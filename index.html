@@ -3,160 +3,202 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<meta name="theme-color" content="#2563eb">
+<meta name="theme-color" content="#2E7D7A">
 <title>Jednostki miar z Centkiem / Единицы измерения с Сантиком</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600;700&family=Pixelify+Sans:wght@500;700&display=swap">
 <style>
+/* Retro: ciepły papier, grube kontury, twarde cienie (DESIGN.md, część 1). Bez ciemnego motywu. */
 :root{
-  --bg:#f6f7f9; --card:#ffffff; --ink:#1f2937; --muted:#6b7280; --line:#dfe3e8;
-  --pri:#2563eb; --pri-ink:#ffffff; --pri-soft:#e8f0fe;
-  --ok:#1b7a3a; --ok-bg:#e6f4ea; --bad:#b3261e; --bad-bg:#fdecea;
-  --hl:#c2410c;--hl-bg:#ffedd5;--gold:#f5b301; --gold-bg:#fff3c4; --gold-ink:#7a5600; --bubble:#fff8e6; --bubble-line:#f3d9a0;
-}
-@media (prefers-color-scheme:dark){
-  :root{
-    --bg:#111418; --card:#1a1f26; --ink:#e8eaee; --muted:#9aa3af; --line:#2b323b;
-    --pri:#5b95ff; --pri-ink:#0b1220; --pri-soft:#1c2a45;
-    --ok:#6fcf8a; --ok-bg:#13301d; --bad:#f28b82; --bad-bg:#3a1a1a;
-    --hl:#ffb366;--hl-bg:#3a2a18;--gold:#f5c542; --gold-bg:#3b3112; --gold-ink:#f5d26b; --bubble:#2a2417; --bubble-line:#4a3d1f;
-  }
+  --bg:#F1E7D0; --card:#FBF5E6; --ink:#2B2622; --muted:#6E655A; --line:#CDBF9F;
+  --pri:#2E7D7A; --pri-ink:#FBF5E6; --pri-soft:#DCE9E3;
+  --gold:#D9A23B; --brick:#B44F38;
+  --ok:#9DB38F; --ok-bg:#D5E3CC; --bad:#B44F38; --bad-bg:#EFCFC6;
+  --hl:#B44F38; --hl-bg:#F0D9A6;
+  --bw:3px; --sh:4px 4px 0 var(--ink); --r:12px;
+  --f-head:"Pixelify Sans",monospace; --f-body:"IBM Plex Mono",monospace;
 }
 *{box-sizing:border-box}
 html,body{margin:0}
-body{background:var(--bg);color:var(--ink);font-family:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;line-height:1.4;-webkit-text-size-adjust:100%}
+body{background:var(--bg);color:var(--ink);font-family:var(--f-body);line-height:1.45;-webkit-text-size-adjust:100%}
 #app{max-width:640px;margin:0 auto;min-height:100vh;min-height:100dvh;display:flex;flex-direction:column}
 button{font:inherit;color:inherit;cursor:pointer}
-button:focus-visible,input:focus-visible,canvas:focus-visible{outline:3px solid var(--pri);outline-offset:2px}
+button:focus-visible,input:focus-visible,canvas:focus-visible{outline:3px dashed var(--brick);outline-offset:3px}
+h1,h2{font-family:var(--f-head);font-weight:700;letter-spacing:.01em;word-spacing:.2em}
+/* Pixelify Sans nie ma cyrylickich „О” i „П” — po rosyjsku nagłówki w IBM Plex Mono */
+html[lang="ru"]{--f-head:"IBM Plex Mono",monospace}
+html[lang="ru"] h1,html[lang="ru"] h2{letter-spacing:0;word-spacing:0}
+/* liczby i jednostki zawsze w IBM Plex Mono (w Pixelify „5” wygląda jak „S”, „cm” jak „om”) */
+.num-font{font-family:var(--f-body)}
+.starrow,.starchip,.stars .big,.pill{font-family:"Segoe UI Symbol","Noto Sans Symbols 2","DejaVu Sans",var(--f-body)}
 
 /* header + language switch */
 .top{display:flex;justify-content:space-between;align-items:flex-start;gap:12px;padding:20px 16px 8px}
-.brand h1{margin:0;font-size:1.35rem;line-height:1.2}
-.brand p{margin:2px 0 0;color:var(--muted);font-size:.95rem}
-.lang{display:inline-flex;border:1px solid var(--line);border-radius:10px;overflow:hidden;background:var(--card);flex:none}
-.lang button{border:0;background:transparent;padding:6px 12px;font-weight:600;color:var(--muted)}
+.brand h1{margin:0;font-size:1.5rem;line-height:1.15}
+.brand p{margin:4px 0 0;color:var(--muted);font-size:.9rem}
+.lang{display:inline-flex;gap:6px;flex:none}
+.lang button{width:44px;height:44px;padding:0;border:var(--bw) solid var(--ink);border-radius:10px;background:var(--card);font-weight:700;color:var(--ink);box-shadow:3px 3px 0 var(--ink)}
 .lang button.on{background:var(--pri);color:var(--pri-ink)}
 
 /* mascot + speech bubble */
-.say{display:flex;gap:10px;align-items:flex-start}
+.say{display:flex;gap:12px;align-items:flex-start}
 .say .mascot{flex:none}
-.bubble{position:relative;background:var(--bubble);border:1px solid var(--bubble-line);border-radius:14px;padding:10px 14px;font-size:1rem}
-.bubble:before{content:"";position:absolute;left:-7px;top:16px;width:12px;height:12px;background:var(--bubble);border-left:1px solid var(--bubble-line);border-bottom:1px solid var(--bubble-line);transform:rotate(45deg)}
-.hello{padding:4px 16px 12px}
+.bubble{position:relative;background:var(--card);border:var(--bw) solid var(--ink);border-radius:var(--r);padding:10px 14px;font-size:.98rem;box-shadow:var(--sh)}
+.bubble:before{content:"";position:absolute;left:-9px;top:16px;width:14px;height:14px;background:var(--card);border-left:var(--bw) solid var(--ink);border-bottom:var(--bw) solid var(--ink);transform:rotate(45deg)}
+.hello{padding:4px 16px 14px}
 
 /* home */
-.chips{padding:0 16px 12px;color:var(--muted);font-size:.95rem}
-.stars{margin:0 16px 12px;padding:12px 14px;background:var(--card);border:1px solid var(--line);border-radius:14px;display:flex;flex-direction:column;gap:8px}
-.stars .rowt{display:flex;justify-content:space-between;align-items:baseline;gap:8px}
-.stars .big{font-weight:700;font-size:1.15rem}
+.chips{padding:0 16px 14px;color:var(--muted);font-size:.9rem}
+.stars{margin:0 16px 16px;padding:14px;background:var(--card);border:var(--bw) solid var(--ink);border-radius:var(--r);box-shadow:var(--sh);display:flex;flex-direction:column;gap:10px}
+.stars .rowt{display:flex;justify-content:space-between;align-items:baseline;gap:8px;flex-wrap:wrap}
+.stars .big{font-weight:700;font-size:1.3rem}
 .starrow{display:flex;gap:2px;font-size:1.35rem;line-height:1}
 .starrow span{color:var(--line)}
-.starrow .on{color:var(--gold)}
-.stars .sub{color:var(--muted);font-size:.93rem}
-.list{display:flex;flex-direction:column;gap:10px;padding:0 16px 8px;margin:0;list-style:none}
-.topic{display:flex;align-items:center;gap:14px;width:100%;text-align:left;background:var(--card);border:1px solid var(--line);border-radius:14px;padding:14px 16px}
-.topic:hover:not(:disabled){border-color:var(--pri)}
-.topic:disabled{cursor:not-allowed;opacity:.6}
-.num{flex:none;width:36px;height:36px;border-radius:50%;display:grid;place-items:center;background:var(--pri-soft);color:var(--pri);font-weight:700}
-.topic.done .num{background:var(--ok-bg);color:var(--ok)}
-.topic .t{font-weight:650}
-.topic .s{color:var(--muted);font-size:.9rem}
-.learn-btn{display:block;width:100%;margin-top:6px;padding:10px 14px;border:1px dashed var(--pri);border-radius:12px;background:transparent;color:var(--pri);font-weight:600}
-.foot{margin-top:auto;padding:16px;display:flex;gap:16px;flex-wrap:wrap}
-.link{background:none;border:0;color:var(--muted);text-decoration:underline;padding:4px 0;font-size:.9rem}
+.starrow .on{color:var(--gold);text-shadow:1px 1px 0 var(--ink)}
+.stars .sub{color:var(--muted);font-size:.88rem}
+.list{display:flex;flex-direction:column;gap:14px;padding:0 16px 8px;margin:0;list-style:none}
+.topic{display:flex;align-items:center;gap:14px;width:100%;text-align:left;background:var(--card);border:var(--bw) solid var(--ink);border-radius:var(--r);padding:14px;box-shadow:var(--sh)}
+.topic:active:not(:disabled){transform:translate(2px,2px);box-shadow:2px 2px 0 var(--ink)}
+.topic:disabled{cursor:not-allowed;border-color:var(--line);box-shadow:none;color:var(--muted)}
+.num{flex:none;width:40px;height:40px;border-radius:10px;border:var(--bw) solid var(--ink);display:grid;place-items:center;background:var(--hl-bg);color:var(--ink);font-weight:700;font-size:1.15rem}
+.topic:disabled .num{border-color:var(--line);background:transparent;color:var(--muted)}
+.topic.done .num{background:var(--ok);color:var(--ink)}
+.topic .t{font-weight:700;font-size:1.08rem}
+.topic .s{color:var(--muted);font-size:.85rem}
+.learn-btn{display:block;width:100%;min-height:44px;margin-top:8px;padding:10px 14px;border:var(--bw) dashed var(--pri);border-radius:var(--r);background:var(--card);color:var(--pri);font-weight:700}
+.foot{margin-top:auto;padding:16px;display:flex;gap:4px 16px;flex-wrap:wrap}
+.link{background:none;border:0;color:var(--muted);text-decoration:underline;min-height:44px;padding:4px 0;font-size:.88rem}
 
 /* lesson */
 .lbar{display:flex;align-items:center;gap:10px;padding:14px 16px}
-.x{flex:none;width:36px;height:36px;border-radius:10px;border:1px solid var(--line);background:var(--card);font-size:1.4rem;line-height:1;color:var(--muted)}
-.prog{flex:1;height:10px;background:var(--line);border-radius:6px;overflow:hidden}
-.fill{height:100%;background:var(--pri);border-radius:6px;transition:width .25s}
-.starchip{flex:none;font-weight:700;color:var(--gold-ink);background:var(--gold-bg);border-radius:999px;padding:3px 10px;font-size:.95rem}
+.x{flex:none;width:44px;height:44px;border-radius:10px;border:var(--bw) solid var(--ink);background:var(--card);font-size:1.5rem;line-height:1;color:var(--ink);box-shadow:3px 3px 0 var(--ink)}
+.prog{flex:1;min-width:40px;height:16px;background:var(--card);border:var(--bw) solid var(--ink);border-radius:8px;overflow:hidden}
+.fill{height:100%;background:var(--pri);transition:width .25s}
+.starchip{flex:none;font-weight:700;color:var(--ink);background:var(--gold);border:var(--bw) solid var(--ink);border-radius:999px;padding:4px 12px;font-size:.92rem}
 .qcard{flex:1;padding:24px 16px;display:flex;flex-direction:column;gap:20px}
-.prompt{margin:0;color:var(--muted);font-size:1rem}
-.prompt.scene{color:var(--ink);font-size:1.1rem}
-.expr{display:flex;flex-wrap:wrap;align-items:center;gap:10px;font-size:clamp(1.5rem,6.2vw,2.1rem);font-weight:600}
+.prompt{margin:0;color:var(--muted);font-size:.98rem}
+.prompt.scene{color:var(--ink);font-size:1.05rem}
+.expr{display:flex;flex-wrap:wrap;align-items:center;gap:10px;font-size:clamp(1.4rem,6.2vw,2rem);font-weight:700}
 .expr .eq{color:var(--muted)}
-.expr .u{font-weight:600}
-.expr input{font:inherit;font-weight:600;width:min(9ch,38vw);text-align:center;padding:6px 8px;border:2px solid var(--line);border-radius:10px;background:var(--card);color:var(--ink)}
-.expr input:focus{border-color:var(--pri)}
-.expr input.ok{border-color:var(--ok);background:var(--ok-bg)}
-.expr input.bad{border-color:var(--bad);background:var(--bad-bg)}
-.sentence{font-size:clamp(1.2rem,5vw,1.6rem);font-weight:600}
-.sentence .blank{display:inline-block;min-width:3ch;border-bottom:3px solid var(--line);text-align:center}
-.err{margin:-8px 0 0;color:var(--bad);font-size:.95rem}
-.choices{display:grid;gap:10px}
+.expr .u{font-weight:700}
+.expr input{font:inherit;width:min(8ch,38vw);text-align:center;padding:4px 8px;border:var(--bw) solid var(--ink);border-radius:10px;background:var(--card);color:var(--ink);box-shadow:3px 3px 0 var(--ink);outline:none}
+.expr input:focus{border-color:var(--pri);box-shadow:3px 3px 0 var(--pri)}
+.expr input.ok{border-color:var(--pri);box-shadow:3px 3px 0 var(--pri);background:var(--ok-bg)}
+.expr input.bad{border-color:var(--brick);box-shadow:3px 3px 0 var(--brick);background:var(--bad-bg)}
+.sentence{font-size:clamp(1.1rem,4.8vw,1.45rem);font-weight:600}
+.sentence .blank{display:inline-block;min-width:3ch;border-bottom:var(--bw) solid var(--ink);text-align:center}
+.err{margin:-8px 0 0;color:var(--brick);font-weight:600;font-size:.92rem}
+.choices{display:grid;gap:12px}
 .choices.two{grid-template-columns:1fr 1fr}
 .choices.three{grid-template-columns:repeat(3,1fr)}
-.choice{padding:16px 12px;border:2px solid var(--line);border-radius:12px;background:var(--card);font-size:1.15rem;font-weight:600;text-align:center}
-.choice.sel{border-color:var(--pri);background:var(--pri-soft)}
-.choice.right{border-color:var(--ok);background:var(--ok-bg)}
-.choice.wrong{border-color:var(--bad);background:var(--bad-bg)}
+.choice{min-height:52px;padding:14px 10px;border:var(--bw) solid var(--ink);border-radius:var(--r);background:var(--card);font-size:1.1rem;font-weight:700;text-align:center;box-shadow:var(--sh)}
+.choice:active:not(:disabled){transform:translate(2px,2px);box-shadow:2px 2px 0 var(--ink)}
+.choice.sel{background:var(--pri);color:var(--pri-ink)}
+.choice.right{background:var(--ok-bg);border-color:var(--ink)}
+.choice.wrong{background:var(--bad-bg);border-color:var(--brick);box-shadow:4px 4px 0 var(--brick)}
 .choice:disabled{cursor:default}
-.actions{position:sticky;bottom:0;padding:14px 16px calc(14px + env(safe-area-inset-bottom));background:var(--card);border-top:1px solid var(--line)}
-.actions.ok{background:var(--ok-bg);border-top-color:var(--ok)}
-.actions.bad{background:var(--bad-bg);border-top-color:var(--bad)}
+.actions{position:sticky;bottom:0;padding:14px 16px calc(14px + env(safe-area-inset-bottom));background:var(--card);border-top:var(--bw) solid var(--ink)}
+.actions.ok{background:var(--ok-bg)}
+.actions.bad{background:var(--bad-bg);border-top-color:var(--brick)}
 .fbrow{display:flex;gap:10px;align-items:flex-start;margin-bottom:12px}
 .fbrow .mascot{flex:none}
-.fb .h{font-weight:700;font-size:1.1rem}
-.actions.ok .h{color:var(--ok)}
-.actions.bad .h{color:var(--bad)}
-.fb .d{margin-top:4px;font-size:.98rem}
-.fb .rule{margin-top:6px;color:var(--muted);font-size:.92rem}
-.pill{display:inline-block;margin-top:4px;padding:2px 10px;border-radius:999px;background:var(--gold-bg);color:var(--gold-ink);font-weight:700;animation:pop .18s ease-out}
-@keyframes pop{from{transform:scale(.8);opacity:.4}to{transform:scale(1);opacity:1}}
-@media (prefers-reduced-motion:reduce){.pill{animation:none}}
-.btn{width:100%;padding:14px;border:0;border-radius:12px;background:var(--pri);color:var(--pri-ink);font-weight:700;font-size:1.05rem}
-.btn:disabled{opacity:.4;cursor:not-allowed}
-.btn.ghost{background:transparent;color:var(--pri);border:2px solid var(--pri)}
-.btn2{margin-top:10px}
-.actions.ok .btn{background:var(--ok);color:#fff}
-.actions.bad .btn{background:var(--bad);color:#fff}
+.fb .h{font-weight:700;font-size:1.08rem}
+.actions.bad .h{color:var(--brick)}
+.fb .d{margin-top:4px;font-size:.95rem}
+.fb .rule{margin-top:6px;color:var(--muted);font-size:.88rem}
+.pill{display:inline-block;margin-top:4px;padding:2px 10px;border-radius:999px;background:var(--gold);border:2px solid var(--ink);color:var(--ink);font-weight:700}
+.btn{display:block;width:100%;min-height:52px;padding:12px 14px;border:var(--bw) solid var(--ink);border-radius:var(--r);background:var(--pri);color:var(--pri-ink);font-weight:700;font-size:1.02rem;box-shadow:var(--sh)}
+.btn:active:not(:disabled){transform:translate(2px,2px);box-shadow:2px 2px 0 var(--ink)}
+.btn:disabled{background:var(--line);color:var(--muted);border-color:var(--line);box-shadow:none;cursor:not-allowed}
+.btn.ghost{background:var(--card);color:var(--ink)}
+.btn2{margin-top:12px}
 
 /* learn */
-.learn{flex:1;padding:8px 16px 24px;display:flex;flex-direction:column;gap:16px}
-.learn h2{margin:8px 0 0;font-size:1.4rem;line-height:1.25}
-.lp{margin:0;font-size:1.05rem}
-.callout{padding:14px 16px;border-radius:12px;background:var(--pri-soft);border:1px solid var(--pri);font-weight:600;display:flex;flex-direction:column;gap:6px}
-.anchors{display:flex;flex-direction:column;gap:8px;margin:0;padding:0;list-style:none}
-.anchors li{display:flex;gap:12px;align-items:center;background:var(--card);border:1px solid var(--line);border-radius:12px;padding:10px 12px}
-.chip{display:inline-block;min-width:3.2rem;text-align:center;padding:4px 10px;border-radius:8px;background:var(--pri-soft);color:var(--pri);font-weight:700}
+.learn{flex:1;padding:8px 16px 24px;display:flex;flex-direction:column;gap:18px}
+.learn h2{margin:8px 0 0;font-size:1.5rem;line-height:1.2}
+.lp{margin:0;font-size:1rem}
+.callout{padding:14px;border-radius:var(--r);background:var(--hl-bg);border:var(--bw) solid var(--ink);box-shadow:var(--sh);font-weight:600;display:flex;flex-direction:column;gap:6px}
+.anchors{display:flex;flex-direction:column;gap:12px;margin:0;padding:0;list-style:none}
+.anchors li{display:flex;gap:12px;align-items:center;background:var(--card);border:var(--bw) solid var(--ink);border-radius:var(--r);padding:10px 12px;box-shadow:var(--sh)}
+.chip{display:inline-block;min-width:3.2rem;text-align:center;padding:3px 9px;border-radius:8px;border:2px solid var(--ink);background:var(--card);color:var(--ink);font-weight:700}
 .chip.on{background:var(--pri);color:var(--pri-ink)}
-.ex{display:flex;flex-direction:column;gap:10px}
-.ex .row{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:10px 14px}
-.ex .l{font-weight:700;font-size:1.1rem}
-.ex .n{color:var(--muted);font-size:.92rem;margin-top:2px}
-.zoom{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:14px;display:flex;flex-direction:column;gap:12px}
+.ex{display:flex;flex-direction:column;gap:12px}
+.ex .row{background:var(--card);border:var(--bw) solid var(--ink);border-radius:var(--r);padding:10px 14px;box-shadow:var(--sh)}
+.ex .l{font-weight:700;font-size:1.05rem}
+.ex .n{color:var(--muted);font-size:.88rem;margin-top:2px}
+.zoom{background:var(--card);border:var(--bw) solid var(--ink);border-radius:var(--r);padding:14px;display:flex;flex-direction:column;gap:12px;box-shadow:var(--sh)}
 .crumbs{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
 .arr{color:var(--muted)}
 .bar{display:flex;gap:3px}
-.seg{flex:1;height:44px;border-radius:6px;background:var(--line);display:grid;place-items:center;font-size:.8rem;color:var(--muted)}
-.seg.first{background:var(--pri-soft);border:2px solid var(--pri);color:var(--pri);font-weight:700}
+.seg{flex:1;height:44px;border-radius:4px;background:#C98F4F;border:2px solid var(--ink);display:grid;place-items:center;font-size:.75rem;color:var(--card);font-weight:700}
+.seg.first{background:var(--gold);color:var(--ink)}
 .seg.one{font-size:1rem}
 .facts{display:flex;flex-direction:column;gap:2px;font-weight:600;min-height:4.2em}
-.cheat{background:var(--card);border:1px dashed var(--line);border-radius:12px;padding:10px 14px;font-size:.95rem}
-.cheat .cap{color:var(--muted);font-size:.85rem;margin-bottom:6px}
-.cheat .chain{display:flex;flex-wrap:nowrap;gap:4px;align-items:center;margin-bottom:8px}
-.cheat .chip{min-width:0;padding:4px 8px}
-.cheat .eqs{display:grid;grid-template-columns:1fr 1fr;gap:2px 16px;font-weight:600}
-.solved{color:var(--ok);font-weight:600}
+.cheat{background:var(--card);border:var(--bw) dashed var(--ink);border-radius:var(--r);padding:10px 12px;font-size:.9rem}
+.cheat .cap{color:var(--muted);font-size:.82rem;margin-bottom:6px;font-weight:700;text-transform:uppercase;letter-spacing:.04em}
+.cheat .chain{display:flex;flex-wrap:wrap;gap:4px;align-items:center;margin-bottom:8px}
+.cheat .chip{min-width:0;padding:2px 6px}
+.cheat .eqs{display:grid;grid-template-columns:1fr 1fr;gap:2px 12px;font-weight:600}
+.solved{color:var(--pri);font-weight:700}
 .chip.on .pre{color:inherit;background:none;text-decoration:underline}
-.pre{color:var(--hl);background:var(--hl-bg);font-weight:800;border-radius:4px;padding:0 2px}
-.q{font-size:1.15rem;font-weight:650}
-.hintbox{padding:10px 14px;border-radius:10px;background:var(--bad-bg);color:var(--bad);font-size:.97rem}
-.task{font-size:clamp(1.4rem,6vw,2rem);font-weight:700}
+.pre{color:var(--hl);background:var(--hl-bg);font-weight:700;border-radius:3px;padding:0 2px}
+.q{font-size:1.1rem;font-weight:700}
+.hintbox{padding:10px 14px;border-radius:var(--r);background:var(--bad-bg);border:var(--bw) solid var(--brick);color:var(--ink);font-size:.94rem}
+.task{font-size:clamp(1.3rem,5.6vw,1.8rem);font-weight:700}
+
+/* comic (DESIGN.md, część 2) */
+.comic{gap:22px}
+.chead h2{margin:4px 0 0;font-size:1.35rem;line-height:1.2}
+.cpage{color:var(--muted);font-size:.85rem;font-weight:700;margin-top:2px}
+.panel{position:relative;border:var(--bw) solid var(--ink);border-radius:var(--r);box-shadow:var(--sh);padding:14px;display:flex;flex-direction:column;gap:14px;
+  background-image:radial-gradient(rgba(43,38,34,.13) 1.3px,transparent 1.6px);background-size:9px 9px}
+.panel.bg-a{background-color:#F6E2BF}.panel.bg-b{background-color:#E3EBD6}.panel.bg-c{background-color:#F4D9C9}.panel.bg-d{background-color:#DDEAE4}
+.panel.card{background:var(--card);background-image:none}
+.ccap{align-self:flex-start;display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin:-4px 0 0 -4px;padding:3px 10px;background:var(--gold);border:var(--bw) solid var(--ink);border-radius:8px;font-weight:700;font-size:.88rem;transform:rotate(-1deg)}
+.ccap .pre{background:var(--card)}
+.cstar{padding:0 8px;border-radius:999px;background:var(--card);border:2px solid var(--ink);font-family:"Segoe UI Symbol","DejaVu Sans",var(--f-body)}
+.csay{display:flex;gap:12px;align-items:center}
+.csay.r{flex-direction:row-reverse}
+.csay .mascot,.heroes{flex:none}
+.heroes{display:flex;gap:2px}
+.cbubble{position:relative;flex:1;background:#FFFDF7;border:var(--bw) solid var(--ink);border-radius:16px;padding:10px 14px;font-weight:600;font-size:1rem}
+.cbubble:before{content:"";position:absolute;left:-10px;top:50%;margin-top:-7px;width:14px;height:14px;background:#FFFDF7;border-left:var(--bw) solid var(--ink);border-bottom:var(--bw) solid var(--ink);transform:rotate(45deg)}
+.csay.r .cbubble:before{left:auto;right:-10px;transform:rotate(225deg)}
+.art{display:flex;flex-direction:column;gap:4px}
+.choc{display:grid;grid-template-columns:repeat(10,1fr);gap:2px;background:var(--ink);border:var(--bw) solid var(--ink);border-radius:6px;overflow:hidden}
+.choc .pc{height:30px;background:#C98F4F;box-shadow:inset 3px 3px 0 #DDAA6E,inset -3px -3px 0 #A8733A}
+.choc.fine .pc{height:44px;background:var(--gold);box-shadow:inset 3px 3px 0 #EEC46E,inset -3px -3px 0 #B9842A}
+.choc.fine .pc.hi{background:#C98F4F;box-shadow:inset 3px 3px 0 #DDAA6E,inset -3px -3px 0 #A8733A}
+.choc.mini{width:62%}.choc.mini .pc{height:16px;box-shadow:none}
+.zoomarrow{width:calc(62% / 10 * 1 + 4px);min-width:max-content;font-weight:700;font-size:.85rem;color:var(--brick)}
+.choc .pc.hi{background:var(--gold);box-shadow:inset 3px 3px 0 #EEC46E,inset -3px -3px 0 #B9842A}
+.clabels{display:grid;grid-template-columns:repeat(10,1fr);font-weight:700;font-size:.85rem}
+.clabels span{white-space:nowrap}
+.span-label{text-align:center;font-weight:700;font-size:.9rem;border-top:2px solid var(--ink);padding-top:2px;margin:0 6px}
+.span-label.top{border-top:0;border-bottom:2px solid var(--ink);padding:0 0 2px}
+.grid100{display:grid;grid-template-columns:repeat(10,1fr);gap:2px;width:min(100%,230px);margin:0 auto;background:var(--ink);border:var(--bw) solid var(--ink);border-radius:6px;overflow:hidden}
+.grid100 div{aspect-ratio:1;background:#C98F4F}
+.grid100 div.hi{background:var(--gold)}
+.why{margin:0;font-size:1rem;font-weight:600}
+.comic .choices .choice{font-size:1.05rem;padding:14px 4px}
 
 /* result + game */
 .result{flex:1;padding:24px 16px;display:flex;flex-direction:column;gap:14px;align-items:flex-start}
-.result h2{margin:0;font-size:1.6rem}
-.result .score{font-size:3rem;font-weight:700;line-height:1}
+.result h2{margin:0;font-size:1.7rem}
+.result .score,.gwrap .score{font-size:3rem;font-weight:700;line-height:1}
 .result p{margin:0;color:var(--muted)}
-.result .gap{display:flex;flex-direction:column;gap:10px;width:100%;margin-top:12px}
+.result .gap{display:flex;flex-direction:column;gap:12px;width:100%;margin-top:12px}
 .gwrap{flex:1;padding:8px 16px 16px;display:flex;flex-direction:column;gap:14px}
-#gcanvas.pix{image-rendering:pixelated;height:auto;aspect-ratio:240/264;max-width:480px;margin:0 auto;background:#0b1020}
-.dpad{display:grid;grid-template-columns:repeat(3,64px);grid-template-rows:repeat(2,56px);gap:6px;justify-content:center;touch-action:none}
-.dpad button{border:2px solid var(--line);border-radius:12px;background:var(--card);font-size:1.4rem;color:var(--ink)}
-.dpad button:active{background:var(--pri-soft);border-color:var(--pri)}
-.gpick{display:flex;flex-direction:column;gap:10px;width:100%}
-.gpick .btn small{display:block;font-weight:500;opacity:.85;margin-top:2px}
-#gcanvas{width:100%;height:min(62vh,520px);border-radius:14px;border:1px solid var(--line);touch-action:none;display:block}
+.gwrap h2{margin:0}
+#gcanvas{width:100%;height:min(62vh,520px);border-radius:var(--r);border:var(--bw) solid var(--ink);box-shadow:var(--sh);touch-action:none;display:block;background:var(--bg)}
+#gcanvas.pix{image-rendering:pixelated;height:auto;aspect-ratio:240/264;max-width:480px;margin:0 auto;background:#2B2622}
+.dpad{display:grid;grid-template-columns:repeat(3,64px);grid-template-rows:repeat(2,56px);gap:8px;justify-content:center;touch-action:none}
+.dpad button{border:var(--bw) solid var(--ink);border-radius:var(--r);background:var(--card);font-size:1.3rem;color:var(--ink);box-shadow:3px 3px 0 var(--ink)}
+.dpad button:active{background:var(--pri);color:var(--pri-ink);transform:translate(2px,2px);box-shadow:1px 1px 0 var(--ink)}
+.gpick{display:flex;flex-direction:column;gap:14px;width:100%}
+.gpick .btn small{display:block;font-weight:500;opacity:.9;margin-top:2px}
+.gpick .btn:disabled small{opacity:1}
 </style>
 </head>
 <body>
@@ -193,28 +235,29 @@ const T = {
     rightAnswer: 'Poprawna odpowiedź:', retryNote: 'To zadanie wróci na końcu lekcji.',
     enterNumber: 'Wpisz samą liczbę, np. 3,5',
     equal: 'Są równe',
-    qConvert: 'Przelicz jednostki', qCompare: 'Co jest większe?', qUnit: 'Wybierz właściwą jednostkę',
-    done: 'Lekcja zaliczona!', firstTry: 'dobrze za pierwszym razem',
+    qConvert: 'Zamień jednostki', qCompare: 'Co jest większe?', qUnit: 'Wybierz właściwą jednostkę',
+    done: 'Lekcja ukończona!', firstTry: 'dobrze za pierwszym razem',
     unlocked: 'Nowy temat odblokowany:',
     needMore: 'Do następnego tematu potrzeba 7/10. Zerknij do wyjaśnienia i spróbuj jeszcze raz — dasz radę!',
     toTopics: 'Do listy tematów', replay: 'Jeszcze raz',
-    unlockAll: 'Otwórz wszystkie tematy', reset: 'Zresetuj postęp', sure: 'Na pewno? Kliknij jeszcze raz',
+    unlockAll: 'Otwórz wszystkie tematy', reset: 'Zresetuj postęp', sure: 'Na pewno? Kliknij znowu',
     close: 'Zamknij', answerAria: 'Twoja odpowiedź', langAria: 'Język',
+    pageOf: (n, m) => 'Strona ' + n + ' z ' + m, nextArrow: 'Dalej →', comicEnd: 'Zapamiętaj ten ciąg — przyda się w ćwiczeniach!', /* PL: требует проверки носителем */
     learn: 'Wyjaśnienie z Centkiem', tryAgain: 'Spróbuj jeszcze raz', zoomIn: 'Przybliż', zoomReset: 'Od początku',
     startPractice: 'Zaczynam ćwiczenia', together: 'Spróbujmy razem', cheat: 'Ściąga', small: 'mniejsza', big: 'większa',
     okMsgs: ['Świetnie!', 'Brawo!', 'Tak trzymać!', 'Strzał w dziesiątkę!', 'Centek jest z Ciebie dumny!'],
-    retryMsgs: ['Teraz się zgadza!', 'Poprawka zaliczona!', 'Tak jest — uczysz się na błędach!', 'Super, tak trzymać!', 'Drugi raz lepiej!'],
+    retryMsgs: ['Teraz się zgadza!', 'Poprawka zaliczona!', 'Tak jest — uczysz się na błędach!', 'Super, tak trzymać!', 'Za drugim razem lepiej!'],
     badMsgs: ['Prawie! Pomyłki są OK — tak uczy się mózg.', 'Spokojnie, sprawdźmy to razem.', 'Nic się nie stało, zaraz to rozgryziemy.', 'Hmm, nie tym razem. Spójrz, jak to działa:', 'Ups! Każdy się myli — Centek też.'],
     res10: 'Dziesięć na dziesięć! Centek tańczy z radości.',
-    res8: 'Świetna robota! Jeszcze trochę, a zostaniesz mistrzem miarek.',
+    res8: 'Świetna robota! Jeszcze trochę, a zostaniesz mistrzem jednostek.',
     res7: 'Zaliczone! Idziemy dalej.',
-    res4: 'Coś już umiesz! Jeszcze jedno podejście, a będzie lepiej.',
-    res0: 'Nic nie szkodzi — każdy mistrz zaczynał od zera. Zerknij do wyjaśnienia i próbujemy jeszcze raz.',
+    res4: 'Coś już umiesz! Jeszcze jedno podejście i będzie lepiej.',
+    res0: 'Nic nie szkodzi — każdy mistrz zaczynał od zera. Zajrzyj do wyjaśnienia i spróbujmy jeszcze raz.',
     meme67: '6–7… tak, Centek zna ten mem 😏',
     starsTitle: 'Gwiazdki', starsHint: (n) => 'Do gry brakuje ' + n + ' ★', starsReady: 'Masz dość gwiazdek na grę!',
     playGame: 'Wybierz grę', playAgain: 'Zagraj jeszcze raz',
     gameName: 'Czekoladopad',
-    gameRules: 'Przesuwaj palcem (albo strzałkami), żeby Centek łapał 🍫 (+1) i ⭐ (+3). Uważaj na brokuły 🥦 (−2)! Masz 40 sekund.',
+    gameRules: 'Przesuwaj Centka palcem (albo strzałkami), żeby łapał 🍫 (+1) i ⭐ (+3). Uważaj na brokuły 🥦 (−2)! Masz 40 sekund.',
     gameStart: 'Start', gameHave: (n) => 'Masz ' + n + ' ★. Jedna gra kosztuje ' + GAME_COST + ' ★.',
     gameOver: 'Koniec gry!', gameScore: (n) => 'Wynik: ' + n, gameBest: (n) => 'Twój rekord: ' + n,
     gameRecord: 'Nowy rekord! Centek jest zachwycony.', gameNice: 'Dobra gra! Pobijesz swój rekord następnym razem?',
@@ -222,7 +265,7 @@ const T = {
     gained: (n) => '+' + n + ' ★',
     chooseGame: 'Wybierz grę — każda kosztuje ' + GAME_COST + ' ★',
     mazeName: 'Labirynt Centka',
-    mazeRules: 'Steruj Centkiem: przesuwaj palcem po planszy, użyj strzałek albo przycisków. Zbierz wszystkie 🍫 w labiryncie. Unikaj brokułów 🥦 — ale gdy złapiesz ⭐, brokuły robią się niebieskie i możesz je zjeść! Masz 3 życia, a każdy poziom jest szybszy.',
+    mazeRules: 'Steruj Centkiem: przesuwaj palcem po planszy albo używaj strzałek lub przycisków. Zbierz wszystkie 🍫 w labiryncie. Unikaj brokułów 🥦 — ale gdy złapiesz ⭐, brokuły robią się niebieskie i możesz je zjeść! Masz 3 życia, a z każdym poziomem jest szybciej.',
     mazeLevel: (n) => 'Poziom ' + n,
     bestOf: 'rekord'
   },
@@ -238,19 +281,20 @@ const T = {
     enterNumber: 'Введи только число, например 3,5',
     equal: 'Равны',
     qConvert: 'Переведи единицы', qCompare: 'Что больше?', qUnit: 'Выбери подходящую единицу',
-    done: 'Урок зачтён!', firstTry: 'верно с первого раза',
+    done: 'Урок окончен!', firstTry: 'верно с первого раза',
     unlocked: 'Открыта новая тема:',
     needMore: 'Для следующей темы нужно 7/10. Загляни в объяснение и попробуй ещё раз — у тебя получится!',
     toTopics: 'К списку тем', replay: 'Ещё раз',
     unlockAll: 'Открыть все темы', reset: 'Сбросить прогресс', sure: 'Точно? Нажми ещё раз',
     close: 'Закрыть', answerAria: 'Твой ответ', langAria: 'Язык',
+    pageOf: (n, m) => 'Страница ' + n + ' из ' + m, nextArrow: 'Дальше →', comicEnd: 'Запомни этот ряд — он пригодится на тренировке!',
     learn: 'Объяснение с Сантиком', tryAgain: 'Попробуй ещё раз', zoomIn: 'Приблизить', zoomReset: 'Сначала',
     startPractice: 'Начинаю тренировку', together: 'Попробуем вместе', cheat: 'Шпаргалка', small: 'меньше', big: 'больше',
     okMsgs: ['Супер!', 'Браво!', 'Так держать!', 'В яблочко!', 'Сантик тобой гордится!'],
     retryMsgs: ['Вот теперь верно!', 'Исправление засчитано!', 'Так и надо — учимся на ошибках!', 'Отлично, так держать!', 'Со второго раза лучше!'],
     badMsgs: ['Почти! Ошибки — это нормально, так учится мозг.', 'Спокойно, разберём это вместе.', 'Ничего страшного, сейчас разберёмся.', 'Хм, не в этот раз. Смотри, как это работает:', 'Упс! Все ошибаются — Сантик тоже.'],
     res10: 'Десять из десяти! Сантик танцует от радости.',
-    res8: 'Отличная работа! Ещё чуть-чуть — и станешь мастером мерок.',
+    res8: 'Отличная работа! Ещё чуть-чуть — и станешь мастером единиц.',
     res7: 'Зачтено! Идём дальше.',
     res4: 'Кое-что уже получается! Ещё один заход — и будет лучше.',
     res0: 'Ничего страшного — каждый мастер начинал с нуля. Загляни в объяснение, и попробуем ещё раз.',
@@ -415,95 +459,145 @@ const TOPICS = [
 const UL = { cm3: 'cm³', dm3: 'dm³', m3: 'm³', mm2: 'mm²', cm2: 'cm²', dm2: 'dm²', m2: 'm²', km2: 'km²', kmh: 'km/h', ms: 'm/s' };
 
 /* ======================================================================
-   Materiał do nauki / Обучающий материал (na razie tylko „Długość”)
+   Materiał do nauki / Обучающий материал („Długość”, „Masa”)
    Typy kroków: info, check, guided, end
+   Dla każdego tematu: anchors (przykłady), chain + eqs (ściąga), zoom, hints (podpowiedzi tematu)
    ====================================================================== */
-const ANCHORS = [
-  ['mm', { pl: 'grubość telefonu ≈ 8 mm', ru: 'толщина телефона ≈ 8 mm' }],
-  ['cm', { pl: 'długość telefonu ≈ 15 cm', ru: 'длина телефона ≈ 15 cm' }],
-  ['dm', { pl: 'szerokość Twojej dłoni ≈ 1 dm (zmierz linijką!)', ru: 'ширина твоей ладони ≈ 1 dm (проверь линейкой!)' }],
-  ['m', { pl: 'jeden blok w Minecrafcie = 1 m, drzwi ≈ 2 m', ru: 'один блок в Minecraft = 1 m, дверь ≈ 2 m' }],
-  ['km', { pl: 'spacer w 12–15 minut ≈ 1 km', ru: 'идти 12–15 минут пешком ≈ 1 km' }]
-];
-
 const HINT = {
-  bigger: { pl: 'Podpowiedź: w ciągu mm → cm → dm → m → km jednostki rosną w prawo.', ru: 'Подсказка: в ряду mm → cm → dm → m → km единицы растут слева направо.' },
   direction: { pl: 'Podpowiedź: mniejszej jednostki potrzeba więcej, większej — mniej.', ru: 'Подсказка: мелких единиц нужно больше, крупных — меньше.' },
   factor: { pl: 'Podpowiedź: zajrzyj do ściągi poniżej.', ru: 'Подсказка: загляни в шпаргалку ниже.' },
   answer: { pl: 'Podpowiedź: wykonaj działanie z pytania i policz jeszcze raz.', ru: 'Подсказка: выполни действие из вопроса и посчитай ещё раз.' }
 };
 
 const LEARN = {
+  /* Komiks zamiast tekstowego wyjaśnienia (DESIGN.md, część 2). Seria 1 „Metrowa czekolada”.
+     PL: teksty z DESIGN.md — требует проверки носителем */
   length: {
+    chain: ['mm', 'cm', 'dm', 'm', 'km'],
+    eqs: ['10 mm = 1 cm', '10 cm = 1 dm', '10 dm = 1 m', '1000 m = 1 km'],
+    comic: {
+      id: 'length-1',
+      title: { pl: 'Odcinek 1 · Metrowa czekolada', ru: 'Серия 1 · Метровая шоколадка' },
+      pages: [
+        { panels: [
+          { bg: 'a', hero: 'cat', art: 'bar',
+            cap: { pl: 'Odcinek 1 · Metrowa czekolada', ru: 'Серия 1 · Метровая шоколадка' },
+            say: { pl: 'Wow! Cały metr czekolady!', ru: 'Ого! Целый метр шоколада!' } },
+          { bg: 'b', hero: 'broc', art: 'bar-dm', right: true,
+            cap: { pl: 'Kroimy na 10 części: decy- = 10 razy mniej', ru: 'Режем на 10 частей: деци = в 10 раз меньше' },
+            say: { pl: 'Każda część to 1 dm.', ru: 'Каждая часть — 1 дм' } },
+          { bg: 'c', hero: 'cat', art: 'dm-cm',
+            cap: { pl: '1 dm = 10 cm', ru: '1 дм = 10 см' },
+            say: { pl: 'Kroimy każdą jeszcze na 10!', ru: 'Режем каждую ещё на 10!' } }
+        ] },
+        { panels: [
+          { bg: 'd', hero: 'cat', art: 'grid',
+            cap: { pl: '1 m = 100 cm · centy- = 100 razy mniej', ru: '1 м = 100 см · санти = в 100 раз меньше' },
+            say: { pl: 'Aż 100 kawałków!', ru: 'Целых 100 кусочков!' } },
+          { bg: 'b', hero: 'broc', right: true,
+            cap: { pl: 'Zadanie od Brokka', ru: 'Задание от Брокко' },
+            say: { pl: 'Gdybyśmy kroili po 1 mm, ile kawałków wyjdzie z 1 metra?', ru: 'Если резать по 1 мм, сколько кусочков получится в 1 метре?' },
+            task: { opts: ['100', '1000', '10000'], correct: '1000',
+              hint: { pl: 'Wskazówka: metr dzieli się na 10 dm, każdy dm na 10 cm, a każdy cm na 10 mm.',
+                      ru: 'Подсказка: метр делится на 10 дм, каждый дм на 10 см, а каждый см на 10 мм.' } } }
+        ] },
+        { panels: [
+          { bg: 'a', hero: 'both', star: true,
+            cap: { pl: 'Dobrze!', ru: 'Верно!' },
+            say: { pl: 'W 1 m jest 1000 mm! Centku, jesteś geniuszem!', ru: 'В 1 м — 1000 мм! Сантик, ты гений!' } },
+          { card: { pl: 'Dlaczego: 1 m = 10 dm, 1 dm = 10 cm, 1 cm = 10 mm. 10 · 10 · 10 = 1000. Przedrostek mili- oznacza „1000 razy mniej”.',
+                    ru: 'Почему: 1 м = 10 дм, 1 дм = 10 см, 1 см = 10 мм. 10 · 10 · 10 = 1000. Приставка милли — это «в 1000 раз меньше».' } }
+        ] },
+        { end: true }
+      ]
+    }
+  },
+  /* PL: wszystkie teksty „pl” w sekcji mass — требует проверки носителем */
+  mass: {
+    anchors: [
+      ['mg', { pl: 'ziarenko ryżu ≈ 25 miligramów (40 ziarenek ≈ 1 gram)', ru: 'зёрнышко риса ≈ 25 миллиграммов (40 зёрнышек ≈ 1 грамм)' }],
+      ['g', { pl: 'Twój telefon ≈ 190 gramów', ru: 'твой телефон ≈ 190 граммов' }],
+      ['dag', { pl: 'tabliczka czekolady = 100 gramów = 10 dekagramów', ru: 'плитка шоколада = 100 граммов = 10 декаграммов' }],
+      ['kg', { pl: 'torebka cukru = 1 kilogram, plecak szkolny ≈ 5 kilogramów', ru: 'пачка сахара = 1 килограмм, школьный рюкзак ≈ 5 килограммов' }],
+      ['t', { pl: 'samochód osobowy ≈ 1,5 tony', ru: 'легковой автомобиль ≈ 1,5 тонны' }]
+    ],
+    chain: ['mg', 'g', 'dag', 'kg', 't'],
+    eqs: ['1000 mg = 1 g', '10 g = 1 dag', '100 dag = 1 kg', '1000 g = 1 kg', '1000 kg = 1 t'],
+    zoom: { levels: [['1', 'kg'], ['100', 'g'], ['1', 'dag'], ['1', 'g']],
+            facts: ['1 kg = 10 · 100 g', '100 g = 10 dag  →  1 kg = 100 dag', '1 dag = 10 g  →  1 kg = 1000 g'] },
+    hints: {
+      bigger: { pl: 'Podpowiedź: w ciągu mg → g → dag → kg → t jednostki są coraz większe (od lewej do prawej).', ru: 'Подсказка: в ряду mg → g → dag → kg → t единицы растут слева направо.' },
+      factor: { pl: 'Podpowiedź: 1 kg = 100 dag, a 1 dag = 10 g, więc 1 kg = 100 · 10 g. A 1 g = 1000 mg.', ru: 'Подсказка: 1 kg = 100 dag, а 1 dag = 10 g, значит 1 kg = 100 · 10 g. А 1 g = 1000 mg.' }
+    },
     steps: [
       { type: 'info',
-        title: { pl: 'Linijki na każdą okazję', ru: 'Линейки на любой случай' },
-        hi: { pl: 'Cześć! Jestem Centek. Pokażę Ci, jak mierzyć wszystko — od telefonu po drogę do szkoły.', ru: 'Привет! Я Сантик. Покажу, как измерять всё — от телефона до дороги в школу.' },
+        title: { pl: 'Ile co waży?', ru: 'Что сколько весит?' },
+        hi: { pl: 'Cześć! To znowu ja, Centek. Dziś ważymy wszystko — od ziarenka ryżu po samochód.', ru: 'Привет! Это снова я, Сантик. Сегодня взвешиваем всё — от зёрнышка риса до автомобиля.' },
         blocks: [
-          { t: 'p', pl: 'Każda jednostka jest od czegoś innego. Wystarczy zapamiętać po jednym przykładzie — i od razu poczujesz, czy wynik ma sens. Zmierz swoją dłoń linijką: to Twój własny 1 dm!',
-            ru: 'Каждая единица — для своего дела. Достаточно запомнить по одному примеру — и ты сразу почувствуешь, разумный ли получился ответ. Измерь свою ладонь линейкой: это твой личный 1 dm!' },
+          { t: 'p', pl: 'Masę mierzymy w miligramach, gramach, dekagramach, kilogramach i tonach. Wystarczy zapamiętać jeden przykład dla każdej jednostki. Jeśli masz w domu wagę kuchenną, zważ swój telefon i zapamiętaj wynik — zwykle wychodzi około 190 gramów.',
+            ru: 'Массу измеряют в миллиграммах, граммах, декаграммах, килограммах и тоннах. Достаточно запомнить по одному примеру для каждой единицы. Если дома есть кухонные весы, взвесь свой телефон и запомни результат — обычно это около 190 граммов.' },
           { t: 'anchors' }
         ] },
       { type: 'info',
-        title: { pl: 'Metr pod lupą', ru: 'Метр под лупой' },
-        hi: { pl: 'Wyobraź sobie metrową czekoladę (marzenie!). Zobacz, na ile kawałków da się ją pokroić.', ru: 'Представь метровую шоколадку (мечта!). Смотри, на сколько кусочков её можно нарезать.' },
+        title: { pl: 'Kilogram pod lupą', ru: 'Килограмм под лупой' },
+        hi: { pl: 'Kilogram to tyle, co 10 tabliczek czekolady. Podzielmy go na części!', ru: 'Килограмм — это столько же, сколько 10 плиток шоколада. Давай разделим его на части!' },
         blocks: [
-          { t: 'p', pl: 'Przedrostki to podpowiedzi: decy- = 10 razy mniej, centy- = 100 razy mniej, mili- = 1000 razy mniej, kilo- = 1000 razy więcej. Klikaj „Przybliż” i patrz, jak metr się dzieli.',
-            ru: 'Приставки — это подсказки: деци = в 10 раз меньше, санти = в 100 раз меньше, милли = в 1000 раз меньше, кило = в 1000 раз больше. Жми «Приблизить» и смотри, как делится метр.' },
+          { t: 'p', pl: 'Przedrostki podpowiadają, ile razy jednostka jest większa lub mniejsza od grama: kilo- = 1000 razy więcej, deka- = 10 razy więcej, mili- = 1000 razy mniej. Klikaj „Przybliż” i patrz, jak dzieli się kilogram.',
+            ru: 'Приставки подсказывают, во сколько раз единица больше или меньше грамма: кило = в 1000 раз больше, дека = в 10 раз больше, милли = в 1000 раз меньше. Жми «Приблизить» и смотри, как делится килограмм.' },
           { t: 'zoom' },
           { t: 'cheat' }
         ] },
       { type: 'check',
-        q: { pl: 'Metrową czekoladę kroisz na kawałki po 1 cm. Ile kawałków wyjdzie?', ru: 'Метровую шоколадку режем на кусочки по 1 cm. Сколько получится кусочков?' },
-        opts: ['10', '100', '1000'], correct: '100',
-        hint: { pl: 'Podpowiedź: metr dzieli się na 10 dm, a każdy decymetr na 10 cm.', ru: 'Подсказка: метр делится на 10 dm, а каждый дециметр — на 10 cm.' },
-        why: { pl: '1 m = 10 dm, a 1 dm = 10 cm, więc 1 m = 10 · 10 = 100 cm.', ru: '1 m = 10 dm, а 1 dm = 10 cm, значит 1 m = 10 · 10 = 100 cm.' } },
+        q: { pl: 'Tabliczka czekolady waży 100 gramów. Ile takich tabliczek razem waży 1 kilogram?', ru: 'Плитка шоколада весит 100 граммов. Сколько таких плиток вместе весят 1 килограмм?' },
+        opts: ['10', '100', '1000'], correct: '10',
+        hint: { pl: 'Podpowiedź: 1 kg = 1000 g. Ile razy 100 gramów mieści się w 1000 gramów?', ru: 'Подсказка: 1 kg = 1000 g. Сколько раз по 100 граммов помещается в 1000 граммах?' },
+        why: { pl: '1 kg = 1000 g, a 1000 : 100 = 10, więc 10 tabliczek.', ru: '1 kg = 1000 g, а 1000 : 100 = 10, значит 10 плиток.' } },
       { type: 'check',
-        q: { pl: 'Do szkoły masz 1 km. Ile to metrów?', ru: 'До школы 1 km. Сколько это метров?' },
-        opts: ['100', '1000', '10000'], correct: '1000',
-        hint: { pl: 'Podpowiedź: kilo- oznacza „tysiąc”.', ru: 'Подсказка: «кило» значит «тысяча».' },
-        why: { pl: '1 km = 1000 m, bo kilo- to tysiąc.', ru: '1 km = 1000 m, потому что «кило» — это тысяча.' } },
+        q: { pl: 'Na opakowaniu czekolady jest napis „100 g”. Ile to dekagramów?', ru: 'На упаковке шоколадки написано «100 g». Сколько это декаграммов?' },
+        opts: ['1', '10', '100'], correct: '10',
+        hint: { pl: 'Podpowiedź: deka- oznacza „dziesięć”, czyli 1 dag = 10 g.', ru: 'Подсказка: «дека» значит «десять», то есть 1 dag = 10 g.' },
+        why: { pl: '1 dag = 10 g, więc 100 g = 100 : 10 = 10 dag. W sklepie mówi się też krótko: „10 deko”.', ru: '1 dag = 10 g, значит 100 g = 100 : 10 = 10 dag. В польских магазинах говорят коротко: «10 деко».' } },
       { type: 'info',
-        title: { pl: 'Mnożyć czy dzielić? Prosty trik', ru: 'Умножать или делить? Простой трюк' },
-        hi: { pl: 'Tu najczęściej wszyscy się mylą. Ale mam na to trik!', ru: 'Тут чаще всего все путаются. Но у меня есть трюк!' },
+        title: { pl: 'Mnożyć czy dzielić? Ten sam trik', ru: 'Умножать или делить? Тот же трюк' },
+        hi: { pl: 'Pamiętasz trik z tematu „Długość”? Z masą działa tak samo!', ru: 'Помнишь трюк из темы «Длина»? С массой он работает так же!' },
         blocks: [
-          { t: 'p', pl: 'Telefon ma 15 cm. Zmierz go centymetrem — mieści się 15 razy. Zmierz milimetrem — aż 150 razy! Im mniejsza miarka, tym więcej jej potrzeba.',
-            ru: 'Телефон длиной 15 cm. Меряем сантиметром — получаем 15. Меряем миллиметром — целых 150! Чем мельче мерка, тем больше таких мерок нужно.' },
+          { t: 'p', pl: 'Plecak waży 5 kilogramów. W kilogramach to 5, a w gramach — aż 5000! Im mniejsza jednostka, tym większa liczba.',
+            ru: 'Рюкзак весит 5 килограммов. Считаем в килограммах — получаем 5. В граммах — целых 5000! Чем мельче единица, тем больше число.' },
           { t: 'rule', pl: ['Z większej jednostki na mniejszą → liczba rośnie → mnożymy.', 'Z mniejszej na większą → liczba maleje → dzielimy.'],
             ru: ['Из крупной единицы в мелкую → число растёт → умножаем.', 'Из мелкой в крупную → число уменьшается → делим.'] },
           { t: 'ex', rows: [
-            { line: '15 cm = 15 · 10 = 150 mm', note: '1 cm = 10 mm' },
-            { line: '1250 m = 1250 : 1000 = 1,25 km', note: '1 km = 1000 m' } ] },
-          { t: 'p', pl: 'Skrót: mnożenie przez 10, 100, 1000 to przesunięcie przecinka o 1, 2, 3 miejsca w prawo (dopisz zera, gdy brakuje cyfr). Dzielenie — w lewo.',
-            ru: 'Лайфхак: умножить на 10, 100, 1000 — значит сдвинуть запятую на 1, 2, 3 знака вправо (дописывая нули, если не хватает цифр). Разделить — сдвинуть влево.' },
+            { line: '5 kg = 5 · 1000 = 5000 g', note: '1 kg = 1000 g' },
+            { line: '190 g = 190 : 1000 = 0,19 kg', note: '1 kg = 1000 g' } ] },
+          { t: 'p', pl: 'Szybki sposób: mnożenie przez 1000 to przesunięcie przecinka o 3 miejsca w prawo (dopisz zera, gdy brakuje cyfr). Dzielenie przez 1000 — o 3 miejsca w lewo.',
+            ru: 'Лайфхак: умножить на 1000 — значит сдвинуть запятую на 3 знака вправо (дописывая нули, если не хватает цифр). Разделить на 1000 — на 3 знака влево.' },
           { t: 'ex', rows: [
-            { line: '1,5 → 1,50 → 150', note: { pl: 'przecinek o 2 miejsca w prawo (· 100)', ru: 'запятая на 2 знака вправо (· 100)' } },
-            { line: '1250 → 1,250 → 1,25', note: { pl: 'przecinek o 3 miejsca w lewo (: 1000)', ru: 'запятая на 3 знака влево (: 1000)' } } ] },
+            { line: '4,5 → 4,500 → 4500', note: { pl: 'przecinek o 3 miejsca w prawo (· 1000)', ru: 'запятая на 3 знака вправо (· 1000)' } },
+            { line: '190 → 0,190 → 0,19', note: { pl: 'przecinek o 3 miejsca w lewo (: 1000)', ru: 'запятая на 3 знака влево (: 1000)' } } ] },
           { t: 'cheat' }
         ] },
-      { type: 'guided', f: 'km', t: 'm', v: 2.4, stages: ['bigger', 'direction', 'factor', 'answer'],
-        scene: { pl: 'Do szkoły masz 2,4 km. Ile to metrów?', ru: 'До школы 2,4 km. Сколько это метров?' } },
-      { type: 'guided', f: 'cm', t: 'm', v: 150, stages: ['direction', 'factor', 'answer'],
-        scene: { pl: 'Kabel do ładowarki ma 150 cm. Ile to metrów?', ru: 'Кабель зарядки длиной 150 cm. Сколько это метров?' } },
+      { type: 'guided', f: 'kg', t: 'g', v: 4.5, stages: ['bigger', 'direction', 'factor', 'answer'],
+        scene: { pl: 'Twój plecak waży 4,5 kilograma. Ile to gramów?', ru: 'Твой рюкзак весит 4,5 килограмма. Сколько это граммов?' } },
+      { type: 'guided', f: 'g', t: 'kg', v: 190, stages: ['direction', 'factor', 'answer'],
+        scene: { pl: 'Twój telefon waży 190 gramów. Ile to kilogramów?', ru: 'Твой телефон весит 190 граммов. Сколько это килограммов?' } },
       { type: 'info',
-        title: { pl: 'Jednostki złożone', ru: 'Составные величины' },
-        hi: { pl: 'Czasem długość jest „w kawałkach”, jak 3 km 250 m. Nic strasznego!', ru: 'Иногда длина записана «в кусочках», например 3 km 250 m. Ничего страшного!' },
+        title: { pl: 'Kilogramy i gramy razem', ru: 'Килограммы и граммы вместе' },
+        hi: { pl: 'Czasem masa jest zapisana w dwóch jednostkach, na przykład 2 kg 350 g. To nic trudnego!', ru: 'Иногда масса записана в двух единицах, например 2 kg 350 g. Это несложно!' },
         blocks: [
-          { t: 'p', pl: 'Zamień większą część na mniejszą jednostkę i dodaj resztę.',
-            ru: 'Переведи крупную часть в мелкую единицу и прибавь остаток.' },
+          { t: 'p', pl: 'Zamień kilogramy na gramy i dodaj pozostałe gramy.',
+            ru: 'Переведи килограммы в граммы и прибавь оставшиеся граммы.' },
           { t: 'ex', rows: [
-            { line: '3 km 250 m = 3000 m + 250 m = 3250 m', note: { pl: '1 km = 1000 m, więc 3 km = 3000 m', ru: '1 km = 1000 m, значит 3 km = 3000 m' } },
-            { line: '3250 m = 3 km 250 m', note: { pl: '3250 : 1000 = 3, reszta 250', ru: '3250 : 1000 = 3, остаток 250' } } ] }
+            { line: '2 kg 350 g = 2000 g + 350 g = 2350 g', note: { pl: '1 kg = 1000 g, więc 2 kg = 2000 g', ru: '1 kg = 1000 g, значит 2 kg = 2000 g' } },
+            { line: '2350 g = 2 kg 350 g', note: { pl: '2350 : 1000 = 2 r. 350', ru: '2350 : 1000 = 2, остаток 350' } } ] }
         ] },
       { type: 'check',
-        q: { pl: 'Wieża Steve’a ma 2 m 35 cm. Ile to cm?', ru: 'Башня Стива — 2 m 35 cm. Сколько это cm?' },
-        opts: ['235', '2035', '2,35'], correct: '235',
-        hint: { pl: 'Podpowiedź: najpierw zamień 2 m na centymetry.', ru: 'Подсказка: сначала переведи 2 m в сантиметры.' },
-        why: { pl: '2 m = 200 cm, więc 200 + 35 = 235 cm.', ru: '2 m = 200 cm, значит 200 + 35 = 235 cm.' } },
+        q: { pl: 'Plecak z podręcznikami waży 3 kg 200 g. Ile to gramów?', ru: 'Рюкзак с учебниками весит 3 kg 200 g. Сколько это граммов?' },
+        opts: ['3200', '3020', '320'], correct: '3200',
+        hint: { pl: 'Podpowiedź: najpierw zamień 3 kilogramy na gramy.', ru: 'Подсказка: сначала переведи 3 килограмма в граммы.' },
+        why: { pl: '3 kg = 3000 g, więc 3000 + 200 = 3200 g.', ru: '3 kg = 3000 g, значит 3000 + 200 = 3200 g.' } },
       { type: 'end',
-        title: { pl: 'Gotowe — jesteś mistrzem miarek!', ru: 'Готово — ты мастер мерок!' },
+        title: { pl: 'Gotowe — ważenie masz w małym palcu!', ru: 'Готово — ты мастер взвешивания!' },
         hi: { pl: 'Jestem z Ciebie dumny!', ru: 'Я тобой горжусь!' },
-        text: { pl: 'Za każdą dobrą odpowiedź za pierwszym razem dostaniesz ⭐. Zbierz 10 gwiazdek — i odblokujesz grę z Centkiem!',
+        text: { pl: 'Za każdą poprawną odpowiedź udzieloną za pierwszym razem dostaniesz ⭐. Zbierz 10 gwiazdek — i odblokujesz grę z Centkiem!',
                 ru: 'За каждый верный ответ с первого раза получишь ⭐. Собери 10 звёздочек — и откроется игра с Сантиком!' } }
     ]
   }
@@ -545,9 +639,11 @@ function lu(str) {
   return S.lang === 'ru' ? str.replace(/(^|[^A-Za-z0-9_])(km|mm|cm|dm|mg|kg|dag|ml|m|g|t|l)(?![A-Za-z0-9_])/g, (x, a, b) => a + LU_MAP[b]) : str;
 }
 /* Приставки (кило, деци, санти, милли / kilo, decy, centy, mili) выделяются цветом */
-const PRE_RE = /(кило|деци|санти(?!к)|милли|kilo|decy|centy|mili)/gi;
+const PRE_RE = /(кило|деци|санти(?!к)|милли|дека(?!бр|д)|kilo|decy|centy|mili|deka(?!d))/gi;
 function textNodes(str) {
-  str = lu(str);
+  str = lu(str).replace(/(\d) (?=[A-Za-zА-Яа-яµ²³]|\d{3}\b)/g, '$1\u00a0')
+    .replace(/(\S) ([=·:]) (?=\d)/g, '$1\u00a0$2\u00a0')
+    .replace(/(^|[\s«„(])([вкосуиаВКОСУИАwizoaWIZOA]) /g, '$1$2\u00a0');
   PRE_RE.lastIndex = 0;
   if (!PRE_RE.test(str)) return [str];
   return str.split(PRE_RE).map((part, i) => {
@@ -555,12 +651,13 @@ function textNodes(str) {
     const sp = document.createElement('span'); sp.className = 'pre'; sp.textContent = part; return sp;
   }).filter((x) => x !== '');
 }
-/* единица как узел: первая буква приставки подсвечена (мм, см, дм, км) */
+/* единица как узел: приставка подсвечена (мм, см, дм, км, мг, даг, кг) */
+const PRE_LEN = { mm: 1, cm: 1, dm: 1, km: 1, mg: 1, kg: 1, dag: 2 };
 function ulNode(u) {
-  const t = ul(u);
-  if (['mm', 'cm', 'dm', 'km'].indexOf(u) < 0) return t;
-  const sp = document.createElement('span'); sp.className = 'pre'; sp.textContent = t.charAt(0);
-  const f = document.createDocumentFragment(); f.append(sp, t.slice(1)); return f;
+  const t = ul(u), n = PRE_LEN[u];
+  if (!n) return t;
+  const sp = document.createElement('span'); sp.className = 'pre'; sp.textContent = t.slice(0, n);
+  const f = document.createDocumentFragment(); f.append(sp, t.slice(n)); return f;
 }
 
 /* ======================================================================
@@ -622,22 +719,39 @@ function el(tag, props) {
    ====================================================================== */
 function mascot(mood, size) {
   const mouth = mood === 'oops'
-    ? '<path d="M24 43 Q30 38 36 43" fill="none" stroke="#2b2118" stroke-width="2" stroke-linecap="round"/>'
-    : '<path d="M22 39 Q30 48 38 39" fill="none" stroke="#2b2118" stroke-width="2" stroke-linecap="round"/>';
-  const brows = mood === 'oops' ? '<path d="M16 24 L25 27 M44 24 L35 27" stroke="#2b2118" stroke-width="2" stroke-linecap="round"/>' : '';
+    ? '<path d="M24 43 Q30 38 36 43" fill="none" stroke="#2B2622" stroke-width="2" stroke-linecap="round"/>'
+    : '<path d="M22 39 Q30 48 38 39" fill="none" stroke="#2B2622" stroke-width="2" stroke-linecap="round"/>';
+  const brows = mood === 'oops' ? '<path d="M16 24 L25 27 M44 24 L35 27" stroke="#2B2622" stroke-width="2" stroke-linecap="round"/>' : '';
   const t = document.createElement('template');
   t.innerHTML = '<svg class="mascot" width="' + size + '" height="' + size + '" viewBox="0 0 60 60" aria-hidden="true">' +
     '<path d="M8 24 L13 4 L27 15 Z" fill="#F2A33A"/><path d="M52 24 L47 4 L33 15 Z" fill="#F2A33A"/>' +
     '<path d="M13 19 L15 10 L21 15 Z" fill="#F4B6C2"/><path d="M47 19 L45 10 L39 15 Z" fill="#F4B6C2"/>' +
     '<circle cx="30" cy="34" r="22" fill="#F2A33A"/>' +
-    '<path d="M12 50 Q30 62 48 50" fill="none" stroke="#2563eb" stroke-width="5" stroke-linecap="round"/>' +
-    '<path d="M14 51 Q30 61 46 51" fill="none" stroke="#fff" stroke-width="1.5" stroke-dasharray="1 4"/>' +
-    '<ellipse cx="22" cy="32" rx="2.6" ry="3.6" fill="#2b2118"/><ellipse cx="38" cy="32" rx="2.6" ry="3.6" fill="#2b2118"/>' +
+    '<path d="M12 50 Q30 62 48 50" fill="none" stroke="#2E7D7A" stroke-width="5" stroke-linecap="round"/>' +
+    '<path d="M14 51 Q30 61 46 51" fill="none" stroke="#FBF5E6" stroke-width="1.5" stroke-dasharray="1 4"/>' +
+    '<ellipse cx="22" cy="32" rx="2.6" ry="3.6" fill="#2B2622"/><ellipse cx="38" cy="32" rx="2.6" ry="3.6" fill="#2B2622"/>' +
     '<circle cx="22.9" cy="30.8" r="1" fill="#fff"/><circle cx="38.9" cy="30.8" r="1" fill="#fff"/>' +
     brows +
     '<path d="M27.5 36.5 H32.5 L30 39.5 Z" fill="#E8798B"/>' + mouth +
-    '<path d="M10 36 L19 37 M10 41 L19 40 M50 36 L41 37 M50 41 L41 40" stroke="#2b2118" stroke-width="1" opacity=".45" stroke-linecap="round"/>' +
+    '<path d="M10 36 L19 37 M10 41 L19 40 M50 36 L41 37 M50 41 L41 40" stroke="#2B2622" stroke-width="1" opacity=".45" stroke-linecap="round"/>' +
     '</svg>';
+  return t.content.firstChild;
+}
+/* Brokko — dobry brokuł, który zadaje pytania (oryginalna postać, rysowana kodem) */
+function brokko(mood, size) {
+  const t = document.createElement('template');
+  const mouth = mood === 'happy'
+    ? '<path d="M24 45 Q30 52 36 45 Z" fill="#2B2622"/>'
+    : '<path d="M25 45 Q30 49 35 45" fill="none" stroke="#2B2622" stroke-width="2" stroke-linecap="round"/>';
+  t.innerHTML = '<svg class="mascot brokko" width="' + size + '" height="' + size + '" viewBox="0 0 60 60" aria-hidden="true">' +
+    '<path d="M21 30 H39 L37 56 Q30 59 23 56 Z" fill="#9DB38F" stroke="#2B2622" stroke-width="2.5" stroke-linejoin="round"/>' +
+    '<g fill="#5E8F57" stroke="#2B2622" stroke-width="2.5">' +
+    '<circle cx="15" cy="26" r="10"/><circle cx="45" cy="26" r="10"/><circle cx="23" cy="15" r="11"/><circle cx="38" cy="15" r="11"/><circle cx="30" cy="25" r="11"/></g>' +
+    '<circle cx="18" cy="12" r="2" fill="#86B07C"/><circle cx="41" cy="21" r="2" fill="#86B07C"/>' +
+    '<ellipse cx="26" cy="39" rx="2.2" ry="3" fill="#2B2622"/><ellipse cx="34" cy="39" rx="2.2" ry="3" fill="#2B2622"/>' +
+    '<circle cx="26.8" cy="38" r=".8" fill="#FBF5E6"/><circle cx="34.8" cy="38" r=".8" fill="#FBF5E6"/>' +
+    (mood === 'happy' ? '<circle cx="22.5" cy="44" r="2" fill="#E8798B" opacity=".6"/><circle cx="37.5" cy="44" r="2" fill="#E8798B" opacity=".6"/>' : '') +
+    mouth + '</svg>';
   return t.content.firstChild;
 }
 function say(text, mood, size) {
@@ -838,6 +952,7 @@ function finishLesson() {
 function startLearn(topic) { V = { view: 'learn', topic, learn: { i: 0 } }; goStep(0); }
 
 function goStep(n) {
+  if (LEARN[V.topic.id].comic) return comicGo(n);
   const steps = LEARN[V.topic.id].steps;
   V.learn = { i: n, zoom: 0, wrongs: [], ok: false, stage: 0, input: '', err: false, msgI: 0 };
   if (steps[n].type === 'end') { S.learned = S.learned || {}; S.learned[V.topic.id] = true; save(); }
@@ -876,6 +991,7 @@ function stageDef(st, name) {
 }
 
 function learnPrimary() {
+  if (LEARN[V.topic.id].comic) return comicPrimary();
   const Lr = V.learn, steps = LEARN[V.topic.id].steps, st = steps[Lr.i];
   if (st.type === 'info') return goStep(Lr.i + 1);
   if (st.type === 'check') { if (Lr.ok) goStep(Lr.i + 1); return; }
@@ -898,39 +1014,37 @@ function guidedCheck(st) {
 }
 
 function cheatBlock() {
+  const LT = LEARN[V.topic.id];
   const chain = el('div', { class: 'chain' });
-  ['mm', 'cm', 'dm', 'm', 'km'].forEach((u, i) => {
+  LT.chain.forEach((u, i) => {
     if (i) chain.append(el('span', { class: 'arr', 'aria-hidden': 'true' }, '→'));
     chain.append(el('span', { class: 'chip' }, ulNode(u)));
   });
   return el('div', { class: 'cheat' }, el('div', { class: 'cap' }, tr('cheat')), chain,
-    el('div', { class: 'eqs' }, ['10 mm = 1 cm', '10 cm = 1 dm', '10 dm = 1 m', '1000 m = 1 km'].map((x) => el('div', null, x))));
+    el('div', { class: 'eqs' }, LT.eqs.map((x) => el('div', null, x))));
 }
 
 function zoomBlock() {
-  const Lr = V.learn, z = Lr.zoom, names = ['m', 'dm', 'cm', 'mm'];
+  const Lr = V.learn, z = Lr.zoom, Z = LEARN[V.topic.id].zoom, lv = Z.levels;
   const crumbs = el('div', { class: 'crumbs' });
-  names.slice(0, z + 1).forEach((n, i) => {
+  lv.slice(0, z + 1).forEach((n, i) => {
     if (i) crumbs.append(el('span', { class: 'arr', 'aria-hidden': 'true' }, '→'));
-    crumbs.append(el('span', { class: 'chip' + (i === z ? ' on' : '') }, '1 ', ulNode(n)));
+    crumbs.append(el('span', { class: 'chip' + (i === z ? ' on' : '') }, n[0] + ' ', ulNode(n[1])));
   });
   const bar = el('div', { class: 'bar' });
-  if (z === 0) bar.append(el('div', { class: 'seg first one' }, '1 m'));
+  if (z === 0) bar.append(el('div', { class: 'seg first one' }, lv[0][0] + ' ' + ul(lv[0][1])));
   else for (let i = 1; i <= 10; i++) bar.append(el('div', { class: 'seg' + (i === 1 ? ' first' : '') }, String(i)));
-  const facts = [];
-  if (z >= 1) facts.push('1 m = 10 dm');
-  if (z >= 2) facts.push('1 dm = 10 cm  →  1 m = 100 cm');
-  if (z >= 3) facts.push('1 cm = 10 mm  →  1 m = 1000 mm');
+  const facts = Z.facts.slice(0, z);
   return el('div', { class: 'zoom' }, crumbs, bar,
     el('div', { class: 'facts', 'aria-live': 'polite' }, facts.map((f) => el('div', null, f))),
-    el('button', { class: 'btn ghost', onclick: () => { Lr.zoom = z < 3 ? z + 1 : 0; render(); } }, z < 3 ? tr('zoomIn') : tr('zoomReset')));
+    el('button', { class: 'btn ghost', onclick: () => { Lr.zoom = z < lv.length - 1 ? z + 1 : 0; render(); } }, z < lv.length - 1 ? tr('zoomIn') : tr('zoomReset')));
 }
 
 function renderBlock(b) {
   const L = S.lang;
   if (b.t === 'p') return el('p', { class: 'lp' }, b[L]);
   if (b.t === 'rule') return el('div', { class: 'callout' }, b[L].map((x) => el('div', null, x)));
-  if (b.t === 'anchors') return el('ul', { class: 'anchors' }, ANCHORS.map((a) => el('li', null, el('span', { class: 'chip' }, ulNode(a[0])), el('span', null, a[1][L]))));
+  if (b.t === 'anchors') return el('ul', { class: 'anchors' }, LEARN[V.topic.id].anchors.map((a) => el('li', null, el('span', { class: 'chip' }, ulNode(a[0])), el('span', null, a[1][L].replace(/(\d) /g, '$1\u00a0')))));
   if (b.t === 'ex') return el('div', { class: 'ex' }, b.rows.map((r) => el('div', { class: 'row' }, el('div', { class: 'l' }, r.line),
     el('div', { class: 'n' }, typeof r.note === 'string' ? r.note : r.note[L]))));
   if (b.t === 'zoom') return zoomBlock();
@@ -986,19 +1100,18 @@ function drawCat(ctx, x, y, w) {
   ctx.beginPath(); ctx.moveTo(x - r * 0.95, y - r * 0.2); ctx.lineTo(x - r * 0.7, y - r * 1.3); ctx.lineTo(x - r * 0.1, y - r * 0.8); ctx.closePath(); ctx.fill();
   ctx.beginPath(); ctx.moveTo(x + r * 0.95, y - r * 0.2); ctx.lineTo(x + r * 0.7, y - r * 1.3); ctx.lineTo(x + r * 0.1, y - r * 0.8); ctx.closePath(); ctx.fill();
   ctx.beginPath(); ctx.arc(x, y, r, 0, Math.PI * 2); ctx.fill();
-  ctx.strokeStyle = '#2563eb'; ctx.lineWidth = r * 0.22; ctx.lineCap = 'round';
+  ctx.strokeStyle = '#2E7D7A'; ctx.lineWidth = r * 0.22; ctx.lineCap = 'round';
   ctx.beginPath(); ctx.arc(x, y - r * 0.05, r * 0.95, 0.15 * Math.PI, 0.85 * Math.PI); ctx.stroke();
-  ctx.fillStyle = '#2b2118';
+  ctx.fillStyle = '#2B2622';
   ctx.beginPath(); ctx.ellipse(x - r * 0.36, y - r * 0.1, r * 0.1, r * 0.15, 0, 0, Math.PI * 2); ctx.fill();
   ctx.beginPath(); ctx.ellipse(x + r * 0.36, y - r * 0.1, r * 0.1, r * 0.15, 0, 0, Math.PI * 2); ctx.fill();
   ctx.fillStyle = '#E8798B';
   ctx.beginPath(); ctx.moveTo(x - r * 0.1, y + r * 0.1); ctx.lineTo(x + r * 0.1, y + r * 0.1); ctx.lineTo(x, y + r * 0.24); ctx.closePath(); ctx.fill();
-  ctx.strokeStyle = '#2b2118'; ctx.lineWidth = 1.6;
+  ctx.strokeStyle = '#2B2622'; ctx.lineWidth = 1.6;
   ctx.beginPath(); ctx.arc(x, y + r * 0.2, r * 0.26, 0.15 * Math.PI, 0.85 * Math.PI); ctx.stroke();
 }
 
 function runGame(cv) {
-  const dark = !!(window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches);
   const ctx = cv.getContext('2d'), dpr = window.devicePixelRatio || 1;
   const W = cv.clientWidth || 320, H = cv.clientHeight || 480;
   cv.width = Math.round(W * dpr); cv.height = Math.round(H * dpr);
@@ -1012,18 +1125,37 @@ function runGame(cv) {
   g.kd = (e) => { if (e.key === 'ArrowLeft') g.dir = -1; if (e.key === 'ArrowRight') g.dir = 1; };
   g.ku = (e) => { if ((e.key === 'ArrowLeft' && g.dir < 0) || (e.key === 'ArrowRight' && g.dir > 0)) g.dir = 0; };
   window.addEventListener('keydown', g.kd); window.addEventListener('keyup', g.ku);
-  const emoji = { c: '🍫', s: '⭐', b: '🥦' };
-  const font = '"Apple Color Emoji","Segoe UI Emoji","Noto Color Emoji",sans-serif';
+  const INK = '#2B2622';
+  function drawItem(it) {
+    const x = it.x, y = it.y;
+    ctx.lineWidth = 2.5; ctx.strokeStyle = INK; ctx.lineJoin = 'round';
+    if (it.kind === 'c') {                       // tabliczka czekolady / шоколадка
+      ctx.fillStyle = '#C98F4F'; ctx.fillRect(x - 13, y - 17, 26, 34); ctx.strokeRect(x - 13, y - 17, 26, 34);
+      ctx.lineWidth = 1.5; ctx.beginPath();
+      ctx.moveTo(x, y - 17); ctx.lineTo(x, y + 17);
+      for (let k = -1; k <= 1; k++) { ctx.moveTo(x - 13, y + k * 8.5); ctx.lineTo(x + 13, y + k * 8.5); }
+      ctx.stroke();
+    } else if (it.kind === 's') {                // gwiazdka / звезда
+      ctx.fillStyle = '#D9A23B'; ctx.beginPath();
+      for (let k = 0; k < 10; k++) { const a = -Math.PI / 2 + k * Math.PI / 5, rr = k % 2 ? 7 : 16; ctx.lineTo(x + rr * Math.cos(a), y + rr * Math.sin(a)); }
+      ctx.closePath(); ctx.fill(); ctx.stroke();
+    } else {                                     // brokuł / брокколи
+      ctx.fillStyle = '#9DB38F'; ctx.fillRect(x - 5, y, 10, 15); ctx.strokeRect(x - 5, y, 10, 15);
+      ctx.fillStyle = '#5E8F57';
+      [[-8, -2, 9], [8, -2, 9], [0, -9, 10]].forEach((c) => { ctx.beginPath(); ctx.arc(x + c[0], y + c[1], c[2], 0, Math.PI * 2); ctx.fill(); ctx.stroke(); });
+    }
+  }
 
   function draw() {
-    ctx.fillStyle = dark ? '#1f2a3a' : '#fef6e4';
+    ctx.fillStyle = '#F1E7D0';
     ctx.fillRect(0, 0, W, H);
-    ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
-    ctx.font = '30px ' + font;
-    g.items.forEach((it) => ctx.fillText(emoji[it.kind], it.x, it.y));
+    ctx.fillStyle = 'rgba(43,38,34,.08)';
+    for (let yy = 6; yy < H; yy += 12) for (let xx = (yy / 12) % 2 ? 12 : 6; xx < W; xx += 12) ctx.fillRect(xx, yy, 2, 2);
+    g.items.forEach(drawItem);
     drawCat(ctx, g.x, catY, catW);
-    ctx.font = '700 17px system-ui,sans-serif';
-    ctx.fillStyle = dark ? '#e8eaee' : '#1f2937';
+    ctx.textBaseline = 'middle';
+    ctx.font = '700 18px "IBM Plex Mono",monospace';
+    ctx.fillStyle = INK;
     ctx.textAlign = 'left'; ctx.fillText(String(g.score), 14, 22);
     ctx.textAlign = 'right'; ctx.fillText(String(Math.max(0, Math.ceil(g.t))) + (S.lang === 'ru' ? ' с' : ' s'), W - 14, 22);
   }
@@ -1079,7 +1211,7 @@ const SPR = {
   veg: ['..GGGG..', '.GGGGGG.', 'GGDGGDGG', 'GWKGWKGG', 'GGGGGGGG', '.SSSSSS.', '.S.SS.S.', 'SS....SS'],
   star: ['...YY...', '...YY...', 'YYYYYYYY', '.YYYYYY.', '..YYYY..', '..YY.YY.', '.YY...YY', '.Y.....Y']
 };
-const PAL = { O: '#F2A33A', E: '#2b2118', P: '#E8798B', B: '#2563eb', G: '#3f9d3a', D: '#256b24', W: '#ffffff', K: '#111111', S: '#9ad46b', Y: '#ffd23f' };
+const PAL = { O: '#F2A33A', E: '#2B2622', P: '#E8798B', B: '#2E7D7A', G: '#5E8F57', D: '#3E6A39', W: '#FBF5E6', K: '#2B2622', S: '#9DB38F', Y: '#D9A23B' };
 
 function runMaze(cv) {
   const T = 16, N = 15, OY = 24, ctx = cv.getContext('2d');
@@ -1177,26 +1309,26 @@ function runMaze(cv) {
     }
   }
   function draw() {
-    ctx.fillStyle = '#0b1020'; ctx.fillRect(0, 0, cv.width, cv.height);
+    ctx.fillStyle = '#2B2622'; ctx.fillRect(0, 0, cv.width, cv.height);
     for (let r = 0; r < N; r++) for (let c = 0; c < N; c++) {
       const x = c * T, y = OY + r * T;
-      if (MAZE[r][c] === '#') { ctx.fillStyle = '#2f5be0'; ctx.fillRect(x, y, T, T); ctx.fillStyle = '#16318f'; ctx.fillRect(x + 3, y + 3, T - 6, T - 6); }
-      else if (g.dots[r][c] === '.') { ctx.fillStyle = '#8b5a2b'; ctx.fillRect(x + 6, y + 6, 4, 4); ctx.fillStyle = '#c98f4f'; ctx.fillRect(x + 6, y + 6, 2, 2); }
+      if (MAZE[r][c] === '#') { ctx.fillStyle = '#2E7D7A'; ctx.fillRect(x, y, T, T); ctx.fillStyle = '#1F5553'; ctx.fillRect(x + 3, y + 3, T - 6, T - 6); }
+      else if (g.dots[r][c] === '.') { ctx.fillStyle = '#C98F4F'; ctx.fillRect(x + 6, y + 6, 4, 4); ctx.fillStyle = '#E2B784'; ctx.fillRect(x + 6, y + 6, 2, 2); }
       else if (g.dots[r][c] === 'o' && Math.floor(g.t * 4) % 2 === 0) spr(SPR.star, x, y);
     }
     g.ghosts.forEach((e) => {
       const fr = g.fright > 0, flash = fr && g.fright < 2 && Math.floor(g.t * 6) % 2 === 0;
-      const pal = fr ? { G: flash ? '#ffffff' : '#3b82f6', D: flash ? '#cbd5e1' : '#1d4ed8', S: flash ? '#e2e8f0' : '#93c5fd' } : null;
+      const pal = fr ? { G: flash ? '#FBF5E6' : '#3F6D8F', D: flash ? '#CDBF9F' : '#2C4F68', S: flash ? '#F1E7D0' : '#8FAEC4' } : null;
       spr(SPR.veg, e.x * T, OY + e.y * T, pal);
     });
     spr(SPR.cat, g.p.x * T, OY + g.p.y * T);
     ctx.font = 'bold 12px monospace'; ctx.textBaseline = 'middle';
-    ctx.fillStyle = '#ffffff'; ctx.textAlign = 'left'; ctx.fillText(String(g.score), 6, 12);
-    ctx.textAlign = 'center'; ctx.fillStyle = '#9db4ff'; ctx.fillText(tr('mazeLevel')(g.level), cv.width / 2, 12);
-    ctx.textAlign = 'right'; ctx.fillStyle = '#ff6b8b'; ctx.fillText('♥'.repeat(Math.max(0, g.lives)), cv.width - 6, 12);
+    ctx.fillStyle = '#FBF5E6'; ctx.textAlign = 'left'; ctx.fillText(String(g.score), 6, 12);
+    ctx.textAlign = 'center'; ctx.fillStyle = '#D9A23B'; ctx.fillText(tr('mazeLevel')(g.level), cv.width / 2, 12);
+    ctx.textAlign = 'right'; ctx.fillStyle = '#E8798B'; ctx.fillText('♥'.repeat(Math.max(0, g.lives)), cv.width - 6, 12);
     if (g.pause > 0 && !g.over) {
-      ctx.fillStyle = 'rgba(11,16,32,.55)'; ctx.fillRect(0, OY + 6 * T, cv.width, 3 * T);
-      ctx.fillStyle = '#ffd23f'; ctx.textAlign = 'center'; ctx.font = 'bold 16px monospace';
+      ctx.fillStyle = 'rgba(43,38,34,.7)'; ctx.fillRect(0, OY + 6 * T, cv.width, 3 * T);
+      ctx.fillStyle = '#D9A23B'; ctx.textAlign = 'center'; ctx.font = 'bold 16px "Pixelify Sans",monospace';
       ctx.fillText(tr('mazeLevel')(g.level), cv.width / 2, OY + 7.5 * T);
     }
   }
@@ -1236,7 +1368,7 @@ function renderGame() {
   const toHome = () => { V = { view: 'home' }; render(); };
   const bar = el('div', { class: 'lbar' },
     el('button', { class: 'x', 'aria-label': tr('close'), onclick: toHome }, '×'),
-    el('div', { style: 'flex:1;font-weight:700' }, gm.phase === 'menu' ? tr('starsTitle') : gname),
+    el('div', { style: 'flex:1;font-weight:700;font-size:1.05rem' }, gm.phase === 'menu' ? tr('starsTitle') : gname),
     el('span', { class: 'starchip' }, '★ ' + have));
   const main = el('main', { class: 'gwrap' });
   let actions = null;
@@ -1260,7 +1392,7 @@ function renderGame() {
   } else {
     main.append(say(gm.record ? tr('gameRecord') : tr('gameNice'), 'happy', 56),
       el('h2', null, tr('gameOver')),
-      el('div', { class: 'score', style: 'font-size:3rem;font-weight:700;line-height:1' }, tr('gameScore')(gm.score)),
+      el('div', { class: 'score' }, tr('gameScore')(gm.score)),
       el('p', { class: 'lp' }, tr('gameBest')(S[bestKey(kind)] || 0)));
     actions = el('footer', { class: 'actions' },
       have >= GAME_COST
@@ -1359,7 +1491,7 @@ function renderLesson() {
       const it = t.item;
       card.append(
         el('p', { class: 'prompt' }, tr('qUnit')),
-        el('div', { class: 'sentence' }, it[S.lang] + ' ', el('b', null, it.n), ' ',
+        el('div', { class: 'sentence' }, it[S.lang] + ' ', el('b', null, it.n), '\u00a0',
           el('span', { class: 'blank' }, fb ? ul(t.correct) : ' ')));
     } else {
       card.append(el('p', { class: 'prompt' }, tr('qCompare')));
@@ -1399,7 +1531,96 @@ function renderLesson() {
   return { nodes: [bar, card, actions], input };
 }
 
+/* ---------- Komiks / Комикс ---------- */
+function comicGo(n) {
+  const C = LEARN[V.topic.id].comic, prev = V.learn || {};
+  V.learn = { i: n, sel: null, wrongs: [], tries: 0, starred: n > 0 ? !!prev.starred : false };
+  if (C.pages[n].end) { S.learned = S.learned || {}; S.learned[V.topic.id] = true; save(); }
+  render();
+}
+function comicTask(pg) { return (pg.panels || []).map((x) => x.task).find(Boolean); }
+function comicCheck() {
+  const Lr = V.learn, C = LEARN[V.topic.id].comic, task = comicTask(C.pages[Lr.i]);
+  if (!task || !Lr.sel) return;
+  Lr.tries++;
+  if (Lr.sel === task.correct) {
+    S.comicStars = S.comicStars || {};
+    // +1 ★ tylko za dobrą odpowiedź za pierwszym razem i tylko raz na odcinek
+    if (Lr.tries === 1 && !S.comicStars[C.id]) { S.comicStars[C.id] = true; S.stars = (S.stars || 0) + 1; save(); Lr.starred = true; }
+    comicGo(Lr.i + 1);
+  } else {
+    // pierwsza pomyłka zamyka gwiazdkę za ten odcinek (także przy kolejnym podejściu)
+    S.comicStars = S.comicStars || {};
+    if (!S.comicStars[C.id]) { S.comicStars[C.id] = 'missed'; save(); }
+    if (Lr.wrongs.indexOf(Lr.sel) < 0) Lr.wrongs.push(Lr.sel);
+    Lr.sel = null; Lr.showHint = true; V.keepScroll = true; render();
+  }
+}
+function comicPrimary() {
+  const Lr = V.learn, pg = LEARN[V.topic.id].comic.pages[Lr.i];
+  if (pg.end) return startLesson(V.topic);
+  if (comicTask(pg)) return comicCheck();
+  comicGo(Lr.i + 1);
+}
+function comicArt(kind) {
+  const piece = (cls, txt) => el('div', { class: 'pc' + (cls ? ' ' + cls : '') }, txt || null);
+  const row = (n, hi) => { const r = el('div', { class: 'choc' }); for (let i = 0; i < n; i++) r.append(piece(i === 0 && hi ? 'hi' : '')); return r; };
+  const labels = (txt) => el('div', { class: 'clabels' }, el('span', null, txt));
+  if (kind === 'bar') return el('div', { class: 'art' }, row(10, false), el('div', { class: 'span-label' }, '1 ' + ul('m')));
+  if (kind === 'bar-dm') return el('div', { class: 'art' }, row(10, true), labels('1 ' + ul('dm')));
+  if (kind === 'dm-cm') { const small = row(10, true); small.classList.add('mini');
+    return el('div', { class: 'art' }, small, el('div', { class: 'zoomarrow', 'aria-hidden': 'true' }, '↓ 1 ' + ul('dm') + ' ↓'),
+      el('div', { class: 'choc fine' }, Array.from({ length: 10 }, (_, i) => piece(i === 0 ? 'hi' : ''))), labels('1 ' + ul('cm'))); }
+  if (kind === 'grid') { const g = el('div', { class: 'grid100', 'aria-hidden': 'true' }); for (let i = 0; i < 100; i++) g.append(el('div', { class: i === 0 ? 'hi' : '' })); return el('div', { class: 'art' }, g); }
+  return null;
+}
+function comicPanel(pn, task) {
+  const L = S.lang, Lr = V.learn;
+  const panel = el('section', { class: 'panel bg-' + (pn.bg || 'a') + (pn.card ? ' card' : '') });
+  if (pn.card) { panel.append(el('p', { class: 'why' }, pn.card[L])); return panel; }
+  if (pn.cap) panel.append(el('div', { class: 'ccap' }, el('span', null, pn.cap[L]), pn.star && Lr.starred ? el('span', { class: 'cstar' }, '+1 ★') : null));
+  const heroes = pn.hero === 'both' ? el('div', { class: 'heroes' }, mascot('happy', 64), brokko('happy', 64))
+    : (pn.hero === 'broc' ? brokko(task ? 'calm' : 'happy', 68) : mascot('happy', 68));
+  panel.append(el('div', { class: 'csay' + (pn.right ? ' r' : '') }, heroes, el('div', { class: 'cbubble' }, pn.say[L])));
+  if (pn.art) panel.append(comicArt(pn.art));
+  if (task) {
+    panel.append(el('div', { class: 'choices three' }, task.opts.map((o) => {
+      const wrong = Lr.wrongs.indexOf(o) >= 0;
+      return el('button', { class: 'choice' + (Lr.sel === o ? ' sel' : '') + (wrong ? ' wrong' : ''), disabled: wrong, 'aria-pressed': Lr.sel === o ? 'true' : 'false',
+        onclick: () => { Lr.sel = o; V.keepScroll = true; render(); } }, fmt(parseNum(o)));
+    })));
+    if (Lr.wrongs.length) panel.append(el('div', { class: 'hintbox', role: 'alert' }, tr('tryAgain') + '. ' + task.hint[L]));
+  }
+  return panel;
+}
+function renderComic() {
+  const Lr = V.learn, LT = LEARN[V.topic.id], C = LT.comic, pg = C.pages[Lr.i], L = S.lang, N = C.pages.length;
+  const bar = el('div', { class: 'lbar' },
+    el('button', { class: 'x', 'aria-label': tr('close'), onclick: () => { V = { view: 'home' }; render(); } }, '×'),
+    el('div', { class: 'prog', role: 'progressbar', 'aria-valuemin': '0', 'aria-valuemax': String(N), 'aria-valuenow': String(Lr.i + 1) },
+      el('div', { class: 'fill', style: 'width:' + ((Lr.i + 1) / N * 100) + '%' })),
+    el('span', { class: 'starchip', 'aria-label': tr('starsTitle') }, '★ ' + (S.stars || 0)),
+    langToggle());
+  const main = el('main', { class: 'learn comic' },
+    el('header', { class: 'chead' }, el('h2', null, C.title[L]), el('div', { class: 'cpage' }, tr('pageOf')(Lr.i + 1, N))));
+  let actions;
+  if (pg.end) {
+    main.append(el('section', { class: 'panel bg-c' }, el('div', { class: 'csay' }, mascot('happy', 60), el('div', { class: 'cbubble' }, tr('comicEnd'))), cheatBlock()));
+    actions = el('footer', { class: 'actions' },
+      el('button', { class: 'btn', onclick: () => startLesson(V.topic) }, tr('startPractice')),
+      el('button', { class: 'btn ghost btn2', onclick: () => { V = { view: 'home' }; render(); } }, tr('toTopics')));
+  } else {
+    const task = comicTask(pg);
+    pg.panels.forEach((pn) => main.append(comicPanel(pn, pn.task)));
+    actions = el('footer', { class: 'actions' }, task
+      ? el('button', { id: 'checkBtn', class: 'btn', disabled: !Lr.sel, onclick: comicCheck }, tr('check'))
+      : el('button', { id: 'nextBtn', class: 'btn', onclick: () => comicGo(Lr.i + 1) }, tr('nextArrow')));
+  }
+  return { nodes: [bar, main, actions], input: null };
+}
+
 function renderLearn() {
+  if (LEARN[V.topic.id].comic) return renderComic();
   const Lr = V.learn, steps = LEARN[V.topic.id].steps, st = steps[Lr.i], L = S.lang;
   const bar = el('div', { class: 'lbar' },
     el('button', { class: 'x', 'aria-label': tr('close'), onclick: () => { V = { view: 'home' }; render(); } }, '×'),
@@ -1440,7 +1661,7 @@ function renderLearn() {
             (id) => { if (id === def.correct) { Lr.stage++; Lr.wrongs = []; } else Lr.wrongs.push(id); render(); },
             def.opts.length === 3 ? 'three' : 'two'));
       }
-      if (Lr.wrongs.length) main.append(el('div', { class: 'hintbox', role: 'alert' }, tr('tryAgain') + '. ' + HINT[name][L]));
+      if (Lr.wrongs.length) main.append(el('div', { class: 'hintbox', role: 'alert' }, tr('tryAgain') + '. ' + ((LEARN[V.topic.id].hints || {})[name] || HINT[name])[L]));
       main.append(cheatBlock());
     } else {
       actions = el('footer', { class: 'actions ok', 'aria-live': 'polite' },
@@ -1471,13 +1692,14 @@ function renderResult() {
     el('h2', null, tr('done')),
     el('div', { class: 'score' }, V.score + '/' + LESSON_LEN),
     el('p', null, tr('firstTry')),
-    el('p', { style: 'color:var(--gold-ink);font-weight:700' }, tr('gained')(V.earned) + ' · ★ ' + have),
+    el('p', { class: 'pill', style: 'color:var(--ink)' }, tr('gained')(V.earned) + ' · ★ ' + have),
     V.next ? el('p', null, tr('unlocked') + ' ', el('b', null, V.next.name[S.lang]))
       : (!V.passed && el('p', null, tr('needMore'))),
     gap);
 }
 
 function render() {
+  const keepY = window.scrollY;
   stopGame();
   const app = document.getElementById('app');
   app.textContent = '';
@@ -1495,7 +1717,8 @@ function render() {
   } else if (V.view === 'game') {
     renderGame().forEach((n) => { if (n) app.append(n); });
   } else app.append(renderResult());
-  window.scrollTo(0, 0);
+  if (V.keepScroll) { window.scrollTo(0, keepY); V.keepScroll = false; } else window.scrollTo(0, 0);
+  if (V.view === 'learn' && V.learn && V.learn.showHint) { V.learn.showHint = false; const h = document.querySelector('.panel .hintbox'); if (h) h.scrollIntoView({ block: 'center' }); }
   if (focusEl) focusEl.focus();
   if (V.view === 'game' && V.game.phase === 'play') (V.game.kind === 'maze' ? runMaze : runGame)(document.getElementById('gcanvas'));
 }
