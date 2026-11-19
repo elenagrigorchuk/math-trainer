@@ -25,7 +25,13 @@ body{background:var(--bg);color:var(--ink);font-family:var(--f-body);line-height
 #app{max-width:640px;margin:0 auto;min-height:100vh;min-height:100dvh;display:flex;flex-direction:column}
 button{font:inherit;color:inherit;cursor:pointer}
 button:focus-visible,input:focus-visible,canvas:focus-visible{outline:3px dashed var(--brick);outline-offset:3px}
-h1,h2{font-family:var(--f-head);font-weight:700;letter-spacing:.01em}
+h1,h2{font-family:var(--f-head);font-weight:700;letter-spacing:.01em;word-spacing:.2em}
+/* Pixelify Sans nie ma cyrylickich „О” i „П” — po rosyjsku nagłówki w IBM Plex Mono */
+html[lang="ru"]{--f-head:"IBM Plex Mono",monospace}
+html[lang="ru"] h1,html[lang="ru"] h2{letter-spacing:0;word-spacing:0}
+/* liczby i jednostki zawsze w IBM Plex Mono (w Pixelify „5” wygląda jak „S”, „cm” jak „om”) */
+.num-font{font-family:var(--f-body)}
+.starrow,.starchip,.stars .big,.pill{font-family:"Segoe UI Symbol","Noto Sans Symbols 2","DejaVu Sans",var(--f-body)}
 
 /* header + language switch */
 .top{display:flex;justify-content:space-between;align-items:flex-start;gap:12px;padding:20px 16px 8px}
@@ -46,7 +52,7 @@ h1,h2{font-family:var(--f-head);font-weight:700;letter-spacing:.01em}
 .chips{padding:0 16px 14px;color:var(--muted);font-size:.9rem}
 .stars{margin:0 16px 16px;padding:14px;background:var(--card);border:var(--bw) solid var(--ink);border-radius:var(--r);box-shadow:var(--sh);display:flex;flex-direction:column;gap:10px}
 .stars .rowt{display:flex;justify-content:space-between;align-items:baseline;gap:8px;flex-wrap:wrap}
-.stars .big{font-family:var(--f-head);font-weight:700;font-size:1.4rem}
+.stars .big{font-weight:700;font-size:1.3rem}
 .starrow{display:flex;gap:2px;font-size:1.35rem;line-height:1}
 .starrow span{color:var(--line)}
 .starrow .on{color:var(--gold);text-shadow:1px 1px 0 var(--ink)}
@@ -55,10 +61,10 @@ h1,h2{font-family:var(--f-head);font-weight:700;letter-spacing:.01em}
 .topic{display:flex;align-items:center;gap:14px;width:100%;text-align:left;background:var(--card);border:var(--bw) solid var(--ink);border-radius:var(--r);padding:14px;box-shadow:var(--sh)}
 .topic:active:not(:disabled){transform:translate(2px,2px);box-shadow:2px 2px 0 var(--ink)}
 .topic:disabled{cursor:not-allowed;border-color:var(--line);box-shadow:none;color:var(--muted)}
-.num{flex:none;width:40px;height:40px;border-radius:10px;border:var(--bw) solid var(--ink);display:grid;place-items:center;background:var(--hl-bg);color:var(--ink);font-family:var(--f-head);font-weight:700;font-size:1.2rem}
+.num{flex:none;width:40px;height:40px;border-radius:10px;border:var(--bw) solid var(--ink);display:grid;place-items:center;background:var(--hl-bg);color:var(--ink);font-weight:700;font-size:1.15rem}
 .topic:disabled .num{border-color:var(--line);background:transparent;color:var(--muted)}
 .topic.done .num{background:var(--ok);color:var(--ink)}
-.topic .t{font-family:var(--f-head);font-weight:700;font-size:1.15rem}
+.topic .t{font-weight:700;font-size:1.08rem}
 .topic .s{color:var(--muted);font-size:.85rem}
 .learn-btn{display:block;width:100%;min-height:44px;margin-top:8px;padding:10px 14px;border:var(--bw) dashed var(--pri);border-radius:var(--r);background:var(--card);color:var(--pri);font-weight:700}
 .foot{margin-top:auto;padding:16px;display:flex;gap:4px 16px;flex-wrap:wrap}
@@ -73,7 +79,7 @@ h1,h2{font-family:var(--f-head);font-weight:700;letter-spacing:.01em}
 .qcard{flex:1;padding:24px 16px;display:flex;flex-direction:column;gap:20px}
 .prompt{margin:0;color:var(--muted);font-size:.98rem}
 .prompt.scene{color:var(--ink);font-size:1.05rem}
-.expr{display:flex;flex-wrap:wrap;align-items:center;gap:10px;font-family:var(--f-head);font-size:clamp(1.5rem,6.6vw,2.2rem);font-weight:700}
+.expr{display:flex;flex-wrap:wrap;align-items:center;gap:10px;font-size:clamp(1.4rem,6.2vw,2rem);font-weight:700}
 .expr .eq{color:var(--muted)}
 .expr .u{font-weight:700}
 .expr input{font:inherit;width:min(8ch,38vw);text-align:center;padding:4px 8px;border:var(--bw) solid var(--ink);border-radius:10px;background:var(--card);color:var(--ink);box-shadow:3px 3px 0 var(--ink);outline:none}
@@ -81,7 +87,6 @@ h1,h2{font-family:var(--f-head);font-weight:700;letter-spacing:.01em}
 .expr input.ok{border-color:var(--pri);box-shadow:3px 3px 0 var(--pri);background:var(--ok-bg)}
 .expr input.bad{border-color:var(--brick);box-shadow:3px 3px 0 var(--brick);background:var(--bad-bg)}
 .sentence{font-size:clamp(1.1rem,4.8vw,1.45rem);font-weight:600}
-.sentence b{font-family:var(--f-head)}
 .sentence .blank{display:inline-block;min-width:3ch;border-bottom:var(--bw) solid var(--ink);text-align:center}
 .err{margin:-8px 0 0;color:var(--brick);font-weight:600;font-size:.92rem}
 .choices{display:grid;gap:12px}
@@ -98,7 +103,7 @@ h1,h2{font-family:var(--f-head);font-weight:700;letter-spacing:.01em}
 .actions.bad{background:var(--bad-bg);border-top-color:var(--brick)}
 .fbrow{display:flex;gap:10px;align-items:flex-start;margin-bottom:12px}
 .fbrow .mascot{flex:none}
-.fb .h{font-family:var(--f-head);font-weight:700;font-size:1.25rem}
+.fb .h{font-weight:700;font-size:1.08rem}
 .actions.bad .h{color:var(--brick)}
 .fb .d{margin-top:4px;font-size:.95rem}
 .fb .rule{margin-top:6px;color:var(--muted);font-size:.88rem}
@@ -140,12 +145,12 @@ h1,h2{font-family:var(--f-head);font-weight:700;letter-spacing:.01em}
 .pre{color:var(--hl);background:var(--hl-bg);font-weight:700;border-radius:3px;padding:0 2px}
 .q{font-size:1.1rem;font-weight:700}
 .hintbox{padding:10px 14px;border-radius:var(--r);background:var(--bad-bg);border:var(--bw) solid var(--brick);color:var(--ink);font-size:.94rem}
-.task{font-family:var(--f-head);font-size:clamp(1.4rem,6vw,2rem);font-weight:700}
+.task{font-size:clamp(1.3rem,5.6vw,1.8rem);font-weight:700}
 
 /* result + game */
 .result{flex:1;padding:24px 16px;display:flex;flex-direction:column;gap:14px;align-items:flex-start}
 .result h2{margin:0;font-size:1.7rem}
-.result .score,.gwrap .score{font-family:var(--f-head);font-size:3.2rem;font-weight:700;line-height:1}
+.result .score,.gwrap .score{font-size:3rem;font-weight:700;line-height:1}
 .result p{margin:0;color:var(--muted)}
 .result .gap{display:flex;flex-direction:column;gap:12px;width:100%;margin-top:12px}
 .gwrap{flex:1;padding:8px 16px 16px;display:flex;flex-direction:column;gap:14px}
@@ -194,28 +199,28 @@ const T = {
     rightAnswer: 'Poprawna odpowiedź:', retryNote: 'To zadanie wróci na końcu lekcji.',
     enterNumber: 'Wpisz samą liczbę, np. 3,5',
     equal: 'Są równe',
-    qConvert: 'Przelicz jednostki', qCompare: 'Co jest większe?', qUnit: 'Wybierz właściwą jednostkę',
-    done: 'Lekcja zaliczona!', firstTry: 'dobrze za pierwszym razem',
+    qConvert: 'Zamień jednostki', qCompare: 'Co jest większe?', qUnit: 'Wybierz właściwą jednostkę',
+    done: 'Lekcja ukończona!', firstTry: 'dobrze za pierwszym razem',
     unlocked: 'Nowy temat odblokowany:',
     needMore: 'Do następnego tematu potrzeba 7/10. Zerknij do wyjaśnienia i spróbuj jeszcze raz — dasz radę!',
     toTopics: 'Do listy tematów', replay: 'Jeszcze raz',
-    unlockAll: 'Otwórz wszystkie tematy', reset: 'Zresetuj postęp', sure: 'Na pewno? Kliknij jeszcze raz',
+    unlockAll: 'Otwórz wszystkie tematy', reset: 'Zresetuj postęp', sure: 'Na pewno? Kliknij znowu',
     close: 'Zamknij', answerAria: 'Twoja odpowiedź', langAria: 'Język',
     learn: 'Wyjaśnienie z Centkiem', tryAgain: 'Spróbuj jeszcze raz', zoomIn: 'Przybliż', zoomReset: 'Od początku',
     startPractice: 'Zaczynam ćwiczenia', together: 'Spróbujmy razem', cheat: 'Ściąga', small: 'mniejsza', big: 'większa',
     okMsgs: ['Świetnie!', 'Brawo!', 'Tak trzymać!', 'Strzał w dziesiątkę!', 'Centek jest z Ciebie dumny!'],
-    retryMsgs: ['Teraz się zgadza!', 'Poprawka zaliczona!', 'Tak jest — uczysz się na błędach!', 'Super, tak trzymać!', 'Drugi raz lepiej!'],
+    retryMsgs: ['Teraz się zgadza!', 'Poprawka zaliczona!', 'Tak jest — uczysz się na błędach!', 'Super, tak trzymać!', 'Za drugim razem lepiej!'],
     badMsgs: ['Prawie! Pomyłki są OK — tak uczy się mózg.', 'Spokojnie, sprawdźmy to razem.', 'Nic się nie stało, zaraz to rozgryziemy.', 'Hmm, nie tym razem. Spójrz, jak to działa:', 'Ups! Każdy się myli — Centek też.'],
     res10: 'Dziesięć na dziesięć! Centek tańczy z radości.',
-    res8: 'Świetna robota! Jeszcze trochę, a zostaniesz mistrzem miarek.',
+    res8: 'Świetna robota! Jeszcze trochę, a zostaniesz mistrzem jednostek.',
     res7: 'Zaliczone! Idziemy dalej.',
-    res4: 'Coś już umiesz! Jeszcze jedno podejście, a będzie lepiej.',
-    res0: 'Nic nie szkodzi — każdy mistrz zaczynał od zera. Zerknij do wyjaśnienia i próbujemy jeszcze raz.',
+    res4: 'Coś już umiesz! Jeszcze jedno podejście i będzie lepiej.',
+    res0: 'Nic nie szkodzi — każdy mistrz zaczynał od zera. Zajrzyj do wyjaśnienia i spróbujmy jeszcze raz.',
     meme67: '6–7… tak, Centek zna ten mem 😏',
     starsTitle: 'Gwiazdki', starsHint: (n) => 'Do gry brakuje ' + n + ' ★', starsReady: 'Masz dość gwiazdek na grę!',
     playGame: 'Wybierz grę', playAgain: 'Zagraj jeszcze raz',
     gameName: 'Czekoladopad',
-    gameRules: 'Przesuwaj palcem (albo strzałkami), żeby Centek łapał 🍫 (+1) i ⭐ (+3). Uważaj na brokuły 🥦 (−2)! Masz 40 sekund.',
+    gameRules: 'Przesuwaj Centka palcem (albo strzałkami), żeby łapał 🍫 (+1) i ⭐ (+3). Uważaj na brokuły 🥦 (−2)! Masz 40 sekund.',
     gameStart: 'Start', gameHave: (n) => 'Masz ' + n + ' ★. Jedna gra kosztuje ' + GAME_COST + ' ★.',
     gameOver: 'Koniec gry!', gameScore: (n) => 'Wynik: ' + n, gameBest: (n) => 'Twój rekord: ' + n,
     gameRecord: 'Nowy rekord! Centek jest zachwycony.', gameNice: 'Dobra gra! Pobijesz swój rekord następnym razem?',
@@ -223,7 +228,7 @@ const T = {
     gained: (n) => '+' + n + ' ★',
     chooseGame: 'Wybierz grę — każda kosztuje ' + GAME_COST + ' ★',
     mazeName: 'Labirynt Centka',
-    mazeRules: 'Steruj Centkiem: przesuwaj palcem po planszy, użyj strzałek albo przycisków. Zbierz wszystkie 🍫 w labiryncie. Unikaj brokułów 🥦 — ale gdy złapiesz ⭐, brokuły robią się niebieskie i możesz je zjeść! Masz 3 życia, a każdy poziom jest szybszy.',
+    mazeRules: 'Steruj Centkiem: przesuwaj palcem po planszy albo używaj strzałek lub przycisków. Zbierz wszystkie 🍫 w labiryncie. Unikaj brokułów 🥦 — ale gdy złapiesz ⭐, brokuły robią się niebieskie i możesz je zjeść! Masz 3 życia, a z każdym poziomem jest szybciej.',
     mazeLevel: (n) => 'Poziom ' + n,
     bestOf: 'rekord'
   },
@@ -239,7 +244,7 @@ const T = {
     enterNumber: 'Введи только число, например 3,5',
     equal: 'Равны',
     qConvert: 'Переведи единицы', qCompare: 'Что больше?', qUnit: 'Выбери подходящую единицу',
-    done: 'Урок зачтён!', firstTry: 'верно с первого раза',
+    done: 'Урок окончен!', firstTry: 'верно с первого раза',
     unlocked: 'Открыта новая тема:',
     needMore: 'Для следующей темы нужно 7/10. Загляни в объяснение и попробуй ещё раз — у тебя получится!',
     toTopics: 'К списку тем', replay: 'Ещё раз',
@@ -251,7 +256,7 @@ const T = {
     retryMsgs: ['Вот теперь верно!', 'Исправление засчитано!', 'Так и надо — учимся на ошибках!', 'Отлично, так держать!', 'Со второго раза лучше!'],
     badMsgs: ['Почти! Ошибки — это нормально, так учится мозг.', 'Спокойно, разберём это вместе.', 'Ничего страшного, сейчас разберёмся.', 'Хм, не в этот раз. Смотри, как это работает:', 'Упс! Все ошибаются — Сантик тоже.'],
     res10: 'Десять из десяти! Сантик танцует от радости.',
-    res8: 'Отличная работа! Ещё чуть-чуть — и станешь мастером мерок.',
+    res8: 'Отличная работа! Ещё чуть-чуть — и станешь мастером единиц.',
     res7: 'Зачтено! Идём дальше.',
     res4: 'Кое-что уже получается! Ещё один заход — и будет лучше.',
     res0: 'Ничего страшного — каждый мастер начинал с нуля. Загляни в объяснение, и попробуем ещё раз.',
@@ -524,7 +529,7 @@ const LEARN = {
       ['t', { pl: 'samochód osobowy ≈ 1,5 tony', ru: 'легковой автомобиль ≈ 1,5 тонны' }]
     ],
     chain: ['mg', 'g', 'dag', 'kg', 't'],
-    eqs: ['1000 mg = 1 g', '10 g = 1 dag', '100 dag = 1000 g = 1 kg', '1000 kg = 1 t'],
+    eqs: ['1000 mg = 1 g', '10 g = 1 dag', '100 dag = 1 kg', '1000 g = 1 kg', '1000 kg = 1 t'],
     zoom: { levels: [['1', 'kg'], ['100', 'g'], ['1', 'dag'], ['1', 'g']],
             facts: ['1 kg = 10 · 100 g', '100 g = 10 dag  →  1 kg = 100 dag', '1 dag = 10 g  →  1 kg = 1000 g'] },
     hints: {
@@ -643,7 +648,7 @@ function lu(str) {
 /* Приставки (кило, деци, санти, милли / kilo, decy, centy, mili) выделяются цветом */
 const PRE_RE = /(кило|деци|санти(?!к)|милли|дека(?!бр|д)|kilo|decy|centy|mili|deka(?!d))/gi;
 function textNodes(str) {
-  str = lu(str);
+  str = lu(str).replace(/(\d) (?=[A-Za-zА-Яа-яµ²³]|\d{3}\b)/g, '$1\u00a0');
   PRE_RE.lastIndex = 0;
   if (!PRE_RE.test(str)) return [str];
   return str.split(PRE_RE).map((part, i) => {
@@ -1135,7 +1140,7 @@ function runGame(cv) {
     g.items.forEach(drawItem);
     drawCat(ctx, g.x, catY, catW);
     ctx.textBaseline = 'middle';
-    ctx.font = '700 18px "Pixelify Sans",monospace';
+    ctx.font = '700 18px "IBM Plex Mono",monospace';
     ctx.fillStyle = INK;
     ctx.textAlign = 'left'; ctx.fillText(String(g.score), 14, 22);
     ctx.textAlign = 'right'; ctx.fillText(String(Math.max(0, Math.ceil(g.t))) + (S.lang === 'ru' ? ' с' : ' s'), W - 14, 22);
@@ -1349,7 +1354,7 @@ function renderGame() {
   const toHome = () => { V = { view: 'home' }; render(); };
   const bar = el('div', { class: 'lbar' },
     el('button', { class: 'x', 'aria-label': tr('close'), onclick: toHome }, '×'),
-    el('div', { style: 'flex:1;font-family:var(--f-head);font-weight:700;font-size:1.15rem' }, gm.phase === 'menu' ? tr('starsTitle') : gname),
+    el('div', { style: 'flex:1;font-weight:700;font-size:1.05rem' }, gm.phase === 'menu' ? tr('starsTitle') : gname),
     el('span', { class: 'starchip' }, '★ ' + have));
   const main = el('main', { class: 'gwrap' });
   let actions = null;
@@ -1472,7 +1477,7 @@ function renderLesson() {
       const it = t.item;
       card.append(
         el('p', { class: 'prompt' }, tr('qUnit')),
-        el('div', { class: 'sentence' }, it[S.lang] + ' ', el('b', null, it.n), ' ',
+        el('div', { class: 'sentence' }, it[S.lang] + ' ', el('b', null, it.n), '\u00a0',
           el('span', { class: 'blank' }, fb ? ul(t.correct) : ' ')));
     } else {
       card.append(el('p', { class: 'prompt' }, tr('qCompare')));
