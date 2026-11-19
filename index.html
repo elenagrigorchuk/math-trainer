@@ -516,59 +516,60 @@ const LEARN = {
   /* PL: wszystkie teksty „pl” w sekcji mass — требует проверки носителем */
   mass: {
     anchors: [
-      ['mg', { pl: 'tabletka witaminy ≈ 500 mg (sprawdź na opakowaniu!)', ru: 'таблетка витамина ≈ 500 mg (посмотри на упаковке!)' }],
-      ['g', { pl: 'Twój telefon ≈ 190 g (zważ go na wadze kuchennej!)', ru: 'твой телефон ≈ 190 g (взвесь на кухонных весах!)' }],
+      ['mg', { pl: 'witamina C w jednej tabletce ≈ 500 mg (sprawdź na opakowaniu!)', ru: 'витамина C в одной таблетке ≈ 500 mg (посмотри на упаковке!)' }],
+      ['g', { pl: 'Twój telefon ≈ 190 g', ru: 'твой телефон ≈ 190 g' }],
       ['dag', { pl: 'tabliczka czekolady = 100 g = 10 dag', ru: 'плитка шоколада = 100 g = 10 dag' }],
-      ['kg', { pl: 'paczka cukru = 1 kg, plecak szkolny ≈ 5 kg', ru: 'пачка сахара = 1 kg, школьный рюкзак ≈ 5 kg' }],
+      ['kg', { pl: 'torebka cukru = 1 kg, plecak szkolny ≈ 5 kg', ru: 'пачка сахара = 1 kg, школьный рюкзак ≈ 5 kg' }],
       ['t', { pl: 'samochód osobowy ≈ 1,5 t', ru: 'легковой автомобиль ≈ 1,5 t' }]
     ],
     chain: ['mg', 'g', 'dag', 'kg', 't'],
-    eqs: ['1000 mg = 1 g', '10 g = 1 dag', '100 dag = 1 kg', '1000 kg = 1 t'],
+    eqs: ['1000 mg = 1 g', '10 g = 1 dag', '100 dag = 1000 g = 1 kg', '1000 kg = 1 t'],
     zoom: { levels: [['1', 'kg'], ['100', 'g'], ['1', 'dag'], ['1', 'g']],
-            facts: ['1 kg = 10 · 100 g = 1000 g', '100 g = 10 dag  →  1 kg = 100 dag', '1 dag = 10 g  →  1 kg = 1000 g'] },
+            facts: ['1 kg = 10 · 100 g', '100 g = 10 dag  →  1 kg = 100 dag', '1 dag = 10 g  →  1 kg = 1000 g'] },
     hints: {
-      bigger: { pl: 'Podpowiedź: w ciągu mg → g → dag → kg → t jednostki rosną w prawo.', ru: 'Подсказка: в ряду mg → g → dag → kg → t единицы растут слева направо.' }
+      bigger: { pl: 'Podpowiedź: w ciągu mg → g → dag → kg → t jednostki są coraz większe (od lewej do prawej).', ru: 'Подсказка: в ряду mg → g → dag → kg → t единицы растут слева направо.' },
+      factor: { pl: 'Podpowiedź: 1 kg = 100 dag, a 1 dag = 10 g, więc 1 kg = 100 · 10 g. A 1 g = 1000 mg.', ru: 'Подсказка: 1 kg = 100 dag, а 1 dag = 10 g, значит 1 kg = 100 · 10 g. А 1 g = 1000 mg.' }
     },
     steps: [
       { type: 'info',
-        title: { pl: 'Waga na każdą okazję', ru: 'Весы на любой случай' },
+        title: { pl: 'Ile co waży?', ru: 'Что сколько весит?' },
         hi: { pl: 'Cześć! To znowu ja, Centek. Dziś ważymy wszystko — od tabletki witaminy po samochód.', ru: 'Привет! Это снова я, Сантик. Сегодня взвешиваем всё — от таблетки витамина до автомобиля.' },
         blocks: [
-          { t: 'p', pl: 'Masę mierzymy w miligramach, gramach, dekagramach, kilogramach i tonach. Wystarczy zapamiętać po jednym przykładzie. Jeśli masz w domu wagę kuchenną, zważ swój telefon i zapamiętaj wynik — zwykle to około 190 g.',
-            ru: 'Массу измеряют в миллиграммах, граммах, декаграммах, килограммах и тоннах. Достаточно запомнить по одному примеру. Если дома есть кухонные весы, взвесь свой телефон и запомни результат — обычно это около 190 g.' },
+          { t: 'p', pl: 'Masę mierzymy w miligramach, gramach, dekagramach, kilogramach i tonach. Wystarczy zapamiętać jeden przykład dla każdej jednostki. Jeśli masz w domu wagę kuchenną, zważ swój telefon i zapamiętaj wynik — zwykle wychodzi około 190 g.',
+            ru: 'Массу измеряют в миллиграммах, граммах, декаграммах, килограммах и тоннах. Достаточно запомнить по одному примеру для каждой единицы. Если дома есть кухонные весы, взвесь свой телефон и запомни результат — обычно это около 190 g.' },
           { t: 'anchors' }
         ] },
       { type: 'info',
         title: { pl: 'Kilogram pod lupą', ru: 'Килограмм под лупой' },
-        hi: { pl: 'Kilogram to aż 10 tabliczek czekolady. Pokrójmy go!', ru: 'Килограмм — это целых 10 плиток шоколада. Давай его разрежем!' },
+        hi: { pl: 'Kilogram to tyle, co 10 tabliczek czekolady. Podzielmy go na części!', ru: 'Килограмм — это столько же, сколько 10 плиток шоколада. Давай разделим его на части!' },
         blocks: [
-          { t: 'p', pl: 'Przedrostki podpowiadają: kilo- = 1000 razy więcej, deka- = 10 razy więcej, mili- = 1000 razy mniej. Klikaj „Przybliż” i patrz, jak dzieli się kilogram.',
-            ru: 'Приставки подсказывают: кило = в 1000 раз больше, дека = в 10 раз больше, милли = в 1000 раз меньше. Жми «Приблизить» и смотри, как делится килограмм.' },
+          { t: 'p', pl: 'Przedrostki podpowiadają, ile razy jednostka jest większa lub mniejsza od grama: kilo- = 1000 razy więcej, deka- = 10 razy więcej, mili- = 1000 razy mniej. Klikaj „Przybliż” i patrz, jak dzieli się kilogram.',
+            ru: 'Приставки подсказывают, во сколько раз единица больше или меньше грамма: кило = в 1000 раз больше, дека = в 10 раз больше, милли = в 1000 раз меньше. Жми «Приблизить» и смотри, как делится килограмм.' },
           { t: 'zoom' },
           { t: 'cheat' }
         ] },
       { type: 'check',
-        q: { pl: 'Tabliczka czekolady waży 100 g. Ile tabliczek waży razem 1 kg?', ru: 'Плитка шоколада весит 100 g. Сколько плиток вместе весят 1 kg?' },
+        q: { pl: 'Tabliczka czekolady waży 100 g. Ile takich tabliczek razem waży 1 kg?', ru: 'Плитка шоколада весит 100 g. Сколько таких плиток вместе весят 1 kg?' },
         opts: ['10', '100', '1000'], correct: '10',
         hint: { pl: 'Podpowiedź: 1 kg = 1000 g. Ile razy 100 g mieści się w 1000 g?', ru: 'Подсказка: 1 kg = 1000 g. Сколько раз 100 g помещается в 1000 g?' },
         why: { pl: '1 kg = 1000 g, a 1000 : 100 = 10, więc 10 tabliczek.', ru: '1 kg = 1000 g, а 1000 : 100 = 10, значит 10 плиток.' } },
       { type: 'check',
-        q: { pl: 'Na opakowaniu czekolady jest napisane 100 g. Ile to dekagramów?', ru: 'На упаковке шоколадки написано 100 g. Сколько это декаграммов?' },
+        q: { pl: 'Na opakowaniu czekolady jest napis „100 g”. Ile to dekagramów?', ru: 'На упаковке шоколадки написано «100 g». Сколько это декаграммов?' },
         opts: ['1', '10', '100'], correct: '10',
         hint: { pl: 'Podpowiedź: deka- oznacza „dziesięć”, czyli 1 dag = 10 g.', ru: 'Подсказка: «дека» значит «десять», то есть 1 dag = 10 g.' },
-        why: { pl: '1 dag = 10 g, więc 100 g = 100 : 10 = 10 dag. W sklepie mówi się też krótko: „10 deko”.', ru: '1 dag = 10 g, значит 100 g = 100 : 10 = 10 dag.' } },
+        why: { pl: '1 dag = 10 g, więc 100 g = 100 : 10 = 10 dag. W sklepie mówi się też krótko: „10 deko”.', ru: '1 dag = 10 g, значит 100 g = 100 : 10 = 10 dag. В польских магазинах говорят коротко: «10 деко».' } },
       { type: 'info',
         title: { pl: 'Mnożyć czy dzielić? Ten sam trik', ru: 'Умножать или делить? Тот же трюк' },
-        hi: { pl: 'Pamiętasz trik z długości? Z masą działa tak samo!', ru: 'Помнишь трюк из темы «Длина»? С массой он работает так же!' },
+        hi: { pl: 'Pamiętasz trik z tematu „Długość”? Z masą działa tak samo!', ru: 'Помнишь трюк из темы «Длина»? С массой он работает так же!' },
         blocks: [
-          { t: 'p', pl: 'Plecak waży 5 kg. Licząc w kilogramach, masz 5. Licząc w gramach — aż 5000! Im mniejsza jednostka, tym większa liczba.',
+          { t: 'p', pl: 'Plecak waży 5 kg. W kilogramach to 5, a w gramach — aż 5000! Im mniejsza jednostka, tym większa liczba.',
             ru: 'Рюкзак весит 5 kg. Считаем в килограммах — получаем 5. В граммах — целых 5000! Чем мельче единица, тем больше число.' },
           { t: 'rule', pl: ['Z większej jednostki na mniejszą → liczba rośnie → mnożymy.', 'Z mniejszej na większą → liczba maleje → dzielimy.'],
             ru: ['Из крупной единицы в мелкую → число растёт → умножаем.', 'Из мелкой в крупную → число уменьшается → делим.'] },
           { t: 'ex', rows: [
             { line: '5 kg = 5 · 1000 = 5000 g', note: '1 kg = 1000 g' },
             { line: '190 g = 190 : 1000 = 0,19 kg', note: '1 kg = 1000 g' } ] },
-          { t: 'p', pl: 'Skrót: mnożenie przez 1000 to przesunięcie przecinka o 3 miejsca w prawo (dopisz zera, gdy brakuje cyfr). Dzielenie przez 1000 — o 3 miejsca w lewo.',
+          { t: 'p', pl: 'Szybki sposób: mnożenie przez 1000 to przesunięcie przecinka o 3 miejsca w prawo (dopisz zera, gdy brakuje cyfr). Dzielenie przez 1000 — o 3 miejsca w lewo.',
             ru: 'Лайфхак: умножить на 1000 — значит сдвинуть запятую на 3 знака вправо (дописывая нули, если не хватает цифр). Разделить на 1000 — на 3 знака влево.' },
           { t: 'ex', rows: [
             { line: '4,5 → 4,500 → 4500', note: { pl: 'przecinek o 3 miejsca w prawo (· 1000)', ru: 'запятая на 3 знака вправо (· 1000)' } },
@@ -580,24 +581,24 @@ const LEARN = {
       { type: 'guided', f: 'g', t: 'kg', v: 190, stages: ['direction', 'factor', 'answer'],
         scene: { pl: 'Twój telefon waży 190 g. Ile to kilogramów?', ru: 'Твой телефон весит 190 g. Сколько это килограммов?' } },
       { type: 'info',
-        title: { pl: 'Masa „w kawałkach”', ru: 'Масса «в кусочках»' },
-        hi: { pl: 'Czasem masa jest zapisana „w kawałkach”, jak 2 kg 350 g. Nic strasznego!', ru: 'Иногда масса записана «в кусочках», например 2 kg 350 g. Ничего страшного!' },
+        title: { pl: 'Kilogramy i gramy razem', ru: 'Килограммы и граммы вместе' },
+        hi: { pl: 'Czasem masa jest zapisana w dwóch jednostkach, na przykład 2 kg 350 g. To nic trudnego!', ru: 'Иногда масса записана в двух единицах, например 2 kg 350 g. Это несложно!' },
         blocks: [
-          { t: 'p', pl: 'Zamień większą część na mniejszą jednostkę i dodaj resztę.',
-            ru: 'Переведи крупную часть в мелкую единицу и прибавь остаток.' },
+          { t: 'p', pl: 'Zamień kilogramy na gramy i dodaj pozostałe gramy.',
+            ru: 'Переведи килограммы в граммы и прибавь оставшиеся граммы.' },
           { t: 'ex', rows: [
             { line: '2 kg 350 g = 2000 g + 350 g = 2350 g', note: { pl: '1 kg = 1000 g, więc 2 kg = 2000 g', ru: '1 kg = 1000 g, значит 2 kg = 2000 g' } },
-            { line: '2350 g = 2 kg 350 g', note: { pl: '2350 : 1000 = 2, reszta 350', ru: '2350 : 1000 = 2, остаток 350' } } ] }
+            { line: '2350 g = 2 kg 350 g', note: { pl: '2350 : 1000 = 2 r. 350', ru: '2350 : 1000 = 2, остаток 350' } } ] }
         ] },
       { type: 'check',
-        q: { pl: 'Plecak z książkami waży 3 kg 200 g. Ile to gramów?', ru: 'Рюкзак с учебниками весит 3 kg 200 g. Сколько это граммов?' },
+        q: { pl: 'Plecak z podręcznikami waży 3 kg 200 g. Ile to gramów?', ru: 'Рюкзак с учебниками весит 3 kg 200 g. Сколько это граммов?' },
         opts: ['3200', '3020', '320'], correct: '3200',
         hint: { pl: 'Podpowiedź: najpierw zamień 3 kg na gramy.', ru: 'Подсказка: сначала переведи 3 kg в граммы.' },
         why: { pl: '3 kg = 3000 g, więc 3000 + 200 = 3200 g.', ru: '3 kg = 3000 g, значит 3000 + 200 = 3200 g.' } },
       { type: 'end',
-        title: { pl: 'Gotowe — jesteś mistrzem ważenia!', ru: 'Готово — ты мастер взвешивания!' },
+        title: { pl: 'Gotowe — ważenie masz w małym palcu!', ru: 'Готово — ты мастер взвешивания!' },
         hi: { pl: 'Jestem z Ciebie dumny!', ru: 'Я тобой горжусь!' },
-        text: { pl: 'Za każdą dobrą odpowiedź za pierwszym razem dostaniesz ⭐. Zbierz 10 gwiazdek — i odblokujesz grę z Centkiem!',
+        text: { pl: 'Za każdą poprawną odpowiedź udzieloną za pierwszym razem dostaniesz ⭐. Zbierz 10 gwiazdek — i odblokujesz grę z Centkiem!',
                 ru: 'За каждый верный ответ с первого раза получишь ⭐. Собери 10 звёздочек — и откроется игра с Сантиком!' } }
     ]
   }
@@ -1023,7 +1024,7 @@ function renderBlock(b) {
   const L = S.lang;
   if (b.t === 'p') return el('p', { class: 'lp' }, b[L]);
   if (b.t === 'rule') return el('div', { class: 'callout' }, b[L].map((x) => el('div', null, x)));
-  if (b.t === 'anchors') return el('ul', { class: 'anchors' }, LEARN[V.topic.id].anchors.map((a) => el('li', null, el('span', { class: 'chip' }, ulNode(a[0])), el('span', null, a[1][L]))));
+  if (b.t === 'anchors') return el('ul', { class: 'anchors' }, LEARN[V.topic.id].anchors.map((a) => el('li', null, el('span', { class: 'chip' }, ulNode(a[0])), el('span', null, a[1][L].replace(/(\d) /g, '$1\u00a0')))));
   if (b.t === 'ex') return el('div', { class: 'ex' }, b.rows.map((r) => el('div', { class: 'row' }, el('div', { class: 'l' }, r.line),
     el('div', { class: 'n' }, typeof r.note === 'string' ? r.note : r.note[L]))));
   if (b.t === 'zoom') return zoomBlock();
