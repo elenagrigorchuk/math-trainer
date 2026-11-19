@@ -415,19 +415,11 @@ const TOPICS = [
 const UL = { cm3: 'cm³', dm3: 'dm³', m3: 'm³', mm2: 'mm²', cm2: 'cm²', dm2: 'dm²', m2: 'm²', km2: 'km²', kmh: 'km/h', ms: 'm/s' };
 
 /* ======================================================================
-   Materiał do nauki / Обучающий материал (na razie tylko „Długość”)
+   Materiał do nauki / Обучающий материал („Długość”, „Masa”)
    Typy kroków: info, check, guided, end
+   Dla każdego tematu: anchors (przykłady), chain + eqs (ściąga), zoom, hints (podpowiedzi tematu)
    ====================================================================== */
-const ANCHORS = [
-  ['mm', { pl: 'grubość telefonu ≈ 8 mm', ru: 'толщина телефона ≈ 8 mm' }],
-  ['cm', { pl: 'długość telefonu ≈ 15 cm', ru: 'длина телефона ≈ 15 cm' }],
-  ['dm', { pl: 'szerokość Twojej dłoni ≈ 1 dm (zmierz linijką!)', ru: 'ширина твоей ладони ≈ 1 dm (проверь линейкой!)' }],
-  ['m', { pl: 'jeden blok w Minecrafcie = 1 m, drzwi ≈ 2 m', ru: 'один блок в Minecraft = 1 m, дверь ≈ 2 m' }],
-  ['km', { pl: 'spacer w 12–15 minut ≈ 1 km', ru: 'идти 12–15 минут пешком ≈ 1 km' }]
-];
-
 const HINT = {
-  bigger: { pl: 'Podpowiedź: w ciągu mm → cm → dm → m → km jednostki rosną w prawo.', ru: 'Подсказка: в ряду mm → cm → dm → m → km единицы растут слева направо.' },
   direction: { pl: 'Podpowiedź: mniejszej jednostki potrzeba więcej, większej — mniej.', ru: 'Подсказка: мелких единиц нужно больше, крупных — меньше.' },
   factor: { pl: 'Podpowiedź: zajrzyj do ściągi poniżej.', ru: 'Подсказка: загляни в шпаргалку ниже.' },
   answer: { pl: 'Podpowiedź: wykonaj działanie z pytania i policz jeszcze raz.', ru: 'Подсказка: выполни действие из вопроса и посчитай ещё раз.' }
@@ -435,6 +427,20 @@ const HINT = {
 
 const LEARN = {
   length: {
+    anchors: [
+      ['mm', { pl: 'grubość telefonu ≈ 8 mm', ru: 'толщина телефона ≈ 8 mm' }],
+      ['cm', { pl: 'długość telefonu ≈ 15 cm', ru: 'длина телефона ≈ 15 cm' }],
+      ['dm', { pl: 'szerokość Twojej dłoni ≈ 1 dm (zmierz linijką!)', ru: 'ширина твоей ладони ≈ 1 dm (проверь линейкой!)' }],
+      ['m', { pl: 'jeden blok w Minecrafcie = 1 m, drzwi ≈ 2 m', ru: 'один блок в Minecraft = 1 m, дверь ≈ 2 m' }],
+      ['km', { pl: 'spacer w 12–15 minut ≈ 1 km', ru: 'идти 12–15 минут пешком ≈ 1 km' }]
+    ],
+    chain: ['mm', 'cm', 'dm', 'm', 'km'],
+    eqs: ['10 mm = 1 cm', '10 cm = 1 dm', '10 dm = 1 m', '1000 m = 1 km'],
+    zoom: { levels: [['1', 'm'], ['1', 'dm'], ['1', 'cm'], ['1', 'mm']],
+            facts: ['1 m = 10 dm', '1 dm = 10 cm  →  1 m = 100 cm', '1 cm = 10 mm  →  1 m = 1000 mm'] },
+    hints: {
+      bigger: { pl: 'Podpowiedź: w ciągu mm → cm → dm → m → km jednostki rosną w prawo.', ru: 'Подсказка: в ряду mm → cm → dm → m → km единицы растут слева направо.' }
+    },
     steps: [
       { type: 'info',
         title: { pl: 'Linijki na każdą okazję', ru: 'Линейки на любой случай' },
@@ -506,6 +512,94 @@ const LEARN = {
         text: { pl: 'Za każdą dobrą odpowiedź za pierwszym razem dostaniesz ⭐. Zbierz 10 gwiazdek — i odblokujesz grę z Centkiem!',
                 ru: 'За каждый верный ответ с первого раза получишь ⭐. Собери 10 звёздочек — и откроется игра с Сантиком!' } }
     ]
+  },
+  /* PL: wszystkie teksty „pl” w sekcji mass — требует проверки носителем */
+  mass: {
+    anchors: [
+      ['mg', { pl: 'tabletka witaminy ≈ 500 mg (sprawdź na opakowaniu!)', ru: 'таблетка витамина ≈ 500 mg (посмотри на упаковке!)' }],
+      ['g', { pl: 'Twój telefon ≈ 190 g (zważ go na wadze kuchennej!)', ru: 'твой телефон ≈ 190 g (взвесь на кухонных весах!)' }],
+      ['dag', { pl: 'tabliczka czekolady = 100 g = 10 dag', ru: 'плитка шоколада = 100 g = 10 dag' }],
+      ['kg', { pl: 'paczka cukru = 1 kg, plecak szkolny ≈ 5 kg', ru: 'пачка сахара = 1 kg, школьный рюкзак ≈ 5 kg' }],
+      ['t', { pl: 'samochód osobowy ≈ 1,5 t', ru: 'легковой автомобиль ≈ 1,5 t' }]
+    ],
+    chain: ['mg', 'g', 'dag', 'kg', 't'],
+    eqs: ['1000 mg = 1 g', '10 g = 1 dag', '100 dag = 1 kg', '1000 kg = 1 t'],
+    zoom: { levels: [['1', 'kg'], ['100', 'g'], ['1', 'dag'], ['1', 'g']],
+            facts: ['1 kg = 10 · 100 g = 1000 g', '100 g = 10 dag  →  1 kg = 100 dag', '1 dag = 10 g  →  1 kg = 1000 g'] },
+    hints: {
+      bigger: { pl: 'Podpowiedź: w ciągu mg → g → dag → kg → t jednostki rosną w prawo.', ru: 'Подсказка: в ряду mg → g → dag → kg → t единицы растут слева направо.' }
+    },
+    steps: [
+      { type: 'info',
+        title: { pl: 'Waga na każdą okazję', ru: 'Весы на любой случай' },
+        hi: { pl: 'Cześć! To znowu ja, Centek. Dziś ważymy wszystko — od tabletki witaminy po samochód.', ru: 'Привет! Это снова я, Сантик. Сегодня взвешиваем всё — от таблетки витамина до автомобиля.' },
+        blocks: [
+          { t: 'p', pl: 'Masę mierzymy w miligramach, gramach, dekagramach, kilogramach i tonach. Wystarczy zapamiętać po jednym przykładzie. Jeśli masz w domu wagę kuchenną, zważ swój telefon i zapamiętaj wynik — zwykle to około 190 g.',
+            ru: 'Массу измеряют в миллиграммах, граммах, декаграммах, килограммах и тоннах. Достаточно запомнить по одному примеру. Если дома есть кухонные весы, взвесь свой телефон и запомни результат — обычно это около 190 g.' },
+          { t: 'anchors' }
+        ] },
+      { type: 'info',
+        title: { pl: 'Kilogram pod lupą', ru: 'Килограмм под лупой' },
+        hi: { pl: 'Kilogram to aż 10 tabliczek czekolady. Pokrójmy go!', ru: 'Килограмм — это целых 10 плиток шоколада. Давай его разрежем!' },
+        blocks: [
+          { t: 'p', pl: 'Przedrostki podpowiadają: kilo- = 1000 razy więcej, deka- = 10 razy więcej, mili- = 1000 razy mniej. Klikaj „Przybliż” i patrz, jak dzieli się kilogram.',
+            ru: 'Приставки подсказывают: кило = в 1000 раз больше, дека = в 10 раз больше, милли = в 1000 раз меньше. Жми «Приблизить» и смотри, как делится килограмм.' },
+          { t: 'zoom' },
+          { t: 'cheat' }
+        ] },
+      { type: 'check',
+        q: { pl: 'Tabliczka czekolady waży 100 g. Ile tabliczek waży razem 1 kg?', ru: 'Плитка шоколада весит 100 g. Сколько плиток вместе весят 1 kg?' },
+        opts: ['10', '100', '1000'], correct: '10',
+        hint: { pl: 'Podpowiedź: 1 kg = 1000 g. Ile razy 100 g mieści się w 1000 g?', ru: 'Подсказка: 1 kg = 1000 g. Сколько раз 100 g помещается в 1000 g?' },
+        why: { pl: '1 kg = 1000 g, a 1000 : 100 = 10, więc 10 tabliczek.', ru: '1 kg = 1000 g, а 1000 : 100 = 10, значит 10 плиток.' } },
+      { type: 'check',
+        q: { pl: 'Na opakowaniu czekolady jest napisane 100 g. Ile to dekagramów?', ru: 'На упаковке шоколадки написано 100 g. Сколько это декаграммов?' },
+        opts: ['1', '10', '100'], correct: '10',
+        hint: { pl: 'Podpowiedź: deka- oznacza „dziesięć”, czyli 1 dag = 10 g.', ru: 'Подсказка: «дека» значит «десять», то есть 1 dag = 10 g.' },
+        why: { pl: '1 dag = 10 g, więc 100 g = 100 : 10 = 10 dag. W sklepie mówi się też krótko: „10 deko”.', ru: '1 dag = 10 g, значит 100 g = 100 : 10 = 10 dag.' } },
+      { type: 'info',
+        title: { pl: 'Mnożyć czy dzielić? Ten sam trik', ru: 'Умножать или делить? Тот же трюк' },
+        hi: { pl: 'Pamiętasz trik z długości? Z masą działa tak samo!', ru: 'Помнишь трюк из темы «Длина»? С массой он работает так же!' },
+        blocks: [
+          { t: 'p', pl: 'Plecak waży 5 kg. Licząc w kilogramach, masz 5. Licząc w gramach — aż 5000! Im mniejsza jednostka, tym większa liczba.',
+            ru: 'Рюкзак весит 5 kg. Считаем в килограммах — получаем 5. В граммах — целых 5000! Чем мельче единица, тем больше число.' },
+          { t: 'rule', pl: ['Z większej jednostki na mniejszą → liczba rośnie → mnożymy.', 'Z mniejszej na większą → liczba maleje → dzielimy.'],
+            ru: ['Из крупной единицы в мелкую → число растёт → умножаем.', 'Из мелкой в крупную → число уменьшается → делим.'] },
+          { t: 'ex', rows: [
+            { line: '5 kg = 5 · 1000 = 5000 g', note: '1 kg = 1000 g' },
+            { line: '190 g = 190 : 1000 = 0,19 kg', note: '1 kg = 1000 g' } ] },
+          { t: 'p', pl: 'Skrót: mnożenie przez 1000 to przesunięcie przecinka o 3 miejsca w prawo (dopisz zera, gdy brakuje cyfr). Dzielenie przez 1000 — o 3 miejsca w lewo.',
+            ru: 'Лайфхак: умножить на 1000 — значит сдвинуть запятую на 3 знака вправо (дописывая нули, если не хватает цифр). Разделить на 1000 — на 3 знака влево.' },
+          { t: 'ex', rows: [
+            { line: '4,5 → 4,500 → 4500', note: { pl: 'przecinek o 3 miejsca w prawo (· 1000)', ru: 'запятая на 3 знака вправо (· 1000)' } },
+            { line: '190 → 0,190 → 0,19', note: { pl: 'przecinek o 3 miejsca w lewo (: 1000)', ru: 'запятая на 3 знака влево (: 1000)' } } ] },
+          { t: 'cheat' }
+        ] },
+      { type: 'guided', f: 'kg', t: 'g', v: 4.5, stages: ['bigger', 'direction', 'factor', 'answer'],
+        scene: { pl: 'Twój plecak waży 4,5 kg. Ile to gramów?', ru: 'Твой рюкзак весит 4,5 kg. Сколько это граммов?' } },
+      { type: 'guided', f: 'g', t: 'kg', v: 190, stages: ['direction', 'factor', 'answer'],
+        scene: { pl: 'Twój telefon waży 190 g. Ile to kilogramów?', ru: 'Твой телефон весит 190 g. Сколько это килограммов?' } },
+      { type: 'info',
+        title: { pl: 'Masa „w kawałkach”', ru: 'Масса «в кусочках»' },
+        hi: { pl: 'Czasem masa jest zapisana „w kawałkach”, jak 2 kg 350 g. Nic strasznego!', ru: 'Иногда масса записана «в кусочках», например 2 kg 350 g. Ничего страшного!' },
+        blocks: [
+          { t: 'p', pl: 'Zamień większą część na mniejszą jednostkę i dodaj resztę.',
+            ru: 'Переведи крупную часть в мелкую единицу и прибавь остаток.' },
+          { t: 'ex', rows: [
+            { line: '2 kg 350 g = 2000 g + 350 g = 2350 g', note: { pl: '1 kg = 1000 g, więc 2 kg = 2000 g', ru: '1 kg = 1000 g, значит 2 kg = 2000 g' } },
+            { line: '2350 g = 2 kg 350 g', note: { pl: '2350 : 1000 = 2, reszta 350', ru: '2350 : 1000 = 2, остаток 350' } } ] }
+        ] },
+      { type: 'check',
+        q: { pl: 'Plecak z książkami waży 3 kg 200 g. Ile to gramów?', ru: 'Рюкзак с учебниками весит 3 kg 200 g. Сколько это граммов?' },
+        opts: ['3200', '3020', '320'], correct: '3200',
+        hint: { pl: 'Podpowiedź: najpierw zamień 3 kg na gramy.', ru: 'Подсказка: сначала переведи 3 kg в граммы.' },
+        why: { pl: '3 kg = 3000 g, więc 3000 + 200 = 3200 g.', ru: '3 kg = 3000 g, значит 3000 + 200 = 3200 g.' } },
+      { type: 'end',
+        title: { pl: 'Gotowe — jesteś mistrzem ważenia!', ru: 'Готово — ты мастер взвешивания!' },
+        hi: { pl: 'Jestem z Ciebie dumny!', ru: 'Я тобой горжусь!' },
+        text: { pl: 'Za każdą dobrą odpowiedź za pierwszym razem dostaniesz ⭐. Zbierz 10 gwiazdek — i odblokujesz grę z Centkiem!',
+                ru: 'За каждый верный ответ с первого раза получишь ⭐. Собери 10 звёздочек — и откроется игра с Сантиком!' } }
+    ]
   }
 };
 
@@ -545,7 +639,7 @@ function lu(str) {
   return S.lang === 'ru' ? str.replace(/(^|[^A-Za-z0-9_])(km|mm|cm|dm|mg|kg|dag|ml|m|g|t|l)(?![A-Za-z0-9_])/g, (x, a, b) => a + LU_MAP[b]) : str;
 }
 /* Приставки (кило, деци, санти, милли / kilo, decy, centy, mili) выделяются цветом */
-const PRE_RE = /(кило|деци|санти(?!к)|милли|kilo|decy|centy|mili)/gi;
+const PRE_RE = /(кило|деци|санти(?!к)|милли|дека(?!бр|д)|kilo|decy|centy|mili|deka(?!d))/gi;
 function textNodes(str) {
   str = lu(str);
   PRE_RE.lastIndex = 0;
@@ -555,12 +649,13 @@ function textNodes(str) {
     const sp = document.createElement('span'); sp.className = 'pre'; sp.textContent = part; return sp;
   }).filter((x) => x !== '');
 }
-/* единица как узел: первая буква приставки подсвечена (мм, см, дм, км) */
+/* единица как узел: приставка подсвечена (мм, см, дм, км, мг, даг, кг) */
+const PRE_LEN = { mm: 1, cm: 1, dm: 1, km: 1, mg: 1, kg: 1, dag: 2 };
 function ulNode(u) {
-  const t = ul(u);
-  if (['mm', 'cm', 'dm', 'km'].indexOf(u) < 0) return t;
-  const sp = document.createElement('span'); sp.className = 'pre'; sp.textContent = t.charAt(0);
-  const f = document.createDocumentFragment(); f.append(sp, t.slice(1)); return f;
+  const t = ul(u), n = PRE_LEN[u];
+  if (!n) return t;
+  const sp = document.createElement('span'); sp.className = 'pre'; sp.textContent = t.slice(0, n);
+  const f = document.createDocumentFragment(); f.append(sp, t.slice(n)); return f;
 }
 
 /* ======================================================================
@@ -898,39 +993,37 @@ function guidedCheck(st) {
 }
 
 function cheatBlock() {
+  const LT = LEARN[V.topic.id];
   const chain = el('div', { class: 'chain' });
-  ['mm', 'cm', 'dm', 'm', 'km'].forEach((u, i) => {
+  LT.chain.forEach((u, i) => {
     if (i) chain.append(el('span', { class: 'arr', 'aria-hidden': 'true' }, '→'));
     chain.append(el('span', { class: 'chip' }, ulNode(u)));
   });
   return el('div', { class: 'cheat' }, el('div', { class: 'cap' }, tr('cheat')), chain,
-    el('div', { class: 'eqs' }, ['10 mm = 1 cm', '10 cm = 1 dm', '10 dm = 1 m', '1000 m = 1 km'].map((x) => el('div', null, x))));
+    el('div', { class: 'eqs' }, LT.eqs.map((x) => el('div', null, x))));
 }
 
 function zoomBlock() {
-  const Lr = V.learn, z = Lr.zoom, names = ['m', 'dm', 'cm', 'mm'];
+  const Lr = V.learn, z = Lr.zoom, Z = LEARN[V.topic.id].zoom, lv = Z.levels;
   const crumbs = el('div', { class: 'crumbs' });
-  names.slice(0, z + 1).forEach((n, i) => {
+  lv.slice(0, z + 1).forEach((n, i) => {
     if (i) crumbs.append(el('span', { class: 'arr', 'aria-hidden': 'true' }, '→'));
-    crumbs.append(el('span', { class: 'chip' + (i === z ? ' on' : '') }, '1 ', ulNode(n)));
+    crumbs.append(el('span', { class: 'chip' + (i === z ? ' on' : '') }, n[0] + ' ', ulNode(n[1])));
   });
   const bar = el('div', { class: 'bar' });
-  if (z === 0) bar.append(el('div', { class: 'seg first one' }, '1 m'));
+  if (z === 0) bar.append(el('div', { class: 'seg first one' }, lv[0][0] + ' ' + ul(lv[0][1])));
   else for (let i = 1; i <= 10; i++) bar.append(el('div', { class: 'seg' + (i === 1 ? ' first' : '') }, String(i)));
-  const facts = [];
-  if (z >= 1) facts.push('1 m = 10 dm');
-  if (z >= 2) facts.push('1 dm = 10 cm  →  1 m = 100 cm');
-  if (z >= 3) facts.push('1 cm = 10 mm  →  1 m = 1000 mm');
+  const facts = Z.facts.slice(0, z);
   return el('div', { class: 'zoom' }, crumbs, bar,
     el('div', { class: 'facts', 'aria-live': 'polite' }, facts.map((f) => el('div', null, f))),
-    el('button', { class: 'btn ghost', onclick: () => { Lr.zoom = z < 3 ? z + 1 : 0; render(); } }, z < 3 ? tr('zoomIn') : tr('zoomReset')));
+    el('button', { class: 'btn ghost', onclick: () => { Lr.zoom = z < lv.length - 1 ? z + 1 : 0; render(); } }, z < lv.length - 1 ? tr('zoomIn') : tr('zoomReset')));
 }
 
 function renderBlock(b) {
   const L = S.lang;
   if (b.t === 'p') return el('p', { class: 'lp' }, b[L]);
   if (b.t === 'rule') return el('div', { class: 'callout' }, b[L].map((x) => el('div', null, x)));
-  if (b.t === 'anchors') return el('ul', { class: 'anchors' }, ANCHORS.map((a) => el('li', null, el('span', { class: 'chip' }, ulNode(a[0])), el('span', null, a[1][L]))));
+  if (b.t === 'anchors') return el('ul', { class: 'anchors' }, LEARN[V.topic.id].anchors.map((a) => el('li', null, el('span', { class: 'chip' }, ulNode(a[0])), el('span', null, a[1][L]))));
   if (b.t === 'ex') return el('div', { class: 'ex' }, b.rows.map((r) => el('div', { class: 'row' }, el('div', { class: 'l' }, r.line),
     el('div', { class: 'n' }, typeof r.note === 'string' ? r.note : r.note[L]))));
   if (b.t === 'zoom') return zoomBlock();
@@ -1440,7 +1533,7 @@ function renderLearn() {
             (id) => { if (id === def.correct) { Lr.stage++; Lr.wrongs = []; } else Lr.wrongs.push(id); render(); },
             def.opts.length === 3 ? 'three' : 'two'));
       }
-      if (Lr.wrongs.length) main.append(el('div', { class: 'hintbox', role: 'alert' }, tr('tryAgain') + '. ' + HINT[name][L]));
+      if (Lr.wrongs.length) main.append(el('div', { class: 'hintbox', role: 'alert' }, tr('tryAgain') + '. ' + ((LEARN[V.topic.id].hints || {})[name] || HINT[name])[L]));
       main.append(cheatBlock());
     } else {
       actions = el('footer', { class: 'actions ok', 'aria-live': 'polite' },
