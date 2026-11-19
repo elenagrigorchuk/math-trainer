@@ -147,6 +147,39 @@ html[lang="ru"] h1,html[lang="ru"] h2{letter-spacing:0;word-spacing:0}
 .hintbox{padding:10px 14px;border-radius:var(--r);background:var(--bad-bg);border:var(--bw) solid var(--brick);color:var(--ink);font-size:.94rem}
 .task{font-size:clamp(1.3rem,5.6vw,1.8rem);font-weight:700}
 
+/* comic (DESIGN.md, część 2) */
+.comic{gap:22px}
+.chead h2{margin:4px 0 0;font-size:1.35rem;line-height:1.2}
+.cpage{color:var(--muted);font-size:.85rem;font-weight:700;margin-top:2px}
+.panel{position:relative;border:var(--bw) solid var(--ink);border-radius:var(--r);box-shadow:var(--sh);padding:14px;display:flex;flex-direction:column;gap:14px;
+  background-image:radial-gradient(rgba(43,38,34,.13) 1.3px,transparent 1.6px);background-size:9px 9px}
+.panel.bg-a{background-color:#F6E2BF}.panel.bg-b{background-color:#E3EBD6}.panel.bg-c{background-color:#F4D9C9}.panel.bg-d{background-color:#DDEAE4}
+.panel.card{background:var(--card);background-image:none}
+.ccap{align-self:flex-start;display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin:-4px 0 0 -4px;padding:3px 10px;background:var(--gold);border:var(--bw) solid var(--ink);border-radius:8px;font-weight:700;font-size:.88rem;transform:rotate(-1deg)}
+.ccap .pre{background:var(--card)}
+.cstar{padding:0 8px;border-radius:999px;background:var(--card);border:2px solid var(--ink);font-family:"Segoe UI Symbol","DejaVu Sans",var(--f-body)}
+.csay{display:flex;gap:12px;align-items:center}
+.csay.r{flex-direction:row-reverse}
+.csay .mascot,.heroes{flex:none}
+.heroes{display:flex;gap:2px}
+.cbubble{position:relative;flex:1;background:#FFFDF7;border:var(--bw) solid var(--ink);border-radius:16px;padding:10px 14px;font-weight:600;font-size:1rem}
+.cbubble:before{content:"";position:absolute;left:-10px;top:50%;margin-top:-7px;width:14px;height:14px;background:#FFFDF7;border-left:var(--bw) solid var(--ink);border-bottom:var(--bw) solid var(--ink);transform:rotate(45deg)}
+.csay.r .cbubble:before{left:auto;right:-10px;transform:rotate(225deg)}
+.art{display:flex;flex-direction:column;gap:4px}
+.choc{display:grid;grid-template-columns:repeat(10,1fr);gap:2px;background:var(--ink);border:var(--bw) solid var(--ink);border-radius:6px;overflow:hidden}
+.choc .pc{height:30px;background:#C98F4F;box-shadow:inset 3px 3px 0 #DDAA6E,inset -3px -3px 0 #A8733A}
+.choc.fine .pc{height:44px}
+.choc .pc.hi{background:var(--gold);box-shadow:inset 3px 3px 0 #EEC46E,inset -3px -3px 0 #B9842A}
+.clabels{display:grid;grid-template-columns:repeat(10,1fr);font-weight:700;font-size:.85rem}
+.clabels span{white-space:nowrap}
+.span-label{text-align:center;font-weight:700;font-size:.9rem;border-top:2px solid var(--ink);padding-top:2px;margin:0 6px}
+.span-label.top{border-top:0;border-bottom:2px solid var(--ink);padding:0 0 2px}
+.grid100{display:grid;grid-template-columns:repeat(10,1fr);gap:2px;width:min(100%,230px);margin:0 auto;background:var(--ink);border:var(--bw) solid var(--ink);border-radius:6px;overflow:hidden}
+.grid100 div{aspect-ratio:1;background:#C98F4F}
+.grid100 div.hi{background:var(--gold)}
+.why{margin:0;font-size:1rem;font-weight:600}
+.comic .choices .choice{font-size:1.05rem;padding:14px 4px}
+
 /* result + game */
 .result{flex:1;padding:24px 16px;display:flex;flex-direction:column;gap:14px;align-items:flex-start}
 .result h2{margin:0;font-size:1.7rem}
@@ -206,6 +239,7 @@ const T = {
     toTopics: 'Do listy tematów', replay: 'Jeszcze raz',
     unlockAll: 'Otwórz wszystkie tematy', reset: 'Zresetuj postęp', sure: 'Na pewno? Kliknij znowu',
     close: 'Zamknij', answerAria: 'Twoja odpowiedź', langAria: 'Język',
+    pageOf: (n, m) => 'Strona ' + n + ' z ' + m, nextArrow: 'Dalej →', /* PL: требует проверки носителем */
     learn: 'Wyjaśnienie z Centkiem', tryAgain: 'Spróbuj jeszcze raz', zoomIn: 'Przybliż', zoomReset: 'Od początku',
     startPractice: 'Zaczynam ćwiczenia', together: 'Spróbujmy razem', cheat: 'Ściąga', small: 'mniejsza', big: 'większa',
     okMsgs: ['Świetnie!', 'Brawo!', 'Tak trzymać!', 'Strzał w dziesiątkę!', 'Centek jest z Ciebie dumny!'],
@@ -250,6 +284,7 @@ const T = {
     toTopics: 'К списку тем', replay: 'Ещё раз',
     unlockAll: 'Открыть все темы', reset: 'Сбросить прогресс', sure: 'Точно? Нажми ещё раз',
     close: 'Закрыть', answerAria: 'Твой ответ', langAria: 'Язык',
+    pageOf: (n, m) => 'Страница ' + n + ' из ' + m, nextArrow: 'Дальше →',
     learn: 'Объяснение с Сантиком', tryAgain: 'Попробуй ещё раз', zoomIn: 'Приблизить', zoomReset: 'Сначала',
     startPractice: 'Начинаю тренировку', together: 'Попробуем вместе', cheat: 'Шпаргалка', small: 'меньше', big: 'больше',
     okMsgs: ['Супер!', 'Браво!', 'Так держать!', 'В яблочко!', 'Сантик тобой гордится!'],
@@ -432,92 +467,47 @@ const HINT = {
 };
 
 const LEARN = {
+  /* Komiks zamiast tekstowego wyjaśnienia (DESIGN.md, część 2). Seria 1 „Metrowa czekolada”.
+     PL: teksty z DESIGN.md — требует проверки носителем */
   length: {
-    anchors: [
-      ['mm', { pl: 'grubość telefonu ≈ 8 milimetrów', ru: 'толщина телефона ≈ 8 миллиметров' }],
-      ['cm', { pl: 'długość telefonu ≈ 15 centymetrów', ru: 'длина телефона ≈ 15 сантиметров' }],
-      ['dm', { pl: 'szerokość Twojej dłoni ≈ 1 decymetr (zmierz linijką!)', ru: 'ширина твоей ладони ≈ 1 дециметр (проверь линейкой!)' }],
-      ['m', { pl: 'jeden blok w Minecrafcie = 1 metr, drzwi ≈ 2 metry', ru: 'один блок в Minecraft = 1 метр, дверь ≈ 2 метра' }],
-      ['km', { pl: 'spacer w 12–15 minut ≈ 1 kilometr', ru: 'идти 12–15 минут пешком ≈ 1 километр' }]
-    ],
     chain: ['mm', 'cm', 'dm', 'm', 'km'],
     eqs: ['10 mm = 1 cm', '10 cm = 1 dm', '10 dm = 1 m', '1000 m = 1 km'],
-    zoom: { levels: [['1', 'm'], ['1', 'dm'], ['1', 'cm'], ['1', 'mm']],
-            facts: ['1 m = 10 dm', '1 dm = 10 cm  →  1 m = 100 cm', '1 cm = 10 mm  →  1 m = 1000 mm'] },
-    hints: {
-      bigger: { pl: 'Podpowiedź: w ciągu mm → cm → dm → m → km jednostki rosną w prawo.', ru: 'Подсказка: в ряду mm → cm → dm → m → km единицы растут слева направо.' }
-    },
-    steps: [
-      { type: 'info',
-        title: { pl: 'Linijki na każdą okazję', ru: 'Линейки на любой случай' },
-        hi: { pl: 'Cześć! Jestem Centek. Pokażę Ci, jak mierzyć wszystko — od telefonu po drogę do szkoły.', ru: 'Привет! Я Сантик. Покажу, как измерять всё — от телефона до дороги в школу.' },
-        blocks: [
-          { t: 'p', pl: 'Każda jednostka jest od czegoś innego. Wystarczy zapamiętać po jednym przykładzie — i od razu poczujesz, czy wynik ma sens. Zmierz swoją dłoń linijką: to Twój własny 1 decymetr!',
-            ru: 'Каждая единица — для своего дела. Достаточно запомнить по одному примеру — и ты сразу почувствуешь, разумный ли получился ответ. Измерь свою ладонь линейкой: это твой личный 1 дециметр!' },
-          { t: 'anchors' }
+    comic: {
+      id: 'length-1',
+      title: { pl: 'Odcinek 1 · Metrowa czekolada', ru: 'Серия 1 · Метровая шоколадка' },
+      pages: [
+        { panels: [
+          { bg: 'a', hero: 'cat', art: 'bar',
+            cap: { pl: 'Odcinek 1 · Metrowa czekolada', ru: 'Серия 1 · Метровая шоколадка' },
+            say: { pl: 'Wow! Cały metr czekolady!', ru: 'Ого! Целый метр шоколада!' } },
+          { bg: 'b', hero: 'broc', art: 'bar-dm', right: true,
+            cap: { pl: 'Kroimy na 10 części: decy- = 10 razy mniej', ru: 'Режем на 10 частей: деци = в 10 раз меньше' },
+            say: { pl: 'Każda część to 1 dm.', ru: 'Каждая часть — 1 дм' } },
+          { bg: 'c', hero: 'cat', art: 'dm-cm',
+            cap: { pl: '1 dm = 10 cm', ru: '1 дм = 10 см' },
+            say: { pl: 'Kroimy każdą jeszcze na 10!', ru: 'Режем каждую ещё на 10!' } }
         ] },
-      { type: 'info',
-        title: { pl: 'Metr pod lupą', ru: 'Метр под лупой' },
-        hi: { pl: 'Wyobraź sobie metrową czekoladę (marzenie!). Zobacz, na ile kawałków da się ją pokroić.', ru: 'Представь метровую шоколадку (мечта!). Смотри, на сколько кусочков её можно нарезать.' },
-        blocks: [
-          { t: 'p', pl: 'Przedrostki to podpowiedzi: decy- = 10 razy mniej, centy- = 100 razy mniej, mili- = 1000 razy mniej, kilo- = 1000 razy więcej. Klikaj „Przybliż” i patrz, jak metr się dzieli.',
-            ru: 'Приставки — это подсказки: деци = в 10 раз меньше, санти = в 100 раз меньше, милли = в 1000 раз меньше, кило = в 1000 раз больше. Жми «Приблизить» и смотри, как делится метр.' },
-          { t: 'zoom' },
-          { t: 'cheat' }
+        { panels: [
+          { bg: 'd', hero: 'cat', art: 'grid',
+            cap: { pl: '1 m = 100 cm · centy- = 100 razy mniej', ru: '1 м = 100 см · санти = в 100 раз меньше' },
+            say: { pl: 'Aż 100 kawałków!', ru: 'Целых 100 кусочков!' } },
+          { bg: 'b', hero: 'broc', right: true,
+            cap: { pl: 'Zadanie od Brokka', ru: 'Задание от Брокко' },
+            say: { pl: 'Gdybyśmy kroili po 1 mm, ile kawałków wyjdzie z 1 metra?', ru: 'Если резать по 1 мм, сколько кусочков получится в 1 метре?' },
+            task: { opts: ['100', '1000', '10000'], correct: '1000',
+              hint: { pl: 'Wskazówka: metr dzieli się na 10 dm, każdy dm na 10 cm, a każdy cm na 10 mm.',
+                      ru: 'Подсказка: метр делится на 10 дм, каждый дм на 10 см, а каждый см на 10 мм.' } } }
         ] },
-      { type: 'check',
-        q: { pl: 'Metrową czekoladę kroisz na kawałki po 1 centymetrze. Ile kawałków wyjdzie?', ru: 'Метровую шоколадку режем на кусочки по 1 сантиметру. Сколько получится кусочков?' },
-        opts: ['10', '100', '1000'], correct: '100',
-        hint: { pl: 'Podpowiedź: metr dzieli się na 10 decymetrów, a każdy decymetr na 10 centymetrów.', ru: 'Подсказка: метр делится на 10 дециметров, а каждый дециметр — на 10 сантиметров.' },
-        why: { pl: '1 m = 10 dm, a 1 dm = 10 cm, więc 1 m = 10 · 10 = 100 cm.', ru: '1 m = 10 dm, а 1 dm = 10 cm, значит 1 m = 10 · 10 = 100 cm.' } },
-      { type: 'check',
-        q: { pl: 'Do szkoły masz 1 kilometr. Ile to metrów?', ru: 'До школы 1 километр. Сколько это метров?' },
-        opts: ['100', '1000', '10000'], correct: '1000',
-        hint: { pl: 'Podpowiedź: kilo- oznacza „tysiąc”.', ru: 'Подсказка: «кило» значит «тысяча».' },
-        why: { pl: '1 km = 1000 m, bo kilo- to tysiąc.', ru: '1 km = 1000 m, потому что «кило» — это тысяча.' } },
-      { type: 'info',
-        title: { pl: 'Mnożyć czy dzielić? Prosty trik', ru: 'Умножать или делить? Простой трюк' },
-        hi: { pl: 'Tu najczęściej wszyscy się mylą. Ale mam na to trik!', ru: 'Тут чаще всего все путаются. Но у меня есть трюк!' },
-        blocks: [
-          { t: 'p', pl: 'Telefon ma 15 centymetrów. Zmierz go centymetrem — mieści się 15 razy. Zmierz milimetrem — aż 150 razy! Im mniejsza miarka, tym więcej jej potrzeba.',
-            ru: 'Телефон длиной 15 сантиметров. Меряем сантиметром — получаем 15. Меряем миллиметром — целых 150! Чем мельче мерка, тем больше таких мерок нужно.' },
-          { t: 'rule', pl: ['Z większej jednostki na mniejszą → liczba rośnie → mnożymy.', 'Z mniejszej na większą → liczba maleje → dzielimy.'],
-            ru: ['Из крупной единицы в мелкую → число растёт → умножаем.', 'Из мелкой в крупную → число уменьшается → делим.'] },
-          { t: 'ex', rows: [
-            { line: '15 cm = 15 · 10 = 150 mm', note: '1 cm = 10 mm' },
-            { line: '1250 m = 1250 : 1000 = 1,25 km', note: '1 km = 1000 m' } ] },
-          { t: 'p', pl: 'Skrót: mnożenie przez 10, 100, 1000 to przesunięcie przecinka o 1, 2, 3 miejsca w prawo (dopisz zera, gdy brakuje cyfr). Dzielenie — w lewo.',
-            ru: 'Лайфхак: умножить на 10, 100, 1000 — значит сдвинуть запятую на 1, 2, 3 знака вправо (дописывая нули, если не хватает цифр). Разделить — сдвинуть влево.' },
-          { t: 'ex', rows: [
-            { line: '1,5 → 1,50 → 150', note: { pl: 'przecinek o 2 miejsca w prawo (· 100)', ru: 'запятая на 2 знака вправо (· 100)' } },
-            { line: '1250 → 1,250 → 1,25', note: { pl: 'przecinek o 3 miejsca w lewo (: 1000)', ru: 'запятая на 3 знака влево (: 1000)' } } ] },
-          { t: 'cheat' }
+        { panels: [
+          { bg: 'a', hero: 'both', star: true,
+            cap: { pl: 'Dobrze!', ru: 'Верно!' },
+            say: { pl: 'W 1 m jest 1000 mm! Centku, jesteś geniuszem!', ru: 'В 1 м — 1000 мм! Сантик, ты гений!' } },
+          { card: { pl: 'Dlaczego: 1 m = 10 dm, 1 dm = 10 cm, 1 cm = 10 mm. 10 · 10 · 10 = 1000. Przedrostek mili- oznacza „1000 razy mniej”.',
+                    ru: 'Почему: 1 м = 10 дм, 1 дм = 10 см, 1 см = 10 мм. 10 · 10 · 10 = 1000. Приставка милли — это «в 1000 раз меньше».' } }
         ] },
-      { type: 'guided', f: 'km', t: 'm', v: 2.4, stages: ['bigger', 'direction', 'factor', 'answer'],
-        scene: { pl: 'Do szkoły masz 2,4 kilometra. Ile to metrów?', ru: 'До школы 2,4 километра. Сколько это метров?' } },
-      { type: 'guided', f: 'cm', t: 'm', v: 150, stages: ['direction', 'factor', 'answer'],
-        scene: { pl: 'Kabel do ładowarki ma 150 centymetrów. Ile to metrów?', ru: 'Кабель зарядки длиной 150 сантиметров. Сколько это метров?' } },
-      { type: 'info',
-        title: { pl: 'Jednostki złożone', ru: 'Составные величины' },
-        hi: { pl: 'Czasem długość jest „w kawałkach”, jak 3 km 250 m. Nic strasznego!', ru: 'Иногда длина записана «в кусочках», например 3 km 250 m. Ничего страшного!' },
-        blocks: [
-          { t: 'p', pl: 'Zamień większą część na mniejszą jednostkę i dodaj resztę.',
-            ru: 'Переведи крупную часть в мелкую единицу и прибавь остаток.' },
-          { t: 'ex', rows: [
-            { line: '3 km 250 m = 3000 m + 250 m = 3250 m', note: { pl: '1 km = 1000 m, więc 3 km = 3000 m', ru: '1 km = 1000 m, значит 3 km = 3000 m' } },
-            { line: '3250 m = 3 km 250 m', note: { pl: '3250 : 1000 = 3, reszta 250', ru: '3250 : 1000 = 3, остаток 250' } } ] }
-        ] },
-      { type: 'check',
-        q: { pl: 'Wieża Steve’a ma 2 m 35 cm. Ile to centymetrów?', ru: 'Башня Стива — 2 m 35 cm. Сколько это сантиметров?' },
-        opts: ['235', '2035', '2,35'], correct: '235',
-        hint: { pl: 'Podpowiedź: najpierw zamień 2 metry na centymetry.', ru: 'Подсказка: сначала переведи 2 метра в сантиметры.' },
-        why: { pl: '2 m = 200 cm, więc 200 + 35 = 235 cm.', ru: '2 m = 200 cm, значит 200 + 35 = 235 cm.' } },
-      { type: 'end',
-        title: { pl: 'Gotowe — jesteś mistrzem miarek!', ru: 'Готово — ты мастер мерок!' },
-        hi: { pl: 'Jestem z Ciebie dumny!', ru: 'Я тобой горжусь!' },
-        text: { pl: 'Za każdą dobrą odpowiedź za pierwszym razem dostaniesz ⭐. Zbierz 10 gwiazdek — i odblokujesz grę z Centkiem!',
-                ru: 'За каждый верный ответ с первого раза получишь ⭐. Собери 10 звёздочек — и откроется игра с Сантиком!' } }
-    ]
+        { end: true }
+      ]
+    }
   },
   /* PL: wszystkie teksty „pl” w sekcji mass — требует проверки носителем */
   mass: {
@@ -742,6 +732,23 @@ function mascot(mood, size) {
     '</svg>';
   return t.content.firstChild;
 }
+/* Brokko — dobry brokuł, który zadaje pytania (oryginalna postać, rysowana kodem) */
+function brokko(mood, size) {
+  const t = document.createElement('template');
+  const mouth = mood === 'happy'
+    ? '<path d="M24 45 Q30 52 36 45 Z" fill="#2B2622"/>'
+    : '<path d="M25 45 Q30 49 35 45" fill="none" stroke="#2B2622" stroke-width="2" stroke-linecap="round"/>';
+  t.innerHTML = '<svg class="mascot brokko" width="' + size + '" height="' + size + '" viewBox="0 0 60 60" aria-hidden="true">' +
+    '<path d="M21 30 H39 L37 56 Q30 59 23 56 Z" fill="#9DB38F" stroke="#2B2622" stroke-width="2.5" stroke-linejoin="round"/>' +
+    '<g fill="#5E8F57" stroke="#2B2622" stroke-width="2.5">' +
+    '<circle cx="15" cy="26" r="10"/><circle cx="45" cy="26" r="10"/><circle cx="23" cy="15" r="11"/><circle cx="38" cy="15" r="11"/><circle cx="30" cy="25" r="11"/></g>' +
+    '<circle cx="18" cy="12" r="2" fill="#86B07C"/><circle cx="41" cy="21" r="2" fill="#86B07C"/>' +
+    '<ellipse cx="26" cy="39" rx="2.2" ry="3" fill="#2B2622"/><ellipse cx="34" cy="39" rx="2.2" ry="3" fill="#2B2622"/>' +
+    '<circle cx="26.8" cy="38" r=".8" fill="#FBF5E6"/><circle cx="34.8" cy="38" r=".8" fill="#FBF5E6"/>' +
+    (mood === 'happy' ? '<circle cx="22.5" cy="44" r="2" fill="#E8798B" opacity=".6"/><circle cx="37.5" cy="44" r="2" fill="#E8798B" opacity=".6"/>' : '') +
+    mouth + '</svg>';
+  return t.content.firstChild;
+}
 function say(text, mood, size) {
   return el('div', { class: 'say' }, mascot(mood || 'happy', size || 44), el('div', { class: 'bubble' }, text));
 }
@@ -940,6 +947,7 @@ function finishLesson() {
 function startLearn(topic) { V = { view: 'learn', topic, learn: { i: 0 } }; goStep(0); }
 
 function goStep(n) {
+  if (LEARN[V.topic.id].comic) return comicGo(n);
   const steps = LEARN[V.topic.id].steps;
   V.learn = { i: n, zoom: 0, wrongs: [], ok: false, stage: 0, input: '', err: false, msgI: 0 };
   if (steps[n].type === 'end') { S.learned = S.learned || {}; S.learned[V.topic.id] = true; save(); }
@@ -978,6 +986,7 @@ function stageDef(st, name) {
 }
 
 function learnPrimary() {
+  if (LEARN[V.topic.id].comic) return comicPrimary();
   const Lr = V.learn, steps = LEARN[V.topic.id].steps, st = steps[Lr.i];
   if (st.type === 'info') return goStep(Lr.i + 1);
   if (st.type === 'check') { if (Lr.ok) goStep(Lr.i + 1); return; }
@@ -1517,7 +1526,87 @@ function renderLesson() {
   return { nodes: [bar, card, actions], input };
 }
 
+/* ---------- Komiks / Комикс ---------- */
+function comicGo(n) {
+  const C = LEARN[V.topic.id].comic, prev = V.learn || {};
+  V.learn = { i: n, sel: null, wrongs: [], tries: 0, starred: n > 0 ? !!prev.starred : false };
+  if (C.pages[n].end) { S.learned = S.learned || {}; S.learned[V.topic.id] = true; save(); }
+  render();
+}
+function comicTask(pg) { return (pg.panels || []).map((x) => x.task).find(Boolean); }
+function comicCheck() {
+  const Lr = V.learn, C = LEARN[V.topic.id].comic, task = comicTask(C.pages[Lr.i]);
+  if (!task || !Lr.sel) return;
+  Lr.tries++;
+  if (Lr.sel === task.correct) {
+    S.comicStars = S.comicStars || {};
+    // +1 ★ tylko za dobrą odpowiedź za pierwszym razem i tylko raz na odcinek
+    if (Lr.tries === 1 && !S.comicStars[C.id]) { S.comicStars[C.id] = true; S.stars = (S.stars || 0) + 1; save(); Lr.starred = true; }
+    comicGo(Lr.i + 1);
+  } else { if (Lr.wrongs.indexOf(Lr.sel) < 0) Lr.wrongs.push(Lr.sel); Lr.sel = null; render(); }
+}
+function comicPrimary() {
+  const Lr = V.learn, pg = LEARN[V.topic.id].comic.pages[Lr.i];
+  if (pg.end) return startLesson(V.topic);
+  if (comicTask(pg)) return comicCheck();
+  comicGo(Lr.i + 1);
+}
+function comicArt(kind) {
+  const piece = (cls, txt) => el('div', { class: 'pc' + (cls ? ' ' + cls : '') }, txt || null);
+  const row = (n, hi) => { const r = el('div', { class: 'choc' }); for (let i = 0; i < n; i++) r.append(piece(i === 0 && hi ? 'hi' : '')); return r; };
+  const labels = (txt) => el('div', { class: 'clabels' }, el('span', null, txt));
+  if (kind === 'bar') return el('div', { class: 'art' }, row(10, false), el('div', { class: 'span-label' }, '1 ' + ul('m')));
+  if (kind === 'bar-dm') return el('div', { class: 'art' }, row(10, true), labels('1 ' + ul('dm')));
+  if (kind === 'dm-cm') return el('div', { class: 'art' }, el('div', { class: 'span-label top' }, '1 ' + ul('dm')), el('div', { class: 'choc fine' }, Array.from({ length: 10 }, (_, i) => piece(i === 0 ? 'hi' : ''))), labels('1 ' + ul('cm')));
+  if (kind === 'grid') { const g = el('div', { class: 'grid100', 'aria-hidden': 'true' }); for (let i = 0; i < 100; i++) g.append(el('div', { class: i === 0 ? 'hi' : '' })); return el('div', { class: 'art' }, g); }
+  return null;
+}
+function comicPanel(pn, task) {
+  const L = S.lang, Lr = V.learn;
+  const panel = el('section', { class: 'panel bg-' + (pn.bg || 'a') + (pn.card ? ' card' : '') });
+  if (pn.card) { panel.append(el('p', { class: 'why' }, pn.card[L])); return panel; }
+  if (pn.cap) panel.append(el('div', { class: 'ccap' }, el('span', null, pn.cap[L]), pn.star && Lr.starred ? el('span', { class: 'cstar' }, '+1 ★') : null));
+  const heroes = pn.hero === 'both' ? el('div', { class: 'heroes' }, mascot('happy', 64), brokko('happy', 64))
+    : (pn.hero === 'broc' ? brokko(task ? 'calm' : 'happy', 68) : mascot('happy', 68));
+  panel.append(el('div', { class: 'csay' + (pn.right ? ' r' : '') }, heroes, el('div', { class: 'cbubble' }, pn.say[L])));
+  if (pn.art) panel.append(comicArt(pn.art));
+  if (task) {
+    panel.append(el('div', { class: 'choices three' }, task.opts.map((o) => {
+      const wrong = Lr.wrongs.indexOf(o) >= 0;
+      return el('button', { class: 'choice' + (Lr.sel === o ? ' sel' : '') + (wrong ? ' wrong' : ''), disabled: wrong, 'aria-pressed': Lr.sel === o ? 'true' : 'false',
+        onclick: () => { Lr.sel = o; render(); } }, fmt(parseNum(o)));
+    })));
+    if (Lr.wrongs.length) panel.append(el('div', { class: 'hintbox', role: 'alert' }, tr('tryAgain') + '. ' + task.hint[L]));
+  }
+  return panel;
+}
+function renderComic() {
+  const Lr = V.learn, LT = LEARN[V.topic.id], C = LT.comic, pg = C.pages[Lr.i], L = S.lang, N = C.pages.length;
+  const bar = el('div', { class: 'lbar' },
+    el('button', { class: 'x', 'aria-label': tr('close'), onclick: () => { V = { view: 'home' }; render(); } }, '×'),
+    el('div', { class: 'prog', role: 'progressbar', 'aria-valuemin': '0', 'aria-valuemax': String(N), 'aria-valuenow': String(Lr.i + 1) },
+      el('div', { class: 'fill', style: 'width:' + ((Lr.i + 1) / N * 100) + '%' })),
+    langToggle());
+  const main = el('main', { class: 'learn comic' },
+    el('header', { class: 'chead' }, el('h2', null, C.title[L]), el('div', { class: 'cpage' }, tr('pageOf')(Lr.i + 1, N))));
+  let actions;
+  if (pg.end) {
+    main.append(el('section', { class: 'panel bg-c' }, el('div', { class: 'csay' }, mascot('happy', 60), el('div', { class: 'cbubble' }, tr('cheat'))), cheatBlock()));
+    actions = el('footer', { class: 'actions' },
+      el('button', { class: 'btn', onclick: () => startLesson(V.topic) }, tr('startPractice')),
+      el('button', { class: 'btn ghost btn2', onclick: () => { V = { view: 'home' }; render(); } }, tr('toTopics')));
+  } else {
+    const task = comicTask(pg);
+    pg.panels.forEach((pn) => main.append(comicPanel(pn, pn.task)));
+    actions = el('footer', { class: 'actions' }, task
+      ? el('button', { id: 'checkBtn', class: 'btn', disabled: !Lr.sel, onclick: comicCheck }, tr('check'))
+      : el('button', { id: 'nextBtn', class: 'btn', onclick: () => comicGo(Lr.i + 1) }, tr('nextArrow')));
+  }
+  return { nodes: [bar, main, actions], input: null };
+}
+
 function renderLearn() {
+  if (LEARN[V.topic.id].comic) return renderComic();
   const Lr = V.learn, steps = LEARN[V.topic.id].steps, st = steps[Lr.i], L = S.lang;
   const bar = el('div', { class: 'lbar' },
     el('button', { class: 'x', 'aria-label': tr('close'), onclick: () => { V = { view: 'home' }; render(); } }, '×'),
