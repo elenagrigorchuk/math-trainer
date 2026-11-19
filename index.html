@@ -168,7 +168,10 @@ html[lang="ru"] h1,html[lang="ru"] h2{letter-spacing:0;word-spacing:0}
 .art{display:flex;flex-direction:column;gap:4px}
 .choc{display:grid;grid-template-columns:repeat(10,1fr);gap:2px;background:var(--ink);border:var(--bw) solid var(--ink);border-radius:6px;overflow:hidden}
 .choc .pc{height:30px;background:#C98F4F;box-shadow:inset 3px 3px 0 #DDAA6E,inset -3px -3px 0 #A8733A}
-.choc.fine .pc{height:44px}
+.choc.fine .pc{height:44px;background:var(--gold);box-shadow:inset 3px 3px 0 #EEC46E,inset -3px -3px 0 #B9842A}
+.choc.fine .pc.hi{background:#C98F4F;box-shadow:inset 3px 3px 0 #DDAA6E,inset -3px -3px 0 #A8733A}
+.choc.mini{width:62%}.choc.mini .pc{height:16px;box-shadow:none}
+.zoomarrow{width:calc(62% / 10 * 1 + 4px);min-width:max-content;font-weight:700;font-size:.85rem;color:var(--brick)}
 .choc .pc.hi{background:var(--gold);box-shadow:inset 3px 3px 0 #EEC46E,inset -3px -3px 0 #B9842A}
 .clabels{display:grid;grid-template-columns:repeat(10,1fr);font-weight:700;font-size:.85rem}
 .clabels span{white-space:nowrap}
@@ -239,7 +242,7 @@ const T = {
     toTopics: 'Do listy tematów', replay: 'Jeszcze raz',
     unlockAll: 'Otwórz wszystkie tematy', reset: 'Zresetuj postęp', sure: 'Na pewno? Kliknij znowu',
     close: 'Zamknij', answerAria: 'Twoja odpowiedź', langAria: 'Język',
-    pageOf: (n, m) => 'Strona ' + n + ' z ' + m, nextArrow: 'Dalej →', /* PL: требует проверки носителем */
+    pageOf: (n, m) => 'Strona ' + n + ' z ' + m, nextArrow: 'Dalej →', comicEnd: 'Zapamiętaj ten ciąg — przyda się w ćwiczeniach!', /* PL: требует проверки носителем */
     learn: 'Wyjaśnienie z Centkiem', tryAgain: 'Spróbuj jeszcze raz', zoomIn: 'Przybliż', zoomReset: 'Od początku',
     startPractice: 'Zaczynam ćwiczenia', together: 'Spróbujmy razem', cheat: 'Ściąga', small: 'mniejsza', big: 'większa',
     okMsgs: ['Świetnie!', 'Brawo!', 'Tak trzymać!', 'Strzał w dziesiątkę!', 'Centek jest z Ciebie dumny!'],
@@ -284,7 +287,7 @@ const T = {
     toTopics: 'К списку тем', replay: 'Ещё раз',
     unlockAll: 'Открыть все темы', reset: 'Сбросить прогресс', sure: 'Точно? Нажми ещё раз',
     close: 'Закрыть', answerAria: 'Твой ответ', langAria: 'Язык',
-    pageOf: (n, m) => 'Страница ' + n + ' из ' + m, nextArrow: 'Дальше →',
+    pageOf: (n, m) => 'Страница ' + n + ' из ' + m, nextArrow: 'Дальше →', comicEnd: 'Запомни этот ряд — он пригодится на тренировке!',
     learn: 'Объяснение с Сантиком', tryAgain: 'Попробуй ещё раз', zoomIn: 'Приблизить', zoomReset: 'Сначала',
     startPractice: 'Начинаю тренировку', together: 'Попробуем вместе', cheat: 'Шпаргалка', small: 'меньше', big: 'больше',
     okMsgs: ['Супер!', 'Браво!', 'Так держать!', 'В яблочко!', 'Сантик тобой гордится!'],
@@ -638,7 +641,9 @@ function lu(str) {
 /* Приставки (кило, деци, санти, милли / kilo, decy, centy, mili) выделяются цветом */
 const PRE_RE = /(кило|деци|санти(?!к)|милли|дека(?!бр|д)|kilo|decy|centy|mili|deka(?!d))/gi;
 function textNodes(str) {
-  str = lu(str).replace(/(\d) (?=[A-Za-zА-Яа-яµ²³]|\d{3}\b)/g, '$1\u00a0');
+  str = lu(str).replace(/(\d) (?=[A-Za-zА-Яа-яµ²³]|\d{3}\b)/g, '$1\u00a0')
+    .replace(/(\S) ([=·:]) (?=\d)/g, '$1\u00a0$2\u00a0')
+    .replace(/(^|[\s«„(])([вкосуиаВКОСУИАwizoaWIZOA]) /g, '$1$2\u00a0');
   PRE_RE.lastIndex = 0;
   if (!PRE_RE.test(str)) return [str];
   return str.split(PRE_RE).map((part, i) => {
@@ -1543,7 +1548,13 @@ function comicCheck() {
     // +1 ★ tylko za dobrą odpowiedź za pierwszym razem i tylko raz na odcinek
     if (Lr.tries === 1 && !S.comicStars[C.id]) { S.comicStars[C.id] = true; S.stars = (S.stars || 0) + 1; save(); Lr.starred = true; }
     comicGo(Lr.i + 1);
-  } else { if (Lr.wrongs.indexOf(Lr.sel) < 0) Lr.wrongs.push(Lr.sel); Lr.sel = null; render(); }
+  } else {
+    // pierwsza pomyłka zamyka gwiazdkę za ten odcinek (także przy kolejnym podejściu)
+    S.comicStars = S.comicStars || {};
+    if (!S.comicStars[C.id]) { S.comicStars[C.id] = 'missed'; save(); }
+    if (Lr.wrongs.indexOf(Lr.sel) < 0) Lr.wrongs.push(Lr.sel);
+    Lr.sel = null; Lr.showHint = true; V.keepScroll = true; render();
+  }
 }
 function comicPrimary() {
   const Lr = V.learn, pg = LEARN[V.topic.id].comic.pages[Lr.i];
@@ -1557,7 +1568,9 @@ function comicArt(kind) {
   const labels = (txt) => el('div', { class: 'clabels' }, el('span', null, txt));
   if (kind === 'bar') return el('div', { class: 'art' }, row(10, false), el('div', { class: 'span-label' }, '1 ' + ul('m')));
   if (kind === 'bar-dm') return el('div', { class: 'art' }, row(10, true), labels('1 ' + ul('dm')));
-  if (kind === 'dm-cm') return el('div', { class: 'art' }, el('div', { class: 'span-label top' }, '1 ' + ul('dm')), el('div', { class: 'choc fine' }, Array.from({ length: 10 }, (_, i) => piece(i === 0 ? 'hi' : ''))), labels('1 ' + ul('cm')));
+  if (kind === 'dm-cm') { const small = row(10, true); small.classList.add('mini');
+    return el('div', { class: 'art' }, small, el('div', { class: 'zoomarrow', 'aria-hidden': 'true' }, '↓ 1 ' + ul('dm') + ' ↓'),
+      el('div', { class: 'choc fine' }, Array.from({ length: 10 }, (_, i) => piece(i === 0 ? 'hi' : ''))), labels('1 ' + ul('cm'))); }
   if (kind === 'grid') { const g = el('div', { class: 'grid100', 'aria-hidden': 'true' }); for (let i = 0; i < 100; i++) g.append(el('div', { class: i === 0 ? 'hi' : '' })); return el('div', { class: 'art' }, g); }
   return null;
 }
@@ -1574,7 +1587,7 @@ function comicPanel(pn, task) {
     panel.append(el('div', { class: 'choices three' }, task.opts.map((o) => {
       const wrong = Lr.wrongs.indexOf(o) >= 0;
       return el('button', { class: 'choice' + (Lr.sel === o ? ' sel' : '') + (wrong ? ' wrong' : ''), disabled: wrong, 'aria-pressed': Lr.sel === o ? 'true' : 'false',
-        onclick: () => { Lr.sel = o; render(); } }, fmt(parseNum(o)));
+        onclick: () => { Lr.sel = o; V.keepScroll = true; render(); } }, fmt(parseNum(o)));
     })));
     if (Lr.wrongs.length) panel.append(el('div', { class: 'hintbox', role: 'alert' }, tr('tryAgain') + '. ' + task.hint[L]));
   }
@@ -1586,12 +1599,13 @@ function renderComic() {
     el('button', { class: 'x', 'aria-label': tr('close'), onclick: () => { V = { view: 'home' }; render(); } }, '×'),
     el('div', { class: 'prog', role: 'progressbar', 'aria-valuemin': '0', 'aria-valuemax': String(N), 'aria-valuenow': String(Lr.i + 1) },
       el('div', { class: 'fill', style: 'width:' + ((Lr.i + 1) / N * 100) + '%' })),
+    el('span', { class: 'starchip', 'aria-label': tr('starsTitle') }, '★ ' + (S.stars || 0)),
     langToggle());
   const main = el('main', { class: 'learn comic' },
     el('header', { class: 'chead' }, el('h2', null, C.title[L]), el('div', { class: 'cpage' }, tr('pageOf')(Lr.i + 1, N))));
   let actions;
   if (pg.end) {
-    main.append(el('section', { class: 'panel bg-c' }, el('div', { class: 'csay' }, mascot('happy', 60), el('div', { class: 'cbubble' }, tr('cheat'))), cheatBlock()));
+    main.append(el('section', { class: 'panel bg-c' }, el('div', { class: 'csay' }, mascot('happy', 60), el('div', { class: 'cbubble' }, tr('comicEnd'))), cheatBlock()));
     actions = el('footer', { class: 'actions' },
       el('button', { class: 'btn', onclick: () => startLesson(V.topic) }, tr('startPractice')),
       el('button', { class: 'btn ghost btn2', onclick: () => { V = { view: 'home' }; render(); } }, tr('toTopics')));
@@ -1685,6 +1699,7 @@ function renderResult() {
 }
 
 function render() {
+  const keepY = window.scrollY;
   stopGame();
   const app = document.getElementById('app');
   app.textContent = '';
@@ -1702,7 +1717,8 @@ function render() {
   } else if (V.view === 'game') {
     renderGame().forEach((n) => { if (n) app.append(n); });
   } else app.append(renderResult());
-  window.scrollTo(0, 0);
+  if (V.keepScroll) { window.scrollTo(0, keepY); V.keepScroll = false; } else window.scrollTo(0, 0);
+  if (V.view === 'learn' && V.learn && V.learn.showHint) { V.learn.showHint = false; const h = document.querySelector('.panel .hintbox'); if (h) h.scrollIntoView({ block: 'center' }); }
   if (focusEl) focusEl.focus();
   if (V.view === 'game' && V.game.phase === 'play') (V.game.kind === 'maze' ? runMaze : runGame)(document.getElementById('gcanvas'));
 }
