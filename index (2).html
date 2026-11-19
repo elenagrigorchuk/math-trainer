@@ -1,0 +1,1519 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#2563eb">
+<title>Jednostki miar z Centkiem / Единицы измерения с Сантиком</title>
+<style>
+:root{
+  --bg:#f6f7f9; --card:#ffffff; --ink:#1f2937; --muted:#6b7280; --line:#dfe3e8;
+  --pri:#2563eb; --pri-ink:#ffffff; --pri-soft:#e8f0fe;
+  --ok:#1b7a3a; --ok-bg:#e6f4ea; --bad:#b3261e; --bad-bg:#fdecea;
+  --hl:#c2410c;--hl-bg:#ffedd5;--gold:#f5b301; --gold-bg:#fff3c4; --gold-ink:#7a5600; --bubble:#fff8e6; --bubble-line:#f3d9a0;
+}
+@media (prefers-color-scheme:dark){
+  :root{
+    --bg:#111418; --card:#1a1f26; --ink:#e8eaee; --muted:#9aa3af; --line:#2b323b;
+    --pri:#5b95ff; --pri-ink:#0b1220; --pri-soft:#1c2a45;
+    --ok:#6fcf8a; --ok-bg:#13301d; --bad:#f28b82; --bad-bg:#3a1a1a;
+    --hl:#ffb366;--hl-bg:#3a2a18;--gold:#f5c542; --gold-bg:#3b3112; --gold-ink:#f5d26b; --bubble:#2a2417; --bubble-line:#4a3d1f;
+  }
+}
+*{box-sizing:border-box}
+html,body{margin:0}
+body{background:var(--bg);color:var(--ink);font-family:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;line-height:1.4;-webkit-text-size-adjust:100%}
+#app{max-width:640px;margin:0 auto;min-height:100vh;min-height:100dvh;display:flex;flex-direction:column}
+button{font:inherit;color:inherit;cursor:pointer}
+button:focus-visible,input:focus-visible,canvas:focus-visible{outline:3px solid var(--pri);outline-offset:2px}
+
+/* header + language switch */
+.top{display:flex;justify-content:space-between;align-items:flex-start;gap:12px;padding:20px 16px 8px}
+.brand h1{margin:0;font-size:1.35rem;line-height:1.2}
+.brand p{margin:2px 0 0;color:var(--muted);font-size:.95rem}
+.lang{display:inline-flex;border:1px solid var(--line);border-radius:10px;overflow:hidden;background:var(--card);flex:none}
+.lang button{border:0;background:transparent;padding:6px 12px;font-weight:600;color:var(--muted)}
+.lang button.on{background:var(--pri);color:var(--pri-ink)}
+
+/* mascot + speech bubble */
+.say{display:flex;gap:10px;align-items:flex-start}
+.say .mascot{flex:none}
+.bubble{position:relative;background:var(--bubble);border:1px solid var(--bubble-line);border-radius:14px;padding:10px 14px;font-size:1rem}
+.bubble:before{content:"";position:absolute;left:-7px;top:16px;width:12px;height:12px;background:var(--bubble);border-left:1px solid var(--bubble-line);border-bottom:1px solid var(--bubble-line);transform:rotate(45deg)}
+.hello{padding:4px 16px 12px}
+
+/* home */
+.chips{padding:0 16px 12px;color:var(--muted);font-size:.95rem}
+.stars{margin:0 16px 12px;padding:12px 14px;background:var(--card);border:1px solid var(--line);border-radius:14px;display:flex;flex-direction:column;gap:8px}
+.stars .rowt{display:flex;justify-content:space-between;align-items:baseline;gap:8px}
+.stars .big{font-weight:700;font-size:1.15rem}
+.starrow{display:flex;gap:2px;font-size:1.35rem;line-height:1}
+.starrow span{color:var(--line)}
+.starrow .on{color:var(--gold)}
+.stars .sub{color:var(--muted);font-size:.93rem}
+.list{display:flex;flex-direction:column;gap:10px;padding:0 16px 8px;margin:0;list-style:none}
+.topic{display:flex;align-items:center;gap:14px;width:100%;text-align:left;background:var(--card);border:1px solid var(--line);border-radius:14px;padding:14px 16px}
+.topic:hover:not(:disabled){border-color:var(--pri)}
+.topic:disabled{cursor:not-allowed;opacity:.6}
+.num{flex:none;width:36px;height:36px;border-radius:50%;display:grid;place-items:center;background:var(--pri-soft);color:var(--pri);font-weight:700}
+.topic.done .num{background:var(--ok-bg);color:var(--ok)}
+.topic .t{font-weight:650}
+.topic .s{color:var(--muted);font-size:.9rem}
+.learn-btn{display:block;width:100%;margin-top:6px;padding:10px 14px;border:1px dashed var(--pri);border-radius:12px;background:transparent;color:var(--pri);font-weight:600}
+.foot{margin-top:auto;padding:16px;display:flex;gap:16px;flex-wrap:wrap}
+.link{background:none;border:0;color:var(--muted);text-decoration:underline;padding:4px 0;font-size:.9rem}
+
+/* lesson */
+.lbar{display:flex;align-items:center;gap:10px;padding:14px 16px}
+.x{flex:none;width:36px;height:36px;border-radius:10px;border:1px solid var(--line);background:var(--card);font-size:1.4rem;line-height:1;color:var(--muted)}
+.prog{flex:1;height:10px;background:var(--line);border-radius:6px;overflow:hidden}
+.fill{height:100%;background:var(--pri);border-radius:6px;transition:width .25s}
+.starchip{flex:none;font-weight:700;color:var(--gold-ink);background:var(--gold-bg);border-radius:999px;padding:3px 10px;font-size:.95rem}
+.qcard{flex:1;padding:24px 16px;display:flex;flex-direction:column;gap:20px}
+.prompt{margin:0;color:var(--muted);font-size:1rem}
+.prompt.scene{color:var(--ink);font-size:1.1rem}
+.expr{display:flex;flex-wrap:wrap;align-items:center;gap:10px;font-size:clamp(1.5rem,6.2vw,2.1rem);font-weight:600}
+.expr .eq{color:var(--muted)}
+.expr .u{font-weight:600}
+.expr input{font:inherit;font-weight:600;width:min(9ch,38vw);text-align:center;padding:6px 8px;border:2px solid var(--line);border-radius:10px;background:var(--card);color:var(--ink)}
+.expr input:focus{border-color:var(--pri)}
+.expr input.ok{border-color:var(--ok);background:var(--ok-bg)}
+.expr input.bad{border-color:var(--bad);background:var(--bad-bg)}
+.sentence{font-size:clamp(1.2rem,5vw,1.6rem);font-weight:600}
+.sentence .blank{display:inline-block;min-width:3ch;border-bottom:3px solid var(--line);text-align:center}
+.err{margin:-8px 0 0;color:var(--bad);font-size:.95rem}
+.choices{display:grid;gap:10px}
+.choices.two{grid-template-columns:1fr 1fr}
+.choices.three{grid-template-columns:repeat(3,1fr)}
+.choice{padding:16px 12px;border:2px solid var(--line);border-radius:12px;background:var(--card);font-size:1.15rem;font-weight:600;text-align:center}
+.choice.sel{border-color:var(--pri);background:var(--pri-soft)}
+.choice.right{border-color:var(--ok);background:var(--ok-bg)}
+.choice.wrong{border-color:var(--bad);background:var(--bad-bg)}
+.choice:disabled{cursor:default}
+.actions{position:sticky;bottom:0;padding:14px 16px calc(14px + env(safe-area-inset-bottom));background:var(--card);border-top:1px solid var(--line)}
+.actions.ok{background:var(--ok-bg);border-top-color:var(--ok)}
+.actions.bad{background:var(--bad-bg);border-top-color:var(--bad)}
+.fbrow{display:flex;gap:10px;align-items:flex-start;margin-bottom:12px}
+.fbrow .mascot{flex:none}
+.fb .h{font-weight:700;font-size:1.1rem}
+.actions.ok .h{color:var(--ok)}
+.actions.bad .h{color:var(--bad)}
+.fb .d{margin-top:4px;font-size:.98rem}
+.fb .rule{margin-top:6px;color:var(--muted);font-size:.92rem}
+.pill{display:inline-block;margin-top:4px;padding:2px 10px;border-radius:999px;background:var(--gold-bg);color:var(--gold-ink);font-weight:700;animation:pop .18s ease-out}
+@keyframes pop{from{transform:scale(.8);opacity:.4}to{transform:scale(1);opacity:1}}
+@media (prefers-reduced-motion:reduce){.pill{animation:none}}
+.btn{width:100%;padding:14px;border:0;border-radius:12px;background:var(--pri);color:var(--pri-ink);font-weight:700;font-size:1.05rem}
+.btn:disabled{opacity:.4;cursor:not-allowed}
+.btn.ghost{background:transparent;color:var(--pri);border:2px solid var(--pri)}
+.btn2{margin-top:10px}
+.actions.ok .btn{background:var(--ok);color:#fff}
+.actions.bad .btn{background:var(--bad);color:#fff}
+
+/* learn */
+.learn{flex:1;padding:8px 16px 24px;display:flex;flex-direction:column;gap:16px}
+.learn h2{margin:8px 0 0;font-size:1.4rem;line-height:1.25}
+.lp{margin:0;font-size:1.05rem}
+.callout{padding:14px 16px;border-radius:12px;background:var(--pri-soft);border:1px solid var(--pri);font-weight:600;display:flex;flex-direction:column;gap:6px}
+.anchors{display:flex;flex-direction:column;gap:8px;margin:0;padding:0;list-style:none}
+.anchors li{display:flex;gap:12px;align-items:center;background:var(--card);border:1px solid var(--line);border-radius:12px;padding:10px 12px}
+.chip{display:inline-block;min-width:3.2rem;text-align:center;padding:4px 10px;border-radius:8px;background:var(--pri-soft);color:var(--pri);font-weight:700}
+.chip.on{background:var(--pri);color:var(--pri-ink)}
+.ex{display:flex;flex-direction:column;gap:10px}
+.ex .row{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:10px 14px}
+.ex .l{font-weight:700;font-size:1.1rem}
+.ex .n{color:var(--muted);font-size:.92rem;margin-top:2px}
+.zoom{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:14px;display:flex;flex-direction:column;gap:12px}
+.crumbs{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.arr{color:var(--muted)}
+.bar{display:flex;gap:3px}
+.seg{flex:1;height:44px;border-radius:6px;background:var(--line);display:grid;place-items:center;font-size:.8rem;color:var(--muted)}
+.seg.first{background:var(--pri-soft);border:2px solid var(--pri);color:var(--pri);font-weight:700}
+.seg.one{font-size:1rem}
+.facts{display:flex;flex-direction:column;gap:2px;font-weight:600;min-height:4.2em}
+.cheat{background:var(--card);border:1px dashed var(--line);border-radius:12px;padding:10px 14px;font-size:.95rem}
+.cheat .cap{color:var(--muted);font-size:.85rem;margin-bottom:6px}
+.cheat .chain{display:flex;flex-wrap:nowrap;gap:4px;align-items:center;margin-bottom:8px}
+.cheat .chip{min-width:0;padding:4px 8px}
+.cheat .eqs{display:grid;grid-template-columns:1fr 1fr;gap:2px 16px;font-weight:600}
+.solved{color:var(--ok);font-weight:600}
+.chip.on .pre{color:inherit;background:none;text-decoration:underline}
+.pre{color:var(--hl);background:var(--hl-bg);font-weight:800;border-radius:4px;padding:0 2px}
+.q{font-size:1.15rem;font-weight:650}
+.hintbox{padding:10px 14px;border-radius:10px;background:var(--bad-bg);color:var(--bad);font-size:.97rem}
+.task{font-size:clamp(1.4rem,6vw,2rem);font-weight:700}
+
+/* result + game */
+.result{flex:1;padding:24px 16px;display:flex;flex-direction:column;gap:14px;align-items:flex-start}
+.result h2{margin:0;font-size:1.6rem}
+.result .score{font-size:3rem;font-weight:700;line-height:1}
+.result p{margin:0;color:var(--muted)}
+.result .gap{display:flex;flex-direction:column;gap:10px;width:100%;margin-top:12px}
+.gwrap{flex:1;padding:8px 16px 16px;display:flex;flex-direction:column;gap:14px}
+#gcanvas.pix{image-rendering:pixelated;height:auto;aspect-ratio:240/264;max-width:480px;margin:0 auto;background:#0b1020}
+.dpad{display:grid;grid-template-columns:repeat(3,64px);grid-template-rows:repeat(2,56px);gap:6px;justify-content:center;touch-action:none}
+.dpad button{border:2px solid var(--line);border-radius:12px;background:var(--card);font-size:1.4rem;color:var(--ink)}
+.dpad button:active{background:var(--pri-soft);border-color:var(--pri)}
+.gpick{display:flex;flex-direction:column;gap:10px;width:100%}
+.gpick .btn small{display:block;font-weight:500;opacity:.85;margin-top:2px}
+#gcanvas{width:100%;height:min(62vh,520px);border-radius:14px;border:1px solid var(--line);touch-action:none;display:block}
+</style>
+</head>
+<body>
+<div id="app"></div>
+<noscript>Włącz JavaScript / Включите JavaScript</noscript>
+
+<script>
+'use strict';
+
+/* ======================================================================
+   Ustawienia / Настройки
+   ====================================================================== */
+const STORE_KEY = 'unitTrainer.v1';
+const PASS = 7;           // ile poprawnych za pierwszym razem, żeby odblokować następny temat
+const LESSON_LEN = 10;    // zadań w lekcji
+const GAME_COST = 10;     // tyle gwiazdek kosztuje jedna gra
+const GAME_SECS = 40;     // długość gry
+
+/* ======================================================================
+   Teksty interfejsu / Тексты интерфейса
+   Tablice *Msgs w obu językach muszą mieć tę samą długość.
+   ====================================================================== */
+const ruDays = (n) => { const a = n % 10, b = n % 100; return (a === 1 && b !== 11) ? 'день' : (a >= 2 && a <= 4 && (b < 12 || b > 14)) ? 'дня' : 'дней'; };
+
+const T = {
+  pl: {
+    title: 'Jednostki miar z Centkiem', subtitle: 'Klasa 7 · krótkie lekcje',
+    hello: 'Cześć! Jestem Centek. Dziś mierzymy telefony, czekoladę i trochę Minecrafta. Zaczynamy?',
+    streakN: (n) => 'Seria: ' + n + ' ' + (n === 1 ? 'dzień' : 'dni') + ' z rzędu — Centek na Ciebie liczy!',
+    streak0: 'Zacznij serię już dziś — wystarczy jedna lekcja.',
+    best: 'Najlepszy wynik', notDone: 'Jeszcze nie ukończono',
+    locked: 'Zdobądź 7/10 w poprzednim temacie, żeby tu wejść',
+    check: 'Sprawdź', next: 'Dalej',
+    rightAnswer: 'Poprawna odpowiedź:', retryNote: 'To zadanie wróci na końcu lekcji.',
+    enterNumber: 'Wpisz samą liczbę, np. 3,5',
+    equal: 'Są równe',
+    qConvert: 'Przelicz jednostki', qCompare: 'Co jest większe?', qUnit: 'Wybierz właściwą jednostkę',
+    done: 'Lekcja zaliczona!', firstTry: 'dobrze za pierwszym razem',
+    unlocked: 'Nowy temat odblokowany:',
+    needMore: 'Do następnego tematu potrzeba 7/10. Zerknij do wyjaśnienia i spróbuj jeszcze raz — dasz radę!',
+    toTopics: 'Do listy tematów', replay: 'Jeszcze raz',
+    unlockAll: 'Otwórz wszystkie tematy', reset: 'Zresetuj postęp', sure: 'Na pewno? Kliknij jeszcze raz',
+    close: 'Zamknij', answerAria: 'Twoja odpowiedź', langAria: 'Język',
+    learn: 'Wyjaśnienie z Centkiem', tryAgain: 'Spróbuj jeszcze raz', zoomIn: 'Przybliż', zoomReset: 'Od początku',
+    startPractice: 'Zaczynam ćwiczenia', together: 'Spróbujmy razem', cheat: 'Ściąga', small: 'mniejsza', big: 'większa',
+    okMsgs: ['Świetnie!', 'Brawo!', 'Tak trzymać!', 'Strzał w dziesiątkę!', 'Centek jest z Ciebie dumny!'],
+    retryMsgs: ['Teraz się zgadza!', 'Poprawka zaliczona!', 'Tak jest — uczysz się na błędach!', 'Super, tak trzymać!', 'Drugi raz lepiej!'],
+    badMsgs: ['Prawie! Pomyłki są OK — tak uczy się mózg.', 'Spokojnie, sprawdźmy to razem.', 'Nic się nie stało, zaraz to rozgryziemy.', 'Hmm, nie tym razem. Spójrz, jak to działa:', 'Ups! Każdy się myli — Centek też.'],
+    res10: 'Dziesięć na dziesięć! Centek tańczy z radości.',
+    res8: 'Świetna robota! Jeszcze trochę, a zostaniesz mistrzem miarek.',
+    res7: 'Zaliczone! Idziemy dalej.',
+    res4: 'Coś już umiesz! Jeszcze jedno podejście, a będzie lepiej.',
+    res0: 'Nic nie szkodzi — każdy mistrz zaczynał od zera. Zerknij do wyjaśnienia i próbujemy jeszcze raz.',
+    meme67: '6–7… tak, Centek zna ten mem 😏',
+    starsTitle: 'Gwiazdki', starsHint: (n) => 'Do gry brakuje ' + n + ' ★', starsReady: 'Masz dość gwiazdek na grę!',
+    playGame: 'Wybierz grę', playAgain: 'Zagraj jeszcze raz',
+    gameName: 'Czekoladopad',
+    gameRules: 'Przesuwaj palcem (albo strzałkami), żeby Centek łapał 🍫 (+1) i ⭐ (+3). Uważaj na brokuły 🥦 (−2)! Masz 40 sekund.',
+    gameStart: 'Start', gameHave: (n) => 'Masz ' + n + ' ★. Jedna gra kosztuje ' + GAME_COST + ' ★.',
+    gameOver: 'Koniec gry!', gameScore: (n) => 'Wynik: ' + n, gameBest: (n) => 'Twój rekord: ' + n,
+    gameRecord: 'Nowy rekord! Centek jest zachwycony.', gameNice: 'Dobra gra! Pobijesz swój rekord następnym razem?',
+    needStars: (n) => 'Do kolejnej gry brakuje ' + n + ' ★ — wracaj do ćwiczeń!',
+    gained: (n) => '+' + n + ' ★',
+    chooseGame: 'Wybierz grę — każda kosztuje ' + GAME_COST + ' ★',
+    mazeName: 'Labirynt Centka',
+    mazeRules: 'Steruj Centkiem: przesuwaj palcem po planszy, użyj strzałek albo przycisków. Zbierz wszystkie 🍫 w labiryncie. Unikaj brokułów 🥦 — ale gdy złapiesz ⭐, brokuły robią się niebieskie i możesz je zjeść! Masz 3 życia, a każdy poziom jest szybszy.',
+    mazeLevel: (n) => 'Poziom ' + n,
+    bestOf: 'rekord'
+  },
+  ru: {
+    title: 'Единицы измерения с Сантиком', subtitle: '7 класс · короткие уроки',
+    hello: 'Привет! Я Сантик. Сегодня меряем телефоны, шоколадки и немного Minecraft. Начнём?',
+    streakN: (n) => 'Серия: ' + n + ' ' + ruDays(n) + ' подряд — Сантик на тебя рассчитывает!',
+    streak0: 'Начни серию сегодня — хватит одного урока.',
+    best: 'Лучший результат', notDone: 'Ещё не пройдено',
+    locked: 'Набери 7/10 в предыдущей теме, чтобы войти сюда',
+    check: 'Проверить', next: 'Дальше',
+    rightAnswer: 'Правильный ответ:', retryNote: 'Это задание вернётся в конце урока.',
+    enterNumber: 'Введи только число, например 3,5',
+    equal: 'Равны',
+    qConvert: 'Переведи единицы', qCompare: 'Что больше?', qUnit: 'Выбери подходящую единицу',
+    done: 'Урок зачтён!', firstTry: 'верно с первого раза',
+    unlocked: 'Открыта новая тема:',
+    needMore: 'Для следующей темы нужно 7/10. Загляни в объяснение и попробуй ещё раз — у тебя получится!',
+    toTopics: 'К списку тем', replay: 'Ещё раз',
+    unlockAll: 'Открыть все темы', reset: 'Сбросить прогресс', sure: 'Точно? Нажми ещё раз',
+    close: 'Закрыть', answerAria: 'Твой ответ', langAria: 'Язык',
+    learn: 'Объяснение с Сантиком', tryAgain: 'Попробуй ещё раз', zoomIn: 'Приблизить', zoomReset: 'Сначала',
+    startPractice: 'Начинаю тренировку', together: 'Попробуем вместе', cheat: 'Шпаргалка', small: 'меньше', big: 'больше',
+    okMsgs: ['Супер!', 'Браво!', 'Так держать!', 'В яблочко!', 'Сантик тобой гордится!'],
+    retryMsgs: ['Вот теперь верно!', 'Исправление засчитано!', 'Так и надо — учимся на ошибках!', 'Отлично, так держать!', 'Со второго раза лучше!'],
+    badMsgs: ['Почти! Ошибки — это нормально, так учится мозг.', 'Спокойно, разберём это вместе.', 'Ничего страшного, сейчас разберёмся.', 'Хм, не в этот раз. Смотри, как это работает:', 'Упс! Все ошибаются — Сантик тоже.'],
+    res10: 'Десять из десяти! Сантик танцует от радости.',
+    res8: 'Отличная работа! Ещё чуть-чуть — и станешь мастером мерок.',
+    res7: 'Зачтено! Идём дальше.',
+    res4: 'Кое-что уже получается! Ещё один заход — и будет лучше.',
+    res0: 'Ничего страшного — каждый мастер начинал с нуля. Загляни в объяснение, и попробуем ещё раз.',
+    meme67: '6–7… да, Сантик знает этот мем 😏',
+    starsTitle: 'Звёздочки', starsHint: (n) => 'До игры не хватает ' + n + ' ★', starsReady: 'Звёздочек хватает на игру!',
+    playGame: 'Выбрать игру', playAgain: 'Сыграть ещё раз',
+    gameName: 'Шоколадопад',
+    gameRules: 'Води пальцем (или стрелками), чтобы Сантик ловил 🍫 (+1) и ⭐ (+3). Берегись брокколи 🥦 (−2)! У тебя 40 секунд.',
+    gameStart: 'Старт', gameHave: (n) => 'У тебя ' + n + ' ★. Одна игра стоит ' + GAME_COST + ' ★.',
+    gameOver: 'Игра окончена!', gameScore: (n) => 'Результат: ' + n, gameBest: (n) => 'Твой рекорд: ' + n,
+    gameRecord: 'Новый рекорд! Сантик в восторге.', gameNice: 'Хорошая игра! Побьёшь свой рекорд в следующий раз?',
+    needStars: (n) => 'До следующей игры не хватает ' + n + ' ★ — возвращайся к тренировке!',
+    gained: (n) => '+' + n + ' ★',
+    chooseGame: 'Выбери игру — каждая стоит ' + GAME_COST + ' ★',
+    mazeName: 'Лабиринт Сантика',
+    mazeRules: 'Води Сантика: проводи пальцем по полю, жми стрелки или кнопки. Собери все шоколадки 🍫 в лабиринте. Не попадайся брокколи 🥦 — но если поймаешь ⭐, они посинеют, и их можно съесть! Три жизни, с каждым уровнем быстрее.',
+    mazeLevel: (n) => 'Уровень ' + n,
+    bestOf: 'рекорд'
+  }
+};
+
+/* ======================================================================
+   Temat y i jednostki / Темы и единицы
+   units: współczynnik do wspólnej jednostki bazowej tematu
+   scenes: zadania z "historyjką"; {q} = liczba z jednostką; wszystkie wartości dają "ładne" wyniki
+   items: pytania "wybierz jednostkę" (opts podane ręcznie, żeby odpowiedź była jednoznaczna)
+   Postacie występują tylko w zadaniach, gdzie liczba jest PODANA w treści.
+   W pytaniach „wybierz jednostkę” są wyłącznie rzeczy, które dziecko zna i może zmierzyć.
+   ====================================================================== */
+const TOPICS = [
+  {
+    id: 'length', name: { pl: 'Długość', ru: 'Длина' },
+    units: { mm: 1, cm: 10, dm: 100, m: 1000, km: 1e6 },
+    compound: [['km', 'm', 1000], ['m', 'cm', 100], ['cm', 'mm', 10]],
+    mix: { convert: 4, scene: 3, compound: 2, compare: 2, unit: 2 },
+    scenes: [
+      { f: 'cm', t: 'mm', vals: [14.5, 15, 15.5, 16, 17], pl: 'Twój telefon ma długość {q}.', ru: 'Длина твоего телефона — {q}.' },
+      { f: 'mm', t: 'cm', vals: [7, 8, 9], pl: 'Grubość telefonu to {q}.', ru: 'Толщина телефона — {q}.' },
+      { f: 'm', t: 'cm', vals: [0.4], pl: 'Pikachu ma wzrost {q}.', ru: 'Рост Пикачу — {q}.' },
+      { f: 'm', t: 'cm', vals: [12, 25, 40], pl: 'W Minecrafcie 1 blok = 1 m. Wieża Steve’a ma {q} wysokości.', ru: 'В Minecraft 1 блок = 1 m. Башня Стива высотой {q}.' },
+      { f: 'm', t: 'km', vals: [750, 1250, 1500, 2400], pl: 'Do szkoły masz {q}.', ru: 'До школы {q}.' },
+      { f: 'cm', t: 'm', vals: [120, 150, 180, 200], pl: 'Kabel do ładowarki ma {q}.', ru: 'Кабель зарядки длиной {q}.' },
+      { f: 'cm', t: 'mm', vals: [15, 16, 17], pl: 'Tabliczka czekolady ma {q} długości.', ru: 'Плитка шоколада длиной {q}.' },
+      { f: 'm', t: 'km', vals: [400, 800, 1200], pl: 'Rumi, Mira i Zoey przebiegły {q} do sceny.', ru: 'Руми, Мира и Зои пробежали {q} до сцены.' }
+    ],
+    items: [
+      { pl: 'Grubość telefonu to około', ru: 'Толщина телефона — около', n: '8', ans: 'mm', opts: ['mm', 'cm', 'm', 'km'] },
+      { pl: 'Długość telefonu to około', ru: 'Длина телефона — около', n: '15', ans: 'cm', opts: ['mm', 'cm', 'm', 'km'] },
+      { pl: 'Długość tabliczki czekolady to około', ru: 'Длина плитки шоколада — около', n: '16', ans: 'cm', opts: ['mm', 'cm', 'm', 'km'] },
+      { pl: 'Wysokość drzwi to około', ru: 'Высота двери — около', n: '2', ans: 'm', opts: ['mm', 'cm', 'm', 'km'] },
+      { pl: 'Ołówek ma długość około', ru: 'Длина карандаша — около', n: '18', ans: 'cm', opts: ['mm', 'cm', 'm', 'km'] },
+      { pl: 'Z Gdyni do Gdańska jest około', ru: 'От Гдыни до Гданьска около', n: '20', ans: 'km', opts: ['mm', 'cm', 'm', 'km'] }
+    ]
+  },
+  {
+    id: 'mass', name: { pl: 'Masa', ru: 'Масса' },
+    units: { mg: 1, g: 1e3, dag: 1e4, kg: 1e6, t: 1e9 },
+    compound: [['kg', 'g', 1000], ['t', 'kg', 1000], ['g', 'mg', 1000]],
+    mix: { convert: 4, scene: 3, compound: 2, compare: 2, unit: 2 },
+    scenes: [
+      { f: 'g', t: 'kg', vals: [100, 200], pl: 'Tabliczka czekolady waży {q}.', ru: 'Плитка шоколада весит {q}.' },
+      { f: 'g', t: 'dag', vals: [100], pl: 'Tabliczka czekolady waży {q}.', ru: 'Плитка шоколада весит {q}.' },
+      { f: 'g', t: 'kg', vals: [170, 190, 200], pl: 'Twój telefon waży {q}.', ru: 'Твой телефон весит {q}.' },
+      { f: 'kg', t: 'g', vals: [6], pl: 'Pikachu waży {q}.', ru: 'Пикачу весит {q}.' },
+      { f: 'kg', t: 't', vals: [460], pl: 'Snorlax waży {q}.', ru: 'Снорлакс весит {q}.' },
+      { f: 'kg', t: 'g', vals: [4, 4.5, 5, 6], pl: 'Twój plecak waży {q}.', ru: 'Твой рюкзак весит {q}.' },
+      { f: 'mg', t: 'g', vals: [250, 500, 750], pl: 'Tabletka witaminy waży {q}.', ru: 'Таблетка витамина весит {q}.' }
+    ],
+    items: [
+      { pl: 'Telefon waży około', ru: 'Телефон весит около', n: '190', ans: 'g', opts: ['mg', 'g', 'kg', 't'] },
+      { pl: 'Tabliczka czekolady waży', ru: 'Плитка шоколада весит', n: '100', ans: 'g', opts: ['mg', 'g', 'kg', 't'] },
+      { pl: 'Dorosły człowiek waży około', ru: 'Взрослый человек весит около', n: '70', ans: 'kg', opts: ['mg', 'g', 'kg', 't'] },
+      { pl: 'Samochód osobowy waży około', ru: 'Легковой автомобиль весит около', n: '1,5', ans: 't', opts: ['mg', 'g', 'kg', 't'] },
+      { pl: 'Tabletka witaminy waży około', ru: 'Таблетка витамина весит около', n: '500', ans: 'mg', opts: ['mg', 'g', 'kg', 't'] },
+      { pl: 'Plecak szkolny waży około', ru: 'Школьный рюкзак весит около', n: '5', ans: 'kg', opts: ['mg', 'g', 'kg', 't'] }
+    ]
+  },
+  {
+    id: 'volume', name: { pl: 'Objętość i pojemność', ru: 'Объём и вместимость' },
+    units: { ml: 1, cm3: 1, l: 1e3, dm3: 1e3, m3: 1e6 },
+    compound: [['l', 'ml', 1000], ['m3', 'dm3', 1000]],
+    mix: { convert: 4, scene: 3, compound: 2, compare: 2, unit: 2 },
+    scenes: [
+      { f: 'ml', t: 'l', vals: [330], pl: 'Puszka napoju ma {q}.', ru: 'В банке напитка {q}.' },
+      { f: 'l', t: 'ml', vals: [0.5, 1.5, 2], pl: 'W butelce wody jest {q}.', ru: 'В бутылке воды {q}.' },
+      { f: 'ml', t: 'l', vals: [200, 250, 300], pl: 'Do szklanki mieści się {q}.', ru: 'В стакан помещается {q}.' },
+      { f: 'm3', t: 'l', vals: [1], pl: 'W Minecrafcie jeden blok ma objętość {q}.', ru: 'В Minecraft один блок имеет объём {q}.' },
+      { f: 'm3', t: 'dm3', vals: [2, 3, 5], pl: 'W Minecrafcie 1 blok = 1 m³. Steve wykopał {q} ziemi.', ru: 'В Minecraft 1 блок = 1 m³. Стив выкопал {q} земли.' },
+      { f: 'l', t: 'dm3', vals: [40, 60, 100], pl: 'Akwarium ma pojemność {q}.', ru: 'Вместимость аквариума — {q}.' }
+    ],
+    items: [
+      { pl: 'Puszka napoju ma pojemność', ru: 'Объём банки напитка', n: '330', ans: 'ml', opts: ['ml', 'l', 'dm3', 'm3'] },
+      { pl: 'Duża butelka wody ma pojemność', ru: 'Большая бутылка воды вмещает', n: '1,5', ans: 'l', opts: ['ml', 'l', 'cm3', 'm3'] },
+      { pl: 'Wanna ma pojemność około', ru: 'Ванна вмещает около', n: '150', ans: 'l', opts: ['ml', 'l', 'cm3', 'm3'] },
+      { pl: 'Akwarium ma pojemność około', ru: 'Аквариум вмещает около', n: '60', ans: 'l', opts: ['ml', 'l', 'cm3', 'm3'] },
+      { pl: 'Do łyżeczki mieści się około', ru: 'В чайную ложку помещается около', n: '5', ans: 'ml', opts: ['ml', 'l', 'dm3', 'm3'] },
+      { pl: 'Sala lekcyjna ma objętość około', ru: 'Объём школьного класса — около', n: '200', ans: 'm3', opts: ['ml', 'l', 'dm3', 'm3'] }
+    ]
+  },
+  {
+    id: 'time', name: { pl: 'Czas', ru: 'Время' },
+    units: { s: 1, min: 60, h: 3600, d: 86400 },
+    compound: [['h', 'min', 60], ['min', 's', 60], ['d', 'h', 24]],
+    mix: { convert: 4, scene: 3, compound: 2, compare: 2, unit: 2 },
+    scenes: [
+      { f: 'min', t: 's', vals: [11, 22, 24], pl: 'Odcinek bajki trwa {q}.', ru: 'Серия мультика длится {q}.' },
+      { f: 'min', t: 's', vals: [0.5, 1.5, 2.5, 3.5], pl: 'Twój ulubiony filmik trwa {q}.', ru: 'Твоё любимое видео длится {q}.' },
+      { f: 'min', t: 'h', vals: [90, 120, 150], pl: 'Ładowanie telefonu trwa {q}.', ru: 'Зарядка телефона занимает {q}.' },
+      { f: 'h', t: 'min', vals: [8, 9, 10], pl: 'Śpisz {q} w nocy.', ru: 'Ночью ты спишь {q}.' },
+      { f: 'h', t: 'min', vals: [1.5, 2, 2.5], pl: 'Film w kinie trwa {q}.', ru: 'Фильм в кино идёт {q}.' },
+      { f: 'min', t: 's', vals: [2.5, 3], pl: 'Mecz w Brawl Stars trwał {q}.', ru: 'Матч в Brawl Stars длился {q}.' },
+      { f: 'h', t: 'min', vals: [1.5, 2.25], pl: 'Rumi, Mira i Zoey ćwiczą choreografię {q}.', ru: 'Руми, Мира и Зои репетируют танец {q}.' }
+    ],
+    items: [
+      { pl: 'Odcinek bajki trwa około', ru: 'Серия мультика длится около', n: '22', ans: 'min', opts: ['s', 'min', 'h', 'd'] },
+      { pl: 'Krótki filmik w telefonie trwa około', ru: 'Короткое видео в телефоне длится около', n: '30', ans: 's', opts: ['s', 'min', 'h', 'd'] },
+      { pl: 'Ładowanie telefonu trwa około', ru: 'Зарядка телефона занимает около', n: '1,5', ans: 'h', opts: ['s', 'min', 'h', 'd'] },
+      { pl: 'Lekcja w szkole trwa', ru: 'Урок в школе длится', n: '45', ans: 'min', opts: ['s', 'min', 'h', 'd'] },
+      { pl: 'Nocny sen trwa około', ru: 'Ночной сон длится около', n: '9', ans: 'h', opts: ['s', 'min', 'h', 'd'] },
+      { pl: 'Mrugnięcie okiem trwa około', ru: 'Моргание длится около', n: '0,3', ans: 's', opts: ['s', 'min', 'h', 'd'] }
+    ]
+  },
+  {
+    id: 'area', name: { pl: 'Pole powierzchni', ru: 'Площадь' },
+    units: { mm2: 1, cm2: 100, dm2: 1e4, m2: 1e6, a: 1e8, ha: 1e10, km2: 1e12 },
+    compound: [],
+    mix: { convert: 6, scene: 3, compound: 0, compare: 2, unit: 2 },
+    scenes: [
+      { f: 'cm2', t: 'mm2', vals: [90, 95, 100], pl: 'Ekran telefonu ma około {q}.', ru: 'Экран телефона — около {q}.' },
+      { f: 'm2', t: 'dm2', vals: [48, 54, 60], pl: 'Twoja sala lekcyjna ma {q}.', ru: 'Твой класс имеет площадь {q}.' },
+      { f: 'ha', t: 'm2', vals: [0.7, 0.8], pl: 'Boisko piłkarskie ma około {q}.', ru: 'Футбольное поле — около {q}.' },
+      { f: 'a', t: 'm2', vals: [2, 3, 5], pl: 'Działka ma {q}.', ru: 'Участок площадью {q}.' },
+      { f: 'km2', t: 'ha', vals: [0.5, 2.5, 3], pl: 'Wyspa ma {q}.', ru: 'Площадь острова — {q}.' },
+      { f: 'mm2', t: 'cm2', vals: [250, 600, 1200], pl: 'Naklejka ma {q}.', ru: 'Площадь наклейки — {q}.' }
+    ],
+    items: [
+      { pl: 'Ekran telefonu ma powierzchnię około', ru: 'Площадь экрана телефона — около', n: '100', ans: 'cm2', opts: ['mm2', 'cm2', 'm2', 'ha'] },
+      { pl: 'Znaczek pocztowy ma około', ru: 'Почтовая марка — около', n: '6', ans: 'cm2', opts: ['mm2', 'cm2', 'm2', 'a'] },
+      { pl: 'Sala lekcyjna ma powierzchnię około', ru: 'Площадь школьного класса — около', n: '60', ans: 'm2', opts: ['cm2', 'm2', 'a', 'ha'] },
+      { pl: 'Boisko piłkarskie ma około', ru: 'Футбольное поле — около', n: '7 000', ans: 'm2', opts: ['cm2', 'm2', 'ha', 'km2'] },
+      { pl: 'Duży park miejski ma około', ru: 'Большой городской парк — около', n: '20', ans: 'ha', opts: ['cm2', 'm2', 'ha', 'km2'] },
+      { pl: 'Polska ma powierzchnię około', ru: 'Площадь Польши — около', n: '313 000', ans: 'km2', opts: ['m2', 'ha', 'km2', 'a'] }
+    ]
+  },
+  {
+    id: 'speed', name: { pl: 'Prędkość', ru: 'Скорость' },
+    units: { kmh: 1, ms: 3.6 },
+    maxV: 300,
+    compound: [],
+    mix: { convert: 7, scene: 4, compound: 0, compare: 3, unit: 0 },
+    scenes: [
+      { f: 'kmh', t: 'ms', vals: [18, 27], pl: 'Hulajnoga jedzie {q}.', ru: 'Самокат едет со скоростью {q}.' },
+      { f: 'kmh', t: 'ms', vals: [36, 72, 108], pl: 'Pociąg jedzie {q}.', ru: 'Поезд едет со скоростью {q}.' },
+      { f: 'ms', t: 'kmh', vals: [5, 8, 10], pl: 'Biegacz pokonuje {q}.', ru: 'Бегун бежит со скоростью {q}.' },
+      { f: 'ms', t: 'kmh', vals: [250], pl: 'Samolot leci {q}.', ru: 'Самолёт летит со скоростью {q}.' },
+      { f: 'kmh', t: 'ms', vals: [18, 36], pl: 'Rowerzysta jedzie {q}.', ru: 'Велосипедист едет со скоростью {q}.' }
+    ],
+    items: []
+  }
+];
+
+const UL = { cm3: 'cm³', dm3: 'dm³', m3: 'm³', mm2: 'mm²', cm2: 'cm²', dm2: 'dm²', m2: 'm²', km2: 'km²', kmh: 'km/h', ms: 'm/s' };
+
+/* ======================================================================
+   Materiał do nauki / Обучающий материал (na razie tylko „Długość”)
+   Typy kroków: info, check, guided, end
+   ====================================================================== */
+const ANCHORS = [
+  ['mm', { pl: 'grubość telefonu ≈ 8 mm', ru: 'толщина телефона ≈ 8 mm' }],
+  ['cm', { pl: 'długość telefonu ≈ 15 cm', ru: 'длина телефона ≈ 15 cm' }],
+  ['dm', { pl: 'szerokość Twojej dłoni ≈ 1 dm (zmierz linijką!)', ru: 'ширина твоей ладони ≈ 1 dm (проверь линейкой!)' }],
+  ['m', { pl: 'jeden blok w Minecrafcie = 1 m, drzwi ≈ 2 m', ru: 'один блок в Minecraft = 1 m, дверь ≈ 2 m' }],
+  ['km', { pl: 'spacer w 12–15 minut ≈ 1 km', ru: 'идти 12–15 минут пешком ≈ 1 km' }]
+];
+
+const HINT = {
+  bigger: { pl: 'Podpowiedź: w ciągu mm → cm → dm → m → km jednostki rosną w prawo.', ru: 'Подсказка: в ряду mm → cm → dm → m → km единицы растут слева направо.' },
+  direction: { pl: 'Podpowiedź: mniejszej jednostki potrzeba więcej, większej — mniej.', ru: 'Подсказка: мелких единиц нужно больше, крупных — меньше.' },
+  factor: { pl: 'Podpowiedź: zajrzyj do ściągi poniżej.', ru: 'Подсказка: загляни в шпаргалку ниже.' },
+  answer: { pl: 'Podpowiedź: wykonaj działanie z pytania i policz jeszcze raz.', ru: 'Подсказка: выполни действие из вопроса и посчитай ещё раз.' }
+};
+
+const LEARN = {
+  length: {
+    steps: [
+      { type: 'info',
+        title: { pl: 'Linijki na każdą okazję', ru: 'Линейки на любой случай' },
+        hi: { pl: 'Cześć! Jestem Centek. Pokażę Ci, jak mierzyć wszystko — od telefonu po drogę do szkoły.', ru: 'Привет! Я Сантик. Покажу, как измерять всё — от телефона до дороги в школу.' },
+        blocks: [
+          { t: 'p', pl: 'Każda jednostka jest od czegoś innego. Wystarczy zapamiętać po jednym przykładzie — i od razu poczujesz, czy wynik ma sens. Zmierz swoją dłoń linijką: to Twój własny 1 dm!',
+            ru: 'Каждая единица — для своего дела. Достаточно запомнить по одному примеру — и ты сразу почувствуешь, разумный ли получился ответ. Измерь свою ладонь линейкой: это твой личный 1 dm!' },
+          { t: 'anchors' }
+        ] },
+      { type: 'info',
+        title: { pl: 'Metr pod lupą', ru: 'Метр под лупой' },
+        hi: { pl: 'Wyobraź sobie metrową czekoladę (marzenie!). Zobacz, na ile kawałków da się ją pokroić.', ru: 'Представь метровую шоколадку (мечта!). Смотри, на сколько кусочков её можно нарезать.' },
+        blocks: [
+          { t: 'p', pl: 'Przedrostki to podpowiedzi: decy- = 10 razy mniej, centy- = 100 razy mniej, mili- = 1000 razy mniej, kilo- = 1000 razy więcej. Klikaj „Przybliż” i patrz, jak metr się dzieli.',
+            ru: 'Приставки — это подсказки: деци = в 10 раз меньше, санти = в 100 раз меньше, милли = в 1000 раз меньше, кило = в 1000 раз больше. Жми «Приблизить» и смотри, как делится метр.' },
+          { t: 'zoom' },
+          { t: 'cheat' }
+        ] },
+      { type: 'check',
+        q: { pl: 'Metrową czekoladę kroisz na kawałki po 1 cm. Ile kawałków wyjdzie?', ru: 'Метровую шоколадку режем на кусочки по 1 cm. Сколько получится кусочков?' },
+        opts: ['10', '100', '1000'], correct: '100',
+        hint: { pl: 'Podpowiedź: metr dzieli się na 10 dm, a każdy decymetr na 10 cm.', ru: 'Подсказка: метр делится на 10 dm, а каждый дециметр — на 10 cm.' },
+        why: { pl: '1 m = 10 dm, a 1 dm = 10 cm, więc 1 m = 10 · 10 = 100 cm.', ru: '1 m = 10 dm, а 1 dm = 10 cm, значит 1 m = 10 · 10 = 100 cm.' } },
+      { type: 'check',
+        q: { pl: 'Do szkoły masz 1 km. Ile to metrów?', ru: 'До школы 1 km. Сколько это метров?' },
+        opts: ['100', '1000', '10000'], correct: '1000',
+        hint: { pl: 'Podpowiedź: kilo- oznacza „tysiąc”.', ru: 'Подсказка: «кило» значит «тысяча».' },
+        why: { pl: '1 km = 1000 m, bo kilo- to tysiąc.', ru: '1 km = 1000 m, потому что «кило» — это тысяча.' } },
+      { type: 'info',
+        title: { pl: 'Mnożyć czy dzielić? Prosty trik', ru: 'Умножать или делить? Простой трюк' },
+        hi: { pl: 'Tu najczęściej wszyscy się mylą. Ale mam na to trik!', ru: 'Тут чаще всего все путаются. Но у меня есть трюк!' },
+        blocks: [
+          { t: 'p', pl: 'Telefon ma 15 cm. Zmierz go centymetrem — mieści się 15 razy. Zmierz milimetrem — aż 150 razy! Im mniejsza miarka, tym więcej jej potrzeba.',
+            ru: 'Телефон длиной 15 cm. Меряем сантиметром — получаем 15. Меряем миллиметром — целых 150! Чем мельче мерка, тем больше таких мерок нужно.' },
+          { t: 'rule', pl: ['Z większej jednostki na mniejszą → liczba rośnie → mnożymy.', 'Z mniejszej na większą → liczba maleje → dzielimy.'],
+            ru: ['Из крупной единицы в мелкую → число растёт → умножаем.', 'Из мелкой в крупную → число уменьшается → делим.'] },
+          { t: 'ex', rows: [
+            { line: '15 cm = 15 · 10 = 150 mm', note: '1 cm = 10 mm' },
+            { line: '1250 m = 1250 : 1000 = 1,25 km', note: '1 km = 1000 m' } ] },
+          { t: 'p', pl: 'Skrót: mnożenie przez 10, 100, 1000 to przesunięcie przecinka o 1, 2, 3 miejsca w prawo (dopisz zera, gdy brakuje cyfr). Dzielenie — w lewo.',
+            ru: 'Лайфхак: умножить на 10, 100, 1000 — значит сдвинуть запятую на 1, 2, 3 знака вправо (дописывая нули, если не хватает цифр). Разделить — сдвинуть влево.' },
+          { t: 'ex', rows: [
+            { line: '1,5 → 1,50 → 150', note: { pl: 'przecinek o 2 miejsca w prawo (· 100)', ru: 'запятая на 2 знака вправо (· 100)' } },
+            { line: '1250 → 1,250 → 1,25', note: { pl: 'przecinek o 3 miejsca w lewo (: 1000)', ru: 'запятая на 3 знака влево (: 1000)' } } ] },
+          { t: 'cheat' }
+        ] },
+      { type: 'guided', f: 'km', t: 'm', v: 2.4, stages: ['bigger', 'direction', 'factor', 'answer'],
+        scene: { pl: 'Do szkoły masz 2,4 km. Ile to metrów?', ru: 'До школы 2,4 km. Сколько это метров?' } },
+      { type: 'guided', f: 'cm', t: 'm', v: 150, stages: ['direction', 'factor', 'answer'],
+        scene: { pl: 'Kabel do ładowarki ma 150 cm. Ile to metrów?', ru: 'Кабель зарядки длиной 150 cm. Сколько это метров?' } },
+      { type: 'info',
+        title: { pl: 'Jednostki złożone', ru: 'Составные величины' },
+        hi: { pl: 'Czasem długość jest „w kawałkach”, jak 3 km 250 m. Nic strasznego!', ru: 'Иногда длина записана «в кусочках», например 3 km 250 m. Ничего страшного!' },
+        blocks: [
+          { t: 'p', pl: 'Zamień większą część na mniejszą jednostkę i dodaj resztę.',
+            ru: 'Переведи крупную часть в мелкую единицу и прибавь остаток.' },
+          { t: 'ex', rows: [
+            { line: '3 km 250 m = 3000 m + 250 m = 3250 m', note: { pl: '1 km = 1000 m, więc 3 km = 3000 m', ru: '1 km = 1000 m, значит 3 km = 3000 m' } },
+            { line: '3250 m = 3 km 250 m', note: { pl: '3250 : 1000 = 3, reszta 250', ru: '3250 : 1000 = 3, остаток 250' } } ] }
+        ] },
+      { type: 'check',
+        q: { pl: 'Wieża Steve’a ma 2 m 35 cm. Ile to cm?', ru: 'Башня Стива — 2 m 35 cm. Сколько это cm?' },
+        opts: ['235', '2035', '2,35'], correct: '235',
+        hint: { pl: 'Podpowiedź: najpierw zamień 2 m na centymetry.', ru: 'Подсказка: сначала переведи 2 m в сантиметры.' },
+        why: { pl: '2 m = 200 cm, więc 200 + 35 = 235 cm.', ru: '2 m = 200 cm, значит 200 + 35 = 235 cm.' } },
+      { type: 'end',
+        title: { pl: 'Gotowe — jesteś mistrzem miarek!', ru: 'Готово — ты мастер мерок!' },
+        hi: { pl: 'Jestem z Ciebie dumny!', ru: 'Я тобой горжусь!' },
+        text: { pl: 'Za każdą dobrą odpowiedź za pierwszym razem dostaniesz ⭐. Zbierz 10 gwiazdek — i odblokujesz grę z Centkiem!',
+                ru: 'За каждый верный ответ с первого раза получишь ⭐. Собери 10 звёздочек — и откроется игра с Сантиком!' } }
+    ]
+  }
+};
+
+/* ======================================================================
+   Stan i zapis / Состояние и сохранение
+   ====================================================================== */
+function guessLang() {
+  const l = ((typeof navigator !== 'undefined' && navigator.language) || 'pl').toLowerCase();
+  return l.indexOf('ru') === 0 ? 'ru' : 'pl';
+}
+function defaults() { return { lang: guessLang(), best: {}, streak: 0, last: '', unlockAll: false, learned: {}, stars: 0, gameBest: 0, mazeBest: 0 }; }
+function load() {
+  try {
+    const o = JSON.parse(localStorage.getItem(STORE_KEY) || 'null');
+    if (o && typeof o === 'object') return Object.assign(defaults(), o);
+  } catch (e) { /* storage niedostępny – działamy bez zapisu */ }
+  return defaults();
+}
+function save() { try { localStorage.setItem(STORE_KEY, JSON.stringify(S)); } catch (e) { /* ignore */ } }
+
+let S = load();
+let V = { view: 'home' };
+let G = null;               // stan działającej gry
+let confirmReset = false;
+
+const tr = (k) => T[S.lang][k];
+const RU_UL = { mm: 'мм', cm: 'см', dm: 'дм', m: 'м', km: 'км', mg: 'мг', g: 'г', dag: 'даг', kg: 'кг', t: 'т',
+  ml: 'мл', l: 'л', cm3: 'см³', dm3: 'дм³', m3: 'м³', s: 'с', min: 'мин', h: 'ч', d: 'сут.',
+  mm2: 'мм²', cm2: 'см²', dm2: 'дм²', m2: 'м²', a: 'ар', ha: 'га', km2: 'км²', kmh: 'км/ч', ms: 'м/с' };
+function ul(u) {
+  if (S.lang === 'ru') return RU_UL[u] || u;
+  return UL[u] || u;
+}
+/* В русском тексте латинские обозначения единиц заменяются на русские (км, м, см…) */
+const LU_MAP = { km: 'км', mm: 'мм', cm: 'см', dm: 'дм', mg: 'мг', kg: 'кг', dag: 'даг', ml: 'мл', m: 'м', g: 'г', t: 'т', l: 'л' };
+function lu(str) {
+  return S.lang === 'ru' ? str.replace(/(^|[^A-Za-z0-9_])(km|mm|cm|dm|mg|kg|dag|ml|m|g|t|l)(?![A-Za-z0-9_])/g, (x, a, b) => a + LU_MAP[b]) : str;
+}
+/* Приставки (кило, деци, санти, милли / kilo, decy, centy, mili) выделяются цветом */
+const PRE_RE = /(кило|деци|санти(?!к)|милли|kilo|decy|centy|mili)/gi;
+function textNodes(str) {
+  str = lu(str);
+  PRE_RE.lastIndex = 0;
+  if (!PRE_RE.test(str)) return [str];
+  return str.split(PRE_RE).map((part, i) => {
+    if (i % 2 === 0) return part;
+    const sp = document.createElement('span'); sp.className = 'pre'; sp.textContent = part; return sp;
+  }).filter((x) => x !== '');
+}
+/* единица как узел: первая буква приставки подсвечена (мм, см, дм, км) */
+function ulNode(u) {
+  const t = ul(u);
+  if (['mm', 'cm', 'dm', 'km'].indexOf(u) < 0) return t;
+  const sp = document.createElement('span'); sp.className = 'pre'; sp.textContent = t.charAt(0);
+  const f = document.createDocumentFragment(); f.append(sp, t.slice(1)); return f;
+}
+
+/* ======================================================================
+   Pomocnicze / Вспомогательные
+   ====================================================================== */
+const rnd = (a, b) => Math.floor(Math.random() * (b - a + 1)) + a;
+const pick = (arr) => arr[rnd(0, arr.length - 1)];
+function shuffle(arr) {
+  const a = arr.slice();
+  for (let i = a.length - 1; i > 0; i--) { const j = rnd(0, i); [a[i], a[j]] = [a[j], a[i]]; }
+  return a;
+}
+const clean = (x) => parseFloat(Number(x).toPrecision(12));
+function nice(x) {
+  return isFinite(x) && x >= 0.001 && x <= 1e7 && Math.abs(x * 1000 - Math.round(x * 1000)) < 1e-6;
+}
+function fmt(n) {
+  n = clean(n);
+  let s = n.toFixed(3);
+  if (s.indexOf('.') >= 0) s = s.replace(/0+$/, '').replace(/\.$/, '');
+  let parts = s.split('.'), i = parts[0], d = parts[1];
+  const neg = i.charAt(0) === '-';
+  if (neg) i = i.slice(1);
+  if (i.length >= 5) i = i.replace(/\B(?=(\d{3})+(?!\d))/g, ' ');
+  return (neg ? '-' : '') + i + (d ? ',' + d : '');
+}
+function parseNum(s) {
+  s = String(s).replace(/[\s  ]/g, '').replace(',', '.');
+  if (!/^-?\d+(\.\d+)?$/.test(s)) return null;
+  return parseFloat(s);
+}
+function ymd(d) {
+  const p = (n) => (n < 10 ? '0' : '') + n;
+  return d.getFullYear() + '-' + p(d.getMonth() + 1) + '-' + p(d.getDate());
+}
+function currentStreak() {
+  const now = new Date(), y = new Date();
+  y.setDate(y.getDate() - 1);
+  return (S.last === ymd(now) || S.last === ymd(y)) ? S.streak : 0;
+}
+function el(tag, props) {
+  const e = document.createElement(tag);
+  if (props) for (const k in props) {
+    const v = props[k];
+    if (v === false || v == null) continue;
+    if (k === 'class') e.className = v;
+    else if (k.slice(0, 2) === 'on') e.addEventListener(k.slice(2), v);
+    else e.setAttribute(k, v === true ? '' : v);
+  }
+  for (let i = 2; i < arguments.length; i++) {
+    const kids = [].concat(arguments[i]);
+    kids.forEach((c) => { if (c == null || c === false) return; if (typeof c === 'string') e.append(...textNodes(c)); else e.append(c); });
+  }
+  return e;
+}
+
+/* ======================================================================
+   Centek / Сантик — nasz maskotka (oryginalna postać, rysowana kodem)
+   ====================================================================== */
+function mascot(mood, size) {
+  const mouth = mood === 'oops'
+    ? '<path d="M24 43 Q30 38 36 43" fill="none" stroke="#2b2118" stroke-width="2" stroke-linecap="round"/>'
+    : '<path d="M22 39 Q30 48 38 39" fill="none" stroke="#2b2118" stroke-width="2" stroke-linecap="round"/>';
+  const brows = mood === 'oops' ? '<path d="M16 24 L25 27 M44 24 L35 27" stroke="#2b2118" stroke-width="2" stroke-linecap="round"/>' : '';
+  const t = document.createElement('template');
+  t.innerHTML = '<svg class="mascot" width="' + size + '" height="' + size + '" viewBox="0 0 60 60" aria-hidden="true">' +
+    '<path d="M8 24 L13 4 L27 15 Z" fill="#F2A33A"/><path d="M52 24 L47 4 L33 15 Z" fill="#F2A33A"/>' +
+    '<path d="M13 19 L15 10 L21 15 Z" fill="#F4B6C2"/><path d="M47 19 L45 10 L39 15 Z" fill="#F4B6C2"/>' +
+    '<circle cx="30" cy="34" r="22" fill="#F2A33A"/>' +
+    '<path d="M12 50 Q30 62 48 50" fill="none" stroke="#2563eb" stroke-width="5" stroke-linecap="round"/>' +
+    '<path d="M14 51 Q30 61 46 51" fill="none" stroke="#fff" stroke-width="1.5" stroke-dasharray="1 4"/>' +
+    '<ellipse cx="22" cy="32" rx="2.6" ry="3.6" fill="#2b2118"/><ellipse cx="38" cy="32" rx="2.6" ry="3.6" fill="#2b2118"/>' +
+    '<circle cx="22.9" cy="30.8" r="1" fill="#fff"/><circle cx="38.9" cy="30.8" r="1" fill="#fff"/>' +
+    brows +
+    '<path d="M27.5 36.5 H32.5 L30 39.5 Z" fill="#E8798B"/>' + mouth +
+    '<path d="M10 36 L19 37 M10 41 L19 40 M50 36 L41 37 M50 41 L41 40" stroke="#2b2118" stroke-width="1" opacity=".45" stroke-linecap="round"/>' +
+    '</svg>';
+  return t.content.firstChild;
+}
+function say(text, mood, size) {
+  return el('div', { class: 'say' }, mascot(mood || 'happy', size || 44), el('div', { class: 'bubble' }, text));
+}
+
+/* ======================================================================
+   Generatory zadań / Генераторы заданий
+   ====================================================================== */
+function genValue() {
+  const n = pick([rnd(1, 9), rnd(1, 9), rnd(10, 99), rnd(2, 20) * 5, rnd(1, 9) + 0.5, rnd(1, 9) + 0.25]);
+  const sc = pick([1, 1, 1, 10, 100, 0.1, 1000]);
+  return parseFloat((n * sc).toPrecision(8));
+}
+
+function convertTask(topic, f0, t0, used) {
+  const U = topic.units, keys = Object.keys(U);
+  for (let i = 0; i < 3000; i++) {
+    const f = f0 || pick(keys), t = t0 || pick(keys);
+    if (f === t) continue;
+    const r = U[f] / U[t];
+    if (Math.max(r, 1 / r) > 1e6) continue;
+    if (used && used.has(f + '>' + t) && i < 1500) continue;
+    const v = genValue();
+    const ans = clean(v * U[f] / U[t]);
+    if (!nice(ans) || v > (topic.maxV || 1e5)) continue;
+    return { type: 'convert', topic: topic.id, f, t, v, ans, retry: () => convertTask(topic, f, t) };
+  }
+  return convertTask(topic);
+}
+
+function sceneTask(topic, sc) {
+  const U = topic.units, v = pick(sc.vals);
+  return { type: 'convert', topic: topic.id, f: sc.f, t: sc.t, v, ans: clean(v * U[sc.f] / U[sc.t]), scene: sc,
+           retry: () => convertTask(topic, sc.f, sc.t) };
+}
+
+function compareTask(topic, f0, t0) {
+  const U = topic.units, keys = Object.keys(U);
+  for (let i = 0; i < 3000; i++) {
+    const f = f0 || pick(keys), t = t0 || pick(keys);
+    if (f === t) continue;
+    const r = U[f] / U[t];
+    if (Math.max(r, 1 / r) > 1e6) continue;
+    const v = genValue();
+    const eq = clean(v * U[f] / U[t]);
+    const mult = pick([1, 1, 0.9, 1.1, 0.8, 1.2, 0.5, 2, 1.5, 0.75]);
+    const w = clean(eq * mult);
+    if (!nice(eq) || !nice(w) || v > (topic.maxV || 1e5)) continue;
+    const correct = mult === 1 ? 'eq' : (mult > 1 ? 'b' : 'a');
+    const order = Math.random() < 0.5 ? ['a', 'b'] : ['b', 'a'];
+    return { type: 'compare', topic: topic.id, f, t, v, eq, w, correct, order, retry: () => compareTask(topic, f, t) };
+  }
+  return compareTask(topic);
+}
+
+function compoundTask(topic, p) {
+  p = p || pick(topic.compound);
+  const big = p[0], small = p[1], k = p[2];
+  const a = big === 'd' ? rnd(1, 6) : rnd(1, 9);
+  let b;
+  if (k >= 1000) b = rnd(1, 19) * 50;
+  else if (k === 100) b = rnd(1, 19) * 5;
+  else if (k === 60) b = rnd(1, 11) * 5;
+  else b = rnd(1, k - 1);
+  return { type: 'compound', topic: topic.id, big, small, k, a, b, ans: a * k + b, retry: () => compoundTask(topic, p) };
+}
+
+function unitTask(topic, item) {
+  return {
+    type: 'unit', topic: topic.id, item, opts: shuffle(item.opts), correct: item.ans,
+    retry: () => unitTask(topic, pick(topic.items.filter((x) => x !== item)))
+  };
+}
+
+function compose(topic) {
+  const m = topic.mix, tasks = [], used = new Set();
+  const scenes = shuffle(topic.scenes || []);
+  for (let i = 0; i < m.convert; i++) {
+    let t;
+    if (i < (m.scene || 0) && scenes[i]) t = sceneTask(topic, scenes[i]);
+    else t = convertTask(topic, null, null, used);
+    used.add(t.f + '>' + t.t);
+    tasks.push(t);
+  }
+  for (let i = 0; i < m.compound; i++) tasks.push(compoundTask(topic));
+  for (let i = 0; i < m.compare; i++) tasks.push(compareTask(topic));
+  shuffle(topic.items).slice(0, m.unit).forEach((it) => tasks.push(unitTask(topic, it)));
+  return shuffle(tasks);
+}
+
+/* ======================================================================
+   Wyświetlanie zadań / Отображение заданий
+   ====================================================================== */
+function isChoice(t) { return t.type === 'compare' || t.type === 'unit'; }
+
+function choicesOf(t) {
+  if (t.type === 'compare') {
+    return t.order.map((id) => ({ id, text: id === 'a' ? fmt(t.v) + ' ' + ul(t.f) : fmt(t.w) + ' ' + ul(t.t) }))
+      .concat([{ id: 'eq', text: tr('equal') }]);
+  }
+  return t.opts.map((u) => ({ id: u, text: ul(u) }));
+}
+
+function sceneText(t) {
+  return t.scene[S.lang].replace('{q}', fmt(t.v) + ' ' + ul(t.f));
+}
+
+function ruleLines(t) {
+  if (t.type === 'convert') {
+    const U = TOPICS.find((x) => x.id === t.topic).units;
+    const r = U[t.f] / U[t.t];
+    let big, small, k;
+    if (r >= 1) { big = t.f; small = t.t; k = r; } else { big = t.t; small = t.f; k = 1 / r; }
+    k = clean(k);
+    return [
+      '1 ' + ul(big) + ' = ' + fmt(k) + ' ' + ul(small),
+      fmt(t.v) + ' ' + ul(t.f) + ' = ' + fmt(t.v) + ' ' + (r >= 1 ? '·' : ':') + ' ' + fmt(k) + ' = ' + fmt(t.ans) + ' ' + ul(t.t)
+    ];
+  }
+  if (t.type === 'compound') {
+    return [
+      '1 ' + ul(t.big) + ' = ' + fmt(t.k) + ' ' + ul(t.small),
+      t.a + ' ' + ul(t.big) + ' ' + t.b + ' ' + ul(t.small) + ' = ' + t.a + ' · ' + fmt(t.k) + ' + ' + t.b + ' = ' + fmt(t.ans) + ' ' + ul(t.small)
+    ];
+  }
+  if (t.type === 'compare') {
+    const sign = t.eq > t.w ? '>' : (t.eq < t.w ? '<' : '=');
+    return [
+      fmt(t.v) + ' ' + ul(t.f) + ' = ' + fmt(t.eq) + ' ' + ul(t.t),
+      fmt(t.eq) + ' ' + ul(t.t) + ' ' + sign + ' ' + fmt(t.w) + ' ' + ul(t.t)
+    ];
+  }
+  return [];
+}
+
+function rightAnswerText(t) {
+  if (t.type === 'convert') return fmt(t.ans) + ' ' + ul(t.t);
+  if (t.type === 'compound') return fmt(t.ans) + ' ' + ul(t.small);
+  if (t.type === 'compare') return choicesOf(t).find((c) => c.id === t.correct).text;
+  return t.item.n + ' ' + ul(t.item.ans);
+}
+
+/* ======================================================================
+   Przebieg lekcji / Ход урока (z gwiazdkami)
+   ====================================================================== */
+function startLesson(topic) {
+  const q = compose(topic);
+  V = { view: 'lesson', topic, lesson: { queue: q, cur: q.shift(), done: 0, first: 0, stars: 0, phase: 'answer', input: '', sel: null, err: false, ok: false, msgI: 0, starred: false } };
+  render();
+}
+
+function doCheck() {
+  const L = V.lesson, t = L.cur;
+  if (L.phase !== 'answer') return;
+  let ok;
+  if (isChoice(t)) {
+    if (!L.sel) return;
+    ok = L.sel === t.correct;
+  } else {
+    const x = parseNum(L.input || '');
+    if (x === null) { L.err = true; render(); return; }
+    ok = Math.abs(x - t.ans) <= 1e-9 * Math.max(1, Math.abs(t.ans));
+  }
+  L.err = false; L.ok = ok; L.phase = 'feedback'; L.msgI = rnd(0, 4); L.starred = false;
+  if (ok) {
+    L.done++;
+    if (!t.isRetry) { L.first++; L.stars++; L.starred = true; S.stars = (S.stars || 0) + 1; save(); }
+  } else { const r = t.retry(); r.isRetry = true; L.queue.push(r); }
+  render();
+}
+
+function doNext() {
+  const L = V.lesson;
+  if (L.phase !== 'feedback') return;
+  if (!L.queue.length) return finishLesson();
+  L.cur = L.queue.shift(); L.phase = 'answer'; L.input = ''; L.sel = null; L.err = false;
+  render();
+}
+
+function finishLesson() {
+  const topic = V.topic, L = V.lesson, idx = TOPICS.indexOf(topic);
+  const prev = S.best[topic.id] || 0;
+  S.best[topic.id] = Math.max(prev, L.first);
+  const next = TOPICS[idx + 1];
+  const newlyUnlocked = !!(next && prev < PASS && L.first >= PASS && !S.unlockAll);
+  const now = new Date(), y = new Date();
+  y.setDate(y.getDate() - 1);
+  if (S.last !== ymd(now)) { S.streak = (S.last === ymd(y)) ? S.streak + 1 : 1; S.last = ymd(now); }
+  save();
+  V = { view: 'result', topic, score: L.first, earned: L.stars, next: newlyUnlocked ? next : null, passed: L.first >= PASS };
+  render();
+}
+
+/* ======================================================================
+   Tryb nauki / Режим обучения
+   ====================================================================== */
+function startLearn(topic) { V = { view: 'learn', topic, learn: { i: 0 } }; goStep(0); }
+
+function goStep(n) {
+  const steps = LEARN[V.topic.id].steps;
+  V.learn = { i: n, zoom: 0, wrongs: [], ok: false, stage: 0, input: '', err: false, msgI: 0 };
+  if (steps[n].type === 'end') { S.learned = S.learned || {}; S.learned[V.topic.id] = true; save(); }
+  render();
+}
+
+function guidedInfo(st) {
+  const U = V.topic.units;
+  const r = U[st.f] / U[st.t];
+  let big, small, k;
+  if (r >= 1) { big = st.f; small = st.t; k = r; } else { big = st.t; small = st.f; k = 1 / r; }
+  k = clean(k);
+  return { r, big, small, k, ans: clean(st.v * U[st.f] / U[st.t]) };
+}
+
+function stageDef(st, name) {
+  const g = guidedInfo(st), L = S.lang;
+  if (name === 'bigger') return {
+    q: { pl: 'Która jednostka jest większa?', ru: 'Какая единица крупнее?' },
+    opts: [st.f, st.t].map((u) => ({ id: u, text: ul(u) })), correct: g.big,
+    solved: { pl: ul(g.big) + ' jest większa niż ' + ul(g.small), ru: ul(g.big) + ' крупнее, чем ' + ul(g.small) }
+  };
+  if (name === 'direction') return {
+    q: { pl: 'Po zamianie liczba będzie…', ru: 'После перевода число будет…' },
+    opts: [{ id: 'bigger', text: T[L].big }, { id: 'smaller', text: T[L].small }], correct: g.r >= 1 ? 'bigger' : 'smaller',
+    solved: g.r >= 1 ? { pl: 'Liczba rośnie, więc mnożymy', ru: 'Число растёт — умножаем' } : { pl: 'Liczba maleje, więc dzielimy', ru: 'Число уменьшается — делим' }
+  };
+  if (name === 'factor') return {
+    q: { pl: 'Ile ' + ul(g.small) + ' mieści się w 1 ' + ul(g.big) + '?', ru: 'Сколько ' + ul(g.small) + ' в 1 ' + ul(g.big) + '?' },
+    opts: ['10', '100', '1000'].map((x) => ({ id: x, text: x })), correct: String(g.k),
+    solved: { pl: '1 ' + ul(g.big) + ' = ' + fmt(g.k) + ' ' + ul(g.small), ru: '1 ' + ul(g.big) + ' = ' + fmt(g.k) + ' ' + ul(g.small) }
+  };
+  const line = fmt(st.v) + ' ' + ul(st.f) + ' = ' + fmt(g.ans) + ' ' + ul(st.t);
+  return { q: null, correct: g.ans, solved: { pl: line, ru: line },
+           expr: fmt(st.v) + ' ' + (g.r >= 1 ? '·' : ':') + ' ' + fmt(g.k) + ' = ' };
+}
+
+function learnPrimary() {
+  const Lr = V.learn, steps = LEARN[V.topic.id].steps, st = steps[Lr.i];
+  if (st.type === 'info') return goStep(Lr.i + 1);
+  if (st.type === 'check') { if (Lr.ok) goStep(Lr.i + 1); return; }
+  if (st.type === 'guided') {
+    if (Lr.stage >= st.stages.length) return goStep(Lr.i + 1);
+    if (st.stages[Lr.stage] === 'answer') return guidedCheck(st);
+    return;
+  }
+  if (st.type === 'end') startLesson(V.topic);
+}
+
+function guidedCheck(st) {
+  const Lr = V.learn, def = stageDef(st, 'answer');
+  const x = parseNum(Lr.input || '');
+  if (x === null) { Lr.err = true; render(); return; }
+  Lr.err = false;
+  if (Math.abs(x - def.correct) <= 1e-9 * Math.max(1, Math.abs(def.correct))) { Lr.stage++; Lr.wrongs = []; Lr.input = ''; Lr.msgI = rnd(0, 4); }
+  else Lr.wrongs = ['x'];
+  render();
+}
+
+function cheatBlock() {
+  const chain = el('div', { class: 'chain' });
+  ['mm', 'cm', 'dm', 'm', 'km'].forEach((u, i) => {
+    if (i) chain.append(el('span', { class: 'arr', 'aria-hidden': 'true' }, '→'));
+    chain.append(el('span', { class: 'chip' }, ulNode(u)));
+  });
+  return el('div', { class: 'cheat' }, el('div', { class: 'cap' }, tr('cheat')), chain,
+    el('div', { class: 'eqs' }, ['10 mm = 1 cm', '10 cm = 1 dm', '10 dm = 1 m', '1000 m = 1 km'].map((x) => el('div', null, x))));
+}
+
+function zoomBlock() {
+  const Lr = V.learn, z = Lr.zoom, names = ['m', 'dm', 'cm', 'mm'];
+  const crumbs = el('div', { class: 'crumbs' });
+  names.slice(0, z + 1).forEach((n, i) => {
+    if (i) crumbs.append(el('span', { class: 'arr', 'aria-hidden': 'true' }, '→'));
+    crumbs.append(el('span', { class: 'chip' + (i === z ? ' on' : '') }, '1 ', ulNode(n)));
+  });
+  const bar = el('div', { class: 'bar' });
+  if (z === 0) bar.append(el('div', { class: 'seg first one' }, '1 m'));
+  else for (let i = 1; i <= 10; i++) bar.append(el('div', { class: 'seg' + (i === 1 ? ' first' : '') }, String(i)));
+  const facts = [];
+  if (z >= 1) facts.push('1 m = 10 dm');
+  if (z >= 2) facts.push('1 dm = 10 cm  →  1 m = 100 cm');
+  if (z >= 3) facts.push('1 cm = 10 mm  →  1 m = 1000 mm');
+  return el('div', { class: 'zoom' }, crumbs, bar,
+    el('div', { class: 'facts', 'aria-live': 'polite' }, facts.map((f) => el('div', null, f))),
+    el('button', { class: 'btn ghost', onclick: () => { Lr.zoom = z < 3 ? z + 1 : 0; render(); } }, z < 3 ? tr('zoomIn') : tr('zoomReset')));
+}
+
+function renderBlock(b) {
+  const L = S.lang;
+  if (b.t === 'p') return el('p', { class: 'lp' }, b[L]);
+  if (b.t === 'rule') return el('div', { class: 'callout' }, b[L].map((x) => el('div', null, x)));
+  if (b.t === 'anchors') return el('ul', { class: 'anchors' }, ANCHORS.map((a) => el('li', null, el('span', { class: 'chip' }, ulNode(a[0])), el('span', null, a[1][L]))));
+  if (b.t === 'ex') return el('div', { class: 'ex' }, b.rows.map((r) => el('div', { class: 'row' }, el('div', { class: 'l' }, r.line),
+    el('div', { class: 'n' }, typeof r.note === 'string' ? r.note : r.note[L]))));
+  if (b.t === 'zoom') return zoomBlock();
+  if (b.t === 'cheat') return cheatBlock();
+  return null;
+}
+
+function optionButtons(opts, correct, wrongs, ok, onPick, cols) {
+  const grid = el('div', { class: 'choices ' + cols });
+  opts.forEach((o) => {
+    let cls = 'choice';
+    if (ok && o.id === correct) cls += ' right';
+    else if (wrongs.indexOf(o.id) >= 0) cls += ' wrong';
+    grid.append(el('button', { class: cls, disabled: ok, onclick: () => onPick(o.id) }, o.text));
+  });
+  return grid;
+}
+
+/* ======================================================================
+   Gra „Czekoladopad” / Игра «Шоколадопад»  (kosztuje 10 gwiazdek)
+   ====================================================================== */
+function stopGame() {
+  if (G) {
+    cancelAnimationFrame(G.raf);
+    window.removeEventListener('keydown', G.kd);
+    window.removeEventListener('keyup', G.ku);
+    G = null;
+  }
+}
+
+function startGamePlay() {
+  if ((S.stars || 0) < GAME_COST) return;
+  S.stars -= GAME_COST; save();
+  V.game = { phase: 'play', score: 0, kind: V.game.kind || 'catch' };
+  render();
+}
+
+function bestKey(kind) { return kind === 'maze' ? 'mazeBest' : 'gameBest'; }
+function endGame(score) {
+  const kind = V.game.kind || 'catch', k = bestKey(kind);
+  const record = score > (S[k] || 0);
+  if (record) S[k] = score;
+  save();
+  stopGame();
+  V.game = { phase: 'end', score, record, kind };
+  render();
+}
+function openGames() { V = { view: 'game', game: { phase: 'menu' } }; render(); }
+
+function drawCat(ctx, x, y, w) {
+  const r = w * 0.42;
+  ctx.fillStyle = '#F2A33A';
+  ctx.beginPath(); ctx.moveTo(x - r * 0.95, y - r * 0.2); ctx.lineTo(x - r * 0.7, y - r * 1.3); ctx.lineTo(x - r * 0.1, y - r * 0.8); ctx.closePath(); ctx.fill();
+  ctx.beginPath(); ctx.moveTo(x + r * 0.95, y - r * 0.2); ctx.lineTo(x + r * 0.7, y - r * 1.3); ctx.lineTo(x + r * 0.1, y - r * 0.8); ctx.closePath(); ctx.fill();
+  ctx.beginPath(); ctx.arc(x, y, r, 0, Math.PI * 2); ctx.fill();
+  ctx.strokeStyle = '#2563eb'; ctx.lineWidth = r * 0.22; ctx.lineCap = 'round';
+  ctx.beginPath(); ctx.arc(x, y - r * 0.05, r * 0.95, 0.15 * Math.PI, 0.85 * Math.PI); ctx.stroke();
+  ctx.fillStyle = '#2b2118';
+  ctx.beginPath(); ctx.ellipse(x - r * 0.36, y - r * 0.1, r * 0.1, r * 0.15, 0, 0, Math.PI * 2); ctx.fill();
+  ctx.beginPath(); ctx.ellipse(x + r * 0.36, y - r * 0.1, r * 0.1, r * 0.15, 0, 0, Math.PI * 2); ctx.fill();
+  ctx.fillStyle = '#E8798B';
+  ctx.beginPath(); ctx.moveTo(x - r * 0.1, y + r * 0.1); ctx.lineTo(x + r * 0.1, y + r * 0.1); ctx.lineTo(x, y + r * 0.24); ctx.closePath(); ctx.fill();
+  ctx.strokeStyle = '#2b2118'; ctx.lineWidth = 1.6;
+  ctx.beginPath(); ctx.arc(x, y + r * 0.2, r * 0.26, 0.15 * Math.PI, 0.85 * Math.PI); ctx.stroke();
+}
+
+function runGame(cv) {
+  const dark = !!(window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches);
+  const ctx = cv.getContext('2d'), dpr = window.devicePixelRatio || 1;
+  const W = cv.clientWidth || 320, H = cv.clientHeight || 480;
+  cv.width = Math.round(W * dpr); cv.height = Math.round(H * dpr);
+  ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+  const catW = Math.min(88, W * 0.22), catY = H - catW * 0.55;
+  const g = G = { x: W / 2, score: 0, t: GAME_SECS, items: [], spawn: 0.3, last: performance.now(), dir: 0, raf: 0 };
+  const clampX = (x) => Math.max(catW / 2, Math.min(W - catW / 2, x));
+  const setX = (cx) => { g.x = clampX(cx - cv.getBoundingClientRect().left); };
+  cv.addEventListener('pointerdown', (e) => { setX(e.clientX); if (cv.setPointerCapture) cv.setPointerCapture(e.pointerId); });
+  cv.addEventListener('pointermove', (e) => setX(e.clientX));
+  g.kd = (e) => { if (e.key === 'ArrowLeft') g.dir = -1; if (e.key === 'ArrowRight') g.dir = 1; };
+  g.ku = (e) => { if ((e.key === 'ArrowLeft' && g.dir < 0) || (e.key === 'ArrowRight' && g.dir > 0)) g.dir = 0; };
+  window.addEventListener('keydown', g.kd); window.addEventListener('keyup', g.ku);
+  const emoji = { c: '🍫', s: '⭐', b: '🥦' };
+  const font = '"Apple Color Emoji","Segoe UI Emoji","Noto Color Emoji",sans-serif';
+
+  function draw() {
+    ctx.fillStyle = dark ? '#1f2a3a' : '#fef6e4';
+    ctx.fillRect(0, 0, W, H);
+    ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+    ctx.font = '30px ' + font;
+    g.items.forEach((it) => ctx.fillText(emoji[it.kind], it.x, it.y));
+    drawCat(ctx, g.x, catY, catW);
+    ctx.font = '700 17px system-ui,sans-serif';
+    ctx.fillStyle = dark ? '#e8eaee' : '#1f2937';
+    ctx.textAlign = 'left'; ctx.fillText(String(g.score), 14, 22);
+    ctx.textAlign = 'right'; ctx.fillText(String(Math.max(0, Math.ceil(g.t))) + (S.lang === 'ru' ? ' с' : ' s'), W - 14, 22);
+  }
+
+  function frame(now) {
+    const dt = Math.min(0.05, (now - g.last) / 1000); g.last = now; g.t -= dt;
+    g.x = clampX(g.x + g.dir * 440 * dt);
+    g.spawn -= dt;
+    if (g.spawn <= 0) {
+      const r = Math.random();
+      g.items.push({ x: 20 + Math.random() * (W - 40), y: -20, kind: r < 0.6 ? 'c' : (r < 0.75 ? 's' : 'b'), vy: 150 + (GAME_SECS - g.t) * 3 + Math.random() * 60 });
+      g.spawn = 0.5 + Math.random() * 0.4;
+    }
+    g.items.forEach((it) => { it.y += it.vy * dt; });
+    g.items = g.items.filter((it) => {
+      if (it.y > catY - catW * 0.5 && it.y < catY + catW * 0.3 && Math.abs(it.x - g.x) < catW / 2 + 8) {
+        g.score = Math.max(0, g.score + (it.kind === 'c' ? 1 : (it.kind === 's' ? 3 : -2)));
+        return false;
+      }
+      return it.y < H + 30;
+    });
+    draw();
+    if (g.t > 0) g.raf = requestAnimationFrame(frame); else endGame(g.score);
+  }
+  draw();
+  g.raf = requestAnimationFrame(frame);
+}
+
+
+/* ======================================================================
+   Gra „Labirynt Centka” — pikselowy labirynt w stylu retro (kosztuje 10 gwiazdek)
+   Własna plansza i własne postacie: Centek zbiera 🍫, unika brokułów, ⭐ = zjadaj brokuły.
+   ====================================================================== */
+const MAZE = [
+  '###############',
+  '#o.....#.....o#',
+  '#.###.###.###.#',
+  '#.............#',
+  '#.###.#.#.###.#',
+  '#.....#.#.....#',
+  '#####.#.#.#####',
+  '#.............#',
+  '#####.#.#.#####',
+  '#.....#.#.....#',
+  '#.###.#.#.###.#',
+  '#.............#',
+  '#.###.###.###.#',
+  '#o...........o#',
+  '###############'
+];
+const SPR = {
+  cat: ['O......O', 'OO....OO', 'OOOOOOOO', 'OEOOOOEO', 'OOOOPOOO', 'OOOOOOOO', '.OOOOOO.', '.BBBBBB.'],
+  veg: ['..GGGG..', '.GGGGGG.', 'GGDGGDGG', 'GWKGWKGG', 'GGGGGGGG', '.SSSSSS.', '.S.SS.S.', 'SS....SS'],
+  star: ['...YY...', '...YY...', 'YYYYYYYY', '.YYYYYY.', '..YYYY..', '..YY.YY.', '.YY...YY', '.Y.....Y']
+};
+const PAL = { O: '#F2A33A', E: '#2b2118', P: '#E8798B', B: '#2563eb', G: '#3f9d3a', D: '#256b24', W: '#ffffff', K: '#111111', S: '#9ad46b', Y: '#ffd23f' };
+
+function runMaze(cv) {
+  const T = 16, N = 15, OY = 24, ctx = cv.getContext('2d');
+  cv.width = N * T; cv.height = OY + N * T;
+  ctx.imageSmoothingEnabled = false;
+  const g = G = { raf: 0, last: performance.now(), t: 0, score: 0, lives: 3, level: 1, pause: 1.4, over: false,
+                  want: { dx: 0, dy: 0 }, fright: 0, dots: [], left: 0, ghosts: [], p: null };
+  const pass = (c, r) => c >= 0 && c < N && r >= 0 && r < N && MAZE[r][c] !== '#';
+  const DIRS = [[1, 0], [-1, 0], [0, 1], [0, -1]];
+
+  function buildDots() {
+    g.dots = MAZE.map((row) => row.split('').map((ch) => (ch === '.' || ch === 'o') ? ch : ' '));
+    g.dots[13][7] = ' ';
+    g.left = g.dots.reduce((a, row) => a + row.filter((c) => c !== ' ').length, 0);
+  }
+  function resetActors() {
+    g.p = { x: 7, y: 13, dx: 0, dy: 0 };
+    g.want = { dx: 0, dy: 0 };
+    const starts = [[3, 7], [11, 7], [7, 7], [7, 5]];
+    const n = g.level >= 3 ? 4 : 3;
+    g.ghosts = starts.slice(0, n).map((s, i) => ({ x: s[0], y: s[1], hx: s[0], hy: s[1], dx: 0, dy: 0, wait: 0.6 + i * 1.6, bias: [0.8, 0.55, 0.65, 0.7][i] }));
+    g.fright = 0;
+  }
+  buildDots(); resetActors();
+
+  function move(e, dist, pick) {
+    for (let guard = 0; dist > 1e-6 && guard < 8; guard++) {
+      const cx = Math.round(e.x), cy = Math.round(e.y);
+      if (Math.abs(e.x - cx) < 1e-6 && Math.abs(e.y - cy) < 1e-6) {
+        e.x = cx; e.y = cy; pick(e, cx, cy);
+        if (!e.dx && !e.dy) return;
+        if (!pass(cx + e.dx, cy + e.dy)) { e.dx = 0; e.dy = 0; return; }
+      }
+      let d;
+      if (e.dx > 0) d = Math.ceil(e.x - 1e-6) - e.x; else if (e.dx < 0) d = e.x - Math.floor(e.x + 1e-6);
+      else if (e.dy > 0) d = Math.ceil(e.y - 1e-6) - e.y; else d = e.y - Math.floor(e.y + 1e-6);
+      if (d < 1e-6) d = 1;
+      const s = Math.min(dist, d);
+      e.x += e.dx * s; e.y += e.dy * s; dist -= s;
+      if (Math.abs(s - d) < 1e-9) { e.x = Math.round(e.x); e.y = Math.round(e.y); }
+    }
+  }
+  function eat(c, r) {
+    const ch = g.dots[r][c];
+    if (ch === ' ') return;
+    g.dots[r][c] = ' '; g.left--;
+    if (ch === 'o') { g.score += 5; g.fright = Math.max(3.5, 6.5 - 0.4 * g.level); } else g.score += 1;
+  }
+  function pPick(e, cx, cy) {
+    eat(cx, cy);
+    const w = g.want;
+    if ((w.dx || w.dy) && pass(cx + w.dx, cy + w.dy)) { e.dx = w.dx; e.dy = w.dy; }
+  }
+  function gPick(e, cx, cy) {
+    let opts = DIRS.filter((d) => pass(cx + d[0], cy + d[1]) && !(d[0] === -e.dx && d[1] === -e.dy));
+    if (!opts.length) opts = DIRS.filter((d) => pass(cx + d[0], cy + d[1]));
+    let d;
+    if (g.fright <= 0 && Math.random() < e.bias) {
+      let best = 1e9;
+      opts.forEach((o) => { const dd = Math.abs(cx + o[0] - g.p.x) + Math.abs(cy + o[1] - g.p.y); if (dd < best) { best = dd; d = o; } });
+    } else d = opts[rnd(0, opts.length - 1)];
+    e.dx = d[0]; e.dy = d[1];
+  }
+  function loseLife() {
+    g.lives--;
+    if (g.lives <= 0) { g.over = true; g.pause = 1; return; }
+    resetActors(); g.pause = 1.1;
+  }
+
+  function update(dt) {
+    const pv = Math.min(6.2, 5 + 0.2 * g.level), gv = Math.min(5.6, 3.8 + 0.35 * g.level);
+    g.fright = Math.max(0, g.fright - dt);
+    const p = g.p, w = g.want;
+    if ((w.dx || w.dy) && w.dx === -p.dx && w.dy === -p.dy) { p.dx = w.dx; p.dy = w.dy; }
+    move(p, pv * dt, pPick);
+    g.ghosts.forEach((e) => {
+      if (e.wait > 0) { e.wait -= dt; return; }
+      move(e, gv * (g.fright > 0 ? 0.6 : 1) * dt, gPick);
+    });
+    for (const e of g.ghosts) {
+      if (e.wait > 0) continue;
+      if (Math.abs(e.x - p.x) + Math.abs(e.y - p.y) < 0.8) {
+        if (g.fright > 0) { g.score += 20; e.x = e.hx; e.y = e.hy; e.dx = e.dy = 0; e.wait = 3; }
+        else { loseLife(); return; }
+      }
+    }
+    if (g.left <= 0) { g.score += 50; g.level++; buildDots(); resetActors(); g.pause = 1.4; }
+  }
+
+  function spr(rows, x, y, pal) {
+    for (let r = 0; r < 8; r++) for (let c = 0; c < 8; c++) {
+      const ch = rows[r][c]; if (ch === '.') continue;
+      ctx.fillStyle = pal ? (pal[ch] || PAL[ch]) : PAL[ch];
+      ctx.fillRect(Math.round(x) + c * 2, Math.round(y) + r * 2, 2, 2);
+    }
+  }
+  function draw() {
+    ctx.fillStyle = '#0b1020'; ctx.fillRect(0, 0, cv.width, cv.height);
+    for (let r = 0; r < N; r++) for (let c = 0; c < N; c++) {
+      const x = c * T, y = OY + r * T;
+      if (MAZE[r][c] === '#') { ctx.fillStyle = '#2f5be0'; ctx.fillRect(x, y, T, T); ctx.fillStyle = '#16318f'; ctx.fillRect(x + 3, y + 3, T - 6, T - 6); }
+      else if (g.dots[r][c] === '.') { ctx.fillStyle = '#8b5a2b'; ctx.fillRect(x + 6, y + 6, 4, 4); ctx.fillStyle = '#c98f4f'; ctx.fillRect(x + 6, y + 6, 2, 2); }
+      else if (g.dots[r][c] === 'o' && Math.floor(g.t * 4) % 2 === 0) spr(SPR.star, x, y);
+    }
+    g.ghosts.forEach((e) => {
+      const fr = g.fright > 0, flash = fr && g.fright < 2 && Math.floor(g.t * 6) % 2 === 0;
+      const pal = fr ? { G: flash ? '#ffffff' : '#3b82f6', D: flash ? '#cbd5e1' : '#1d4ed8', S: flash ? '#e2e8f0' : '#93c5fd' } : null;
+      spr(SPR.veg, e.x * T, OY + e.y * T, pal);
+    });
+    spr(SPR.cat, g.p.x * T, OY + g.p.y * T);
+    ctx.font = 'bold 12px monospace'; ctx.textBaseline = 'middle';
+    ctx.fillStyle = '#ffffff'; ctx.textAlign = 'left'; ctx.fillText(String(g.score), 6, 12);
+    ctx.textAlign = 'center'; ctx.fillStyle = '#9db4ff'; ctx.fillText(tr('mazeLevel')(g.level), cv.width / 2, 12);
+    ctx.textAlign = 'right'; ctx.fillStyle = '#ff6b8b'; ctx.fillText('♥'.repeat(Math.max(0, g.lives)), cv.width - 6, 12);
+    if (g.pause > 0 && !g.over) {
+      ctx.fillStyle = 'rgba(11,16,32,.55)'; ctx.fillRect(0, OY + 6 * T, cv.width, 3 * T);
+      ctx.fillStyle = '#ffd23f'; ctx.textAlign = 'center'; ctx.font = 'bold 16px monospace';
+      ctx.fillText(tr('mazeLevel')(g.level), cv.width / 2, OY + 7.5 * T);
+    }
+  }
+  const setW = (dx, dy) => { g.want.dx = dx; g.want.dy = dy; };
+  g.setW = setW;
+  g.kd = (e) => {
+    const m = { ArrowLeft: [-1, 0], ArrowRight: [1, 0], ArrowUp: [0, -1], ArrowDown: [0, 1], a: [-1, 0], d: [1, 0], w: [0, -1], s: [0, 1] }[e.key];
+    if (m) { e.preventDefault(); setW(m[0], m[1]); }
+  };
+  g.ku = () => {};
+  window.addEventListener('keydown', g.kd);
+  let sx = 0, sy = 0, down = false;
+  cv.addEventListener('pointerdown', (e) => { down = true; sx = e.clientX; sy = e.clientY; if (cv.setPointerCapture) cv.setPointerCapture(e.pointerId); });
+  cv.addEventListener('pointermove', (e) => {
+    if (!down) return;
+    const dx = e.clientX - sx, dy = e.clientY - sy;
+    if (Math.max(Math.abs(dx), Math.abs(dy)) < 14) return;
+    if (Math.abs(dx) > Math.abs(dy)) setW(dx > 0 ? 1 : -1, 0); else setW(0, dy > 0 ? 1 : -1);
+    sx = e.clientX; sy = e.clientY;
+  });
+  cv.addEventListener('pointerup', () => { down = false; });
+
+  function frame(now) {
+    const dt = Math.min(0.05, (now - g.last) / 1000); g.last = now; g.t += dt;
+    if (g.pause > 0) { g.pause -= dt; if (g.pause <= 0 && g.over) { endGame(g.score); return; } }
+    else update(dt);
+    draw();
+    g.raf = requestAnimationFrame(frame);
+  }
+  draw();
+  g.raf = requestAnimationFrame(frame);
+}
+
+function renderGame() {
+  const gm = V.game, have = S.stars || 0, kind = gm.kind || 'catch';
+  const gname = kind === 'maze' ? tr('mazeName') : tr('gameName');
+  const toHome = () => { V = { view: 'home' }; render(); };
+  const bar = el('div', { class: 'lbar' },
+    el('button', { class: 'x', 'aria-label': tr('close'), onclick: toHome }, '×'),
+    el('div', { style: 'flex:1;font-weight:700' }, gm.phase === 'menu' ? tr('starsTitle') : gname),
+    el('span', { class: 'starchip' }, '★ ' + have));
+  const main = el('main', { class: 'gwrap' });
+  let actions = null;
+  const pickBtn = (k, name, best) => el('button', {
+    class: 'btn', disabled: have < GAME_COST,
+    onclick: () => { V.game = { phase: 'intro', kind: k }; render(); }
+  }, name, el('small', null, tr('bestOf') + ': ' + (best || 0)));
+  if (gm.phase === 'menu') {
+    main.append(say(tr('chooseGame'), 'happy', 56), el('p', { class: 'lp' }, tr('gameHave')(have)),
+      el('div', { class: 'gpick' }, pickBtn('maze', tr('mazeName'), S.mazeBest), pickBtn('catch', tr('gameName'), S.gameBest)));
+  } else if (gm.phase === 'intro') {
+    main.append(say(kind === 'maze' ? tr('mazeRules') : tr('gameRules'), 'happy', 56), el('p', { class: 'lp' }, tr('gameHave')(have)));
+    actions = el('footer', { class: 'actions' },
+      el('button', { class: 'btn', disabled: have < GAME_COST, onclick: startGamePlay }, tr('gameStart') + ' (−' + GAME_COST + ' ★)'));
+  } else if (gm.phase === 'play') {
+    main.append(el('canvas', { id: 'gcanvas', class: kind === 'maze' ? 'pix' : '', 'aria-label': gname, tabindex: '0' }));
+    if (kind === 'maze') {
+      const dp = (label, dx, dy, area) => el('button', { 'aria-label': label, style: 'grid-area:' + area, onpointerdown: (e) => { e.preventDefault(); if (G && G.setW) G.setW(dx, dy); } }, label);
+      main.append(el('div', { class: 'dpad' }, dp('▲', 0, -1, '1 / 2'), dp('◀', -1, 0, '2 / 1'), dp('▼', 0, 1, '2 / 2'), dp('▶', 1, 0, '2 / 3')));
+    }
+  } else {
+    main.append(say(gm.record ? tr('gameRecord') : tr('gameNice'), 'happy', 56),
+      el('h2', null, tr('gameOver')),
+      el('div', { class: 'score', style: 'font-size:3rem;font-weight:700;line-height:1' }, tr('gameScore')(gm.score)),
+      el('p', { class: 'lp' }, tr('gameBest')(S[bestKey(kind)] || 0)));
+    actions = el('footer', { class: 'actions' },
+      have >= GAME_COST
+        ? el('button', { class: 'btn', onclick: () => { V.game = { phase: 'intro', kind }; render(); } }, tr('playAgain') + ' (−' + GAME_COST + ' ★)')
+        : el('p', { class: 'lp', style: 'margin:0 0 10px' }, tr('needStars')(GAME_COST - have)),
+      have >= GAME_COST && el('button', { class: 'btn ghost btn2', onclick: openGames }, tr('playGame')),
+      el('button', { class: 'btn ghost btn2', onclick: toHome }, tr('toTopics')));
+  }
+  return [bar, main, actions];
+}
+
+/* ======================================================================
+   Widoki / Экраны
+   ====================================================================== */
+function langToggle() {
+  return el('div', { class: 'lang', role: 'group', 'aria-label': tr('langAria') },
+    ['pl', 'ru'].map((l) => el('button', {
+      class: S.lang === l ? 'on' : '', 'aria-pressed': S.lang === l ? 'true' : 'false',
+      onclick: () => { S.lang = l; save(); document.documentElement.lang = l; render(); }
+    }, l.toUpperCase())));
+}
+
+function starsCard() {
+  const have = S.stars || 0, ready = have >= GAME_COST;
+  const row = el('div', { class: 'starrow', 'aria-hidden': 'true' });
+  for (let i = 0; i < GAME_COST; i++) row.append(el('span', { class: i < Math.min(have, GAME_COST) ? 'on' : '' }, '★'));
+  return el('section', { class: 'stars', 'aria-label': tr('starsTitle') },
+    el('div', { class: 'rowt' }, el('span', { class: 'big' }, '★ ' + have), el('span', { class: 'sub' }, ready ? tr('starsReady') : tr('starsHint')(GAME_COST - have))),
+    row,
+    ready && el('button', { class: 'btn', onclick: openGames }, tr('playGame')));
+}
+
+function renderHome() {
+  const list = el('ul', { class: 'list' });
+  TOPICS.forEach((tp, i) => {
+    const unlocked = S.unlockAll || i === 0 || (S.best[TOPICS[i - 1].id] || 0) >= PASS;
+    const b = S.best[tp.id];
+    const done = b >= PASS;
+    const sub = !unlocked ? tr('locked')
+      : (b == null ? tr('notDone') + ' · ' : tr('best') + ': ' + b + '/' + LESSON_LEN + ' · ') + Object.keys(tp.units).map(ul).join(' · ');
+    list.append(el('li', null,
+      el('button', { class: 'topic' + (done ? ' done' : ''), disabled: !unlocked, onclick: () => startLesson(tp) },
+        el('span', { class: 'num', 'aria-hidden': 'true' }, done ? '✓' : String(i + 1)),
+        el('span', null, el('div', { class: 't' }, tp.name[S.lang]), el('div', { class: 's' }, sub))),
+      (unlocked && LEARN[tp.id]) && el('button', { class: 'learn-btn', onclick: () => startLearn(tp) },
+        tr('learn') + (S.learned && S.learned[tp.id] ? ' ✓' : ''))));
+  });
+  const n = currentStreak();
+  const foot = el('div', { class: 'foot' },
+    el('button', { class: 'link', onclick: () => { S.unlockAll = true; save(); render(); } }, tr('unlockAll')),
+    el('button', {
+      class: 'link', onclick: () => {
+        if (!confirmReset) { confirmReset = true; render(); setTimeout(() => { confirmReset = false; if (V.view === 'home') render(); }, 4000); return; }
+        confirmReset = false; S = defaults(); save(); document.documentElement.lang = S.lang; render();
+      }
+    }, confirmReset ? tr('sure') : tr('reset')));
+  return [
+    el('header', { class: 'top' }, el('div', { class: 'brand' }, el('h1', null, tr('title')), el('p', null, tr('subtitle'))), langToggle()),
+    el('div', { class: 'hello' }, say(tr('hello'), 'happy', 56)),
+    starsCard(),
+    el('div', { class: 'chips' }, n ? tr('streakN')(n) : tr('streak0')),
+    list, foot
+  ];
+}
+
+function renderLesson() {
+  const L = V.lesson, t = L.cur;
+  const fb = L.phase === 'feedback';
+  const bar = el('div', { class: 'lbar' },
+    el('button', { class: 'x', 'aria-label': tr('close'), onclick: () => { V = { view: 'home' }; render(); } }, '×'),
+    el('div', { class: 'prog', role: 'progressbar', 'aria-valuemin': '0', 'aria-valuemax': String(LESSON_LEN), 'aria-valuenow': String(L.done) },
+      el('div', { class: 'fill', style: 'width:' + (L.done / LESSON_LEN * 100) + '%' })),
+    el('span', { class: 'starchip', 'aria-label': tr('starsTitle') }, '★ ' + (S.stars || 0)),
+    langToggle());
+
+  const card = el('main', { class: 'qcard' });
+  let input = null;
+
+  if (t.type === 'convert' || t.type === 'compound') {
+    const lhs = t.type === 'convert'
+      ? fmt(t.v) + ' ' + ul(t.f)
+      : t.a + ' ' + ul(t.big) + ' ' + t.b + ' ' + ul(t.small);
+    const unit = t.type === 'convert' ? ul(t.t) : ul(t.small);
+    input = el('input', {
+      type: 'text', inputmode: 'decimal', autocomplete: 'off', autocapitalize: 'off', spellcheck: 'false',
+      'aria-label': tr('answerAria'), value: L.input || '', readonly: fb, class: fb ? (L.ok ? 'ok' : 'bad') : '',
+      oninput: (e) => { L.input = e.target.value; const b = document.getElementById('checkBtn'); if (b) b.disabled = !L.input.trim(); }
+    });
+    card.append(
+      t.scene ? el('p', { class: 'prompt scene' }, sceneText(t)) : el('p', { class: 'prompt' }, tr('qConvert')),
+      el('div', { class: 'expr' }, el('span', null, lhs), el('span', { class: 'eq' }, '='), input, el('span', { class: 'u' }, unit)));
+    if (L.err) card.append(el('p', { class: 'err', role: 'alert' }, tr('enterNumber')));
+  } else {
+    const ch = choicesOf(t);
+    if (t.type === 'unit') {
+      const it = t.item;
+      card.append(
+        el('p', { class: 'prompt' }, tr('qUnit')),
+        el('div', { class: 'sentence' }, it[S.lang] + ' ', el('b', null, it.n), ' ',
+          el('span', { class: 'blank' }, fb ? ul(t.correct) : ' ')));
+    } else {
+      card.append(el('p', { class: 'prompt' }, tr('qCompare')));
+    }
+    const grid = el('div', { class: 'choices' + (t.type === 'unit' ? ' two' : '') });
+    ch.forEach((c) => {
+      let cls = 'choice';
+      if (fb) { if (c.id === t.correct) cls += ' right'; else if (c.id === L.sel) cls += ' wrong'; }
+      else if (c.id === L.sel) cls += ' sel';
+      grid.append(el('button', {
+        class: cls, disabled: fb, 'aria-pressed': c.id === L.sel ? 'true' : 'false',
+        onclick: () => { L.sel = c.id; render(); }
+      }, c.text));
+    });
+    card.append(grid);
+  }
+
+  let actions;
+  if (!fb) {
+    const disabled = isChoice(t) ? !L.sel : !(L.input || '').trim();
+    actions = el('footer', { class: 'actions' }, el('button', { id: 'checkBtn', class: 'btn', disabled, onclick: doCheck }, tr('check')));
+  } else {
+    const kind = L.ok ? (t.isRetry ? 'retryMsgs' : 'okMsgs') : 'badMsgs';
+    const msgs = tr(kind), msg = msgs[L.msgI % msgs.length];
+    const rules = ruleLines(t);
+    actions = el('footer', { class: 'actions ' + (L.ok ? 'ok' : 'bad'), 'aria-live': 'polite' },
+      el('div', { class: 'fbrow' },
+        mascot(L.ok ? 'happy' : 'oops', 44),
+        el('div', { class: 'fb' },
+          el('div', { class: 'h' }, msg),
+          L.starred && el('span', { class: 'pill' }, tr('gained')(1)),
+          !L.ok && el('div', { class: 'd' }, tr('rightAnswer') + ' ', el('b', null, rightAnswerText(t))),
+          rules.length > 0 && el('div', { class: 'rule' }, rules.map((r) => el('div', null, r))),
+          !L.ok && el('div', { class: 'rule' }, tr('retryNote')))),
+      el('button', { id: 'nextBtn', class: 'btn', onclick: doNext }, tr('next')));
+  }
+  return { nodes: [bar, card, actions], input };
+}
+
+function renderLearn() {
+  const Lr = V.learn, steps = LEARN[V.topic.id].steps, st = steps[Lr.i], L = S.lang;
+  const bar = el('div', { class: 'lbar' },
+    el('button', { class: 'x', 'aria-label': tr('close'), onclick: () => { V = { view: 'home' }; render(); } }, '×'),
+    el('div', { class: 'prog', role: 'progressbar', 'aria-valuemin': '0', 'aria-valuemax': String(steps.length - 1), 'aria-valuenow': String(Lr.i) },
+      el('div', { class: 'fill', style: 'width:' + (Lr.i / (steps.length - 1) * 100) + '%' })),
+    langToggle());
+  const main = el('main', { class: 'learn' });
+  let actions = null, input = null;
+  const next = (label) => el('button', { id: 'nextBtn', class: 'btn', onclick: () => goStep(Lr.i + 1) }, label || tr('next'));
+  const cheer = () => { const m = tr('okMsgs'); return m[Lr.msgI % m.length]; };
+
+  if (st.type === 'info') {
+    main.append(el('h2', null, st.title[L]), st.hi && say(st.hi[L], 'happy', 48), ...st.blocks.map(renderBlock));
+    actions = el('footer', { class: 'actions' }, next());
+  } else if (st.type === 'check') {
+    main.append(el('div', { class: 'q' }, st.q[L]),
+      optionButtons(st.opts.map((x) => ({ id: x, text: fmt(parseNum(x)) })), st.correct, Lr.wrongs, Lr.ok,
+        (id) => { if (id === st.correct) { Lr.ok = true; Lr.msgI = rnd(0, 4); } else Lr.wrongs.push(id); render(); }, 'three'));
+    if (Lr.wrongs.length && !Lr.ok) main.append(el('div', { class: 'hintbox', role: 'alert' }, tr('tryAgain') + '. ' + st.hint[L]));
+    if (Lr.ok) actions = el('footer', { class: 'actions ok', 'aria-live': 'polite' },
+      el('div', { class: 'fbrow' }, mascot('happy', 44), el('div', { class: 'fb' }, el('div', { class: 'h' }, cheer()), el('div', { class: 'd' }, st.why[L]))), next());
+  } else if (st.type === 'guided') {
+    main.append(el('h2', null, tr('together')), el('p', { class: 'lp' }, st.scene[L]),
+      el('div', { class: 'task' }, fmt(st.v) + ' ' + ul(st.f) + ' = ? ' + ul(st.t)));
+    for (let i = 0; i < Lr.stage; i++) main.append(el('div', { class: 'solved' }, '✓ ' + stageDef(st, st.stages[i]).solved[L]));
+    if (Lr.stage < st.stages.length) {
+      const name = st.stages[Lr.stage], def = stageDef(st, name);
+      if (name === 'answer') {
+        input = el('input', { type: 'text', inputmode: 'decimal', autocomplete: 'off', autocapitalize: 'off', spellcheck: 'false',
+          'aria-label': tr('answerAria'), value: Lr.input || '',
+          oninput: (e) => { Lr.input = e.target.value; const b = document.getElementById('checkBtn'); if (b) b.disabled = !Lr.input.trim(); } });
+        main.append(el('div', { class: 'expr' }, el('span', null, def.expr), input, el('span', { class: 'u' }, ul(st.t))));
+        if (Lr.err) main.append(el('p', { class: 'err', role: 'alert' }, tr('enterNumber')));
+        actions = el('footer', { class: 'actions' }, el('button', { id: 'checkBtn', class: 'btn', disabled: !(Lr.input || '').trim(), onclick: () => guidedCheck(st) }, tr('check')));
+      } else {
+        main.append(el('div', { class: 'q' }, def.q[L]),
+          optionButtons(def.opts, def.correct, Lr.wrongs, false,
+            (id) => { if (id === def.correct) { Lr.stage++; Lr.wrongs = []; } else Lr.wrongs.push(id); render(); },
+            def.opts.length === 3 ? 'three' : 'two'));
+      }
+      if (Lr.wrongs.length) main.append(el('div', { class: 'hintbox', role: 'alert' }, tr('tryAgain') + '. ' + HINT[name][L]));
+      main.append(cheatBlock());
+    } else {
+      actions = el('footer', { class: 'actions ok', 'aria-live': 'polite' },
+        el('div', { class: 'fbrow' }, mascot('happy', 44), el('div', { class: 'fb' }, el('div', { class: 'h' }, cheer()))), next());
+    }
+  } else {
+    main.append(el('h2', null, st.title[L]), st.hi && say(st.hi[L], 'happy', 56), el('p', { class: 'lp' }, st.text[L]));
+    actions = el('footer', { class: 'actions' },
+      el('button', { class: 'btn', onclick: () => startLesson(V.topic) }, tr('startPractice')),
+      el('button', { class: 'btn ghost btn2', onclick: () => { V = { view: 'home' }; render(); } }, tr('toTopics')));
+  }
+  return { nodes: [bar, main, actions], input };
+}
+
+function resultMessage(score) {
+  const base = score === 10 ? tr('res10') : score >= 8 ? tr('res8') : score === 7 ? tr('res7') : score >= 4 ? tr('res4') : tr('res0');
+  return (score === 6 || score === 7) ? base + ' ' + tr('meme67') : base;
+}
+
+function renderResult() {
+  const tp = V.topic, have = S.stars || 0;
+  const gap = el('div', { class: 'gap' },
+    have >= GAME_COST && el('button', { class: 'btn', onclick: openGames }, tr('playGame')),
+    el('button', { class: have >= GAME_COST ? 'btn ghost' : 'btn', onclick: () => { V = { view: 'home' }; render(); } }, tr('toTopics')),
+    el('button', { class: 'btn ghost', onclick: () => startLesson(tp) }, tr('replay')));
+  return el('main', { class: 'result' },
+    say(resultMessage(V.score), V.score >= 7 ? 'happy' : 'oops', 56),
+    el('h2', null, tr('done')),
+    el('div', { class: 'score' }, V.score + '/' + LESSON_LEN),
+    el('p', null, tr('firstTry')),
+    el('p', { style: 'color:var(--gold-ink);font-weight:700' }, tr('gained')(V.earned) + ' · ★ ' + have),
+    V.next ? el('p', null, tr('unlocked') + ' ', el('b', null, V.next.name[S.lang]))
+      : (!V.passed && el('p', null, tr('needMore'))),
+    gap);
+}
+
+function render() {
+  stopGame();
+  const app = document.getElementById('app');
+  app.textContent = '';
+  document.documentElement.lang = S.lang;
+  let focusEl = null;
+  if (V.view === 'home') renderHome().forEach((n) => app.append(n));
+  else if (V.view === 'lesson') {
+    const r = renderLesson();
+    r.nodes.forEach((n) => app.append(n));
+    focusEl = V.lesson.phase === 'answer' ? r.input : null;
+  } else if (V.view === 'learn') {
+    const r = renderLearn();
+    r.nodes.forEach((n) => { if (n) app.append(n); });
+    focusEl = r.input;
+  } else if (V.view === 'game') {
+    renderGame().forEach((n) => { if (n) app.append(n); });
+  } else app.append(renderResult());
+  window.scrollTo(0, 0);
+  if (focusEl) focusEl.focus();
+  if (V.view === 'game' && V.game.phase === 'play') (V.game.kind === 'maze' ? runMaze : runGame)(document.getElementById('gcanvas'));
+}
+
+document.addEventListener('keydown', (e) => {
+  if (e.repeat) return;
+  if (V.view === 'learn' && e.key === 'Enter') { e.preventDefault(); learnPrimary(); return; }
+  if (V.view === 'game' && e.key === 'Enter' && V.game.phase === 'intro') { e.preventDefault(); startGamePlay(); return; }
+  if (V.view !== 'lesson') return;
+  const L = V.lesson;
+  if (e.key === 'Enter') { e.preventDefault(); if (L.phase === 'answer') doCheck(); else doNext(); return; }
+  if (L.phase === 'answer' && isChoice(L.cur) && /^[1-4]$/.test(e.key)) {
+    const c = choicesOf(L.cur)[Number(e.key) - 1];
+    if (c) { L.sel = c.id; render(); }
+  }
+});
+
+render();
+</script>
+</body>
+</html>
