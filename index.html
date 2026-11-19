@@ -428,11 +428,11 @@ const HINT = {
 const LEARN = {
   length: {
     anchors: [
-      ['mm', { pl: 'grubość telefonu ≈ 8 mm', ru: 'толщина телефона ≈ 8 mm' }],
-      ['cm', { pl: 'długość telefonu ≈ 15 cm', ru: 'длина телефона ≈ 15 cm' }],
-      ['dm', { pl: 'szerokość Twojej dłoni ≈ 1 dm (zmierz linijką!)', ru: 'ширина твоей ладони ≈ 1 dm (проверь линейкой!)' }],
-      ['m', { pl: 'jeden blok w Minecrafcie = 1 m, drzwi ≈ 2 m', ru: 'один блок в Minecraft = 1 m, дверь ≈ 2 m' }],
-      ['km', { pl: 'spacer w 12–15 minut ≈ 1 km', ru: 'идти 12–15 минут пешком ≈ 1 km' }]
+      ['mm', { pl: 'grubość telefonu ≈ 8 milimetrów', ru: 'толщина телефона ≈ 8 миллиметров' }],
+      ['cm', { pl: 'długość telefonu ≈ 15 centymetrów', ru: 'длина телефона ≈ 15 сантиметров' }],
+      ['dm', { pl: 'szerokość Twojej dłoni ≈ 1 decymetr (zmierz linijką!)', ru: 'ширина твоей ладони ≈ 1 дециметр (проверь линейкой!)' }],
+      ['m', { pl: 'jeden blok w Minecrafcie = 1 metr, drzwi ≈ 2 metry', ru: 'один блок в Minecraft = 1 метр, дверь ≈ 2 метра' }],
+      ['km', { pl: 'spacer w 12–15 minut ≈ 1 kilometr', ru: 'идти 12–15 минут пешком ≈ 1 километр' }]
     ],
     chain: ['mm', 'cm', 'dm', 'm', 'km'],
     eqs: ['10 mm = 1 cm', '10 cm = 1 dm', '10 dm = 1 m', '1000 m = 1 km'],
@@ -446,8 +446,8 @@ const LEARN = {
         title: { pl: 'Linijki na każdą okazję', ru: 'Линейки на любой случай' },
         hi: { pl: 'Cześć! Jestem Centek. Pokażę Ci, jak mierzyć wszystko — od telefonu po drogę do szkoły.', ru: 'Привет! Я Сантик. Покажу, как измерять всё — от телефона до дороги в школу.' },
         blocks: [
-          { t: 'p', pl: 'Każda jednostka jest od czegoś innego. Wystarczy zapamiętać po jednym przykładzie — i od razu poczujesz, czy wynik ma sens. Zmierz swoją dłoń linijką: to Twój własny 1 dm!',
-            ru: 'Каждая единица — для своего дела. Достаточно запомнить по одному примеру — и ты сразу почувствуешь, разумный ли получился ответ. Измерь свою ладонь линейкой: это твой личный 1 dm!' },
+          { t: 'p', pl: 'Każda jednostka jest od czegoś innego. Wystarczy zapamiętać po jednym przykładzie — i od razu poczujesz, czy wynik ma sens. Zmierz swoją dłoń linijką: to Twój własny 1 decymetr!',
+            ru: 'Каждая единица — для своего дела. Достаточно запомнить по одному примеру — и ты сразу почувствуешь, разумный ли получился ответ. Измерь свою ладонь линейкой: это твой личный 1 дециметр!' },
           { t: 'anchors' }
         ] },
       { type: 'info',
@@ -460,12 +460,12 @@ const LEARN = {
           { t: 'cheat' }
         ] },
       { type: 'check',
-        q: { pl: 'Metrową czekoladę kroisz na kawałki po 1 cm. Ile kawałków wyjdzie?', ru: 'Метровую шоколадку режем на кусочки по 1 cm. Сколько получится кусочков?' },
+        q: { pl: 'Metrową czekoladę kroisz na kawałki po 1 centymetrze. Ile kawałków wyjdzie?', ru: 'Метровую шоколадку режем на кусочки по 1 сантиметру. Сколько получится кусочков?' },
         opts: ['10', '100', '1000'], correct: '100',
-        hint: { pl: 'Podpowiedź: metr dzieli się na 10 dm, a każdy decymetr na 10 cm.', ru: 'Подсказка: метр делится на 10 dm, а каждый дециметр — на 10 cm.' },
+        hint: { pl: 'Podpowiedź: metr dzieli się na 10 decymetrów, a każdy decymetr na 10 centymetrów.', ru: 'Подсказка: метр делится на 10 дециметров, а каждый дециметр — на 10 сантиметров.' },
         why: { pl: '1 m = 10 dm, a 1 dm = 10 cm, więc 1 m = 10 · 10 = 100 cm.', ru: '1 m = 10 dm, а 1 dm = 10 cm, значит 1 m = 10 · 10 = 100 cm.' } },
       { type: 'check',
-        q: { pl: 'Do szkoły masz 1 km. Ile to metrów?', ru: 'До школы 1 km. Сколько это метров?' },
+        q: { pl: 'Do szkoły masz 1 kilometr. Ile to metrów?', ru: 'До школы 1 километр. Сколько это метров?' },
         opts: ['100', '1000', '10000'], correct: '1000',
         hint: { pl: 'Podpowiedź: kilo- oznacza „tysiąc”.', ru: 'Подсказка: «кило» значит «тысяча».' },
         why: { pl: '1 km = 1000 m, bo kilo- to tysiąc.', ru: '1 km = 1000 m, потому что «кило» — это тысяча.' } },
@@ -473,8 +473,8 @@ const LEARN = {
         title: { pl: 'Mnożyć czy dzielić? Prosty trik', ru: 'Умножать или делить? Простой трюк' },
         hi: { pl: 'Tu najczęściej wszyscy się mylą. Ale mam na to trik!', ru: 'Тут чаще всего все путаются. Но у меня есть трюк!' },
         blocks: [
-          { t: 'p', pl: 'Telefon ma 15 cm. Zmierz go centymetrem — mieści się 15 razy. Zmierz milimetrem — aż 150 razy! Im mniejsza miarka, tym więcej jej potrzeba.',
-            ru: 'Телефон длиной 15 cm. Меряем сантиметром — получаем 15. Меряем миллиметром — целых 150! Чем мельче мерка, тем больше таких мерок нужно.' },
+          { t: 'p', pl: 'Telefon ma 15 centymetrów. Zmierz go centymetrem — mieści się 15 razy. Zmierz milimetrem — aż 150 razy! Im mniejsza miarka, tym więcej jej potrzeba.',
+            ru: 'Телефон длиной 15 сантиметров. Меряем сантиметром — получаем 15. Меряем миллиметром — целых 150! Чем мельче мерка, тем больше таких мерок нужно.' },
           { t: 'rule', pl: ['Z większej jednostki na mniejszą → liczba rośnie → mnożymy.', 'Z mniejszej na większą → liczba maleje → dzielimy.'],
             ru: ['Из крупной единицы в мелкую → число растёт → умножаем.', 'Из мелкой в крупную → число уменьшается → делим.'] },
           { t: 'ex', rows: [
@@ -488,9 +488,9 @@ const LEARN = {
           { t: 'cheat' }
         ] },
       { type: 'guided', f: 'km', t: 'm', v: 2.4, stages: ['bigger', 'direction', 'factor', 'answer'],
-        scene: { pl: 'Do szkoły masz 2,4 km. Ile to metrów?', ru: 'До школы 2,4 km. Сколько это метров?' } },
+        scene: { pl: 'Do szkoły masz 2,4 kilometra. Ile to metrów?', ru: 'До школы 2,4 километра. Сколько это метров?' } },
       { type: 'guided', f: 'cm', t: 'm', v: 150, stages: ['direction', 'factor', 'answer'],
-        scene: { pl: 'Kabel do ładowarki ma 150 cm. Ile to metrów?', ru: 'Кабель зарядки длиной 150 cm. Сколько это метров?' } },
+        scene: { pl: 'Kabel do ładowarki ma 150 centymetrów. Ile to metrów?', ru: 'Кабель зарядки длиной 150 сантиметров. Сколько это метров?' } },
       { type: 'info',
         title: { pl: 'Jednostki złożone', ru: 'Составные величины' },
         hi: { pl: 'Czasem długość jest „w kawałkach”, jak 3 km 250 m. Nic strasznego!', ru: 'Иногда длина записана «в кусочках», например 3 km 250 m. Ничего страшного!' },
@@ -502,9 +502,9 @@ const LEARN = {
             { line: '3250 m = 3 km 250 m', note: { pl: '3250 : 1000 = 3, reszta 250', ru: '3250 : 1000 = 3, остаток 250' } } ] }
         ] },
       { type: 'check',
-        q: { pl: 'Wieża Steve’a ma 2 m 35 cm. Ile to cm?', ru: 'Башня Стива — 2 m 35 cm. Сколько это cm?' },
+        q: { pl: 'Wieża Steve’a ma 2 m 35 cm. Ile to centymetrów?', ru: 'Башня Стива — 2 m 35 cm. Сколько это сантиметров?' },
         opts: ['235', '2035', '2,35'], correct: '235',
-        hint: { pl: 'Podpowiedź: najpierw zamień 2 m na centymetry.', ru: 'Подсказка: сначала переведи 2 m в сантиметры.' },
+        hint: { pl: 'Podpowiedź: najpierw zamień 2 metry na centymetry.', ru: 'Подсказка: сначала переведи 2 метра в сантиметры.' },
         why: { pl: '2 m = 200 cm, więc 200 + 35 = 235 cm.', ru: '2 m = 200 cm, значит 200 + 35 = 235 cm.' } },
       { type: 'end',
         title: { pl: 'Gotowe — jesteś mistrzem miarek!', ru: 'Готово — ты мастер мерок!' },
@@ -549,9 +549,9 @@ const LEARN = {
           { t: 'cheat' }
         ] },
       { type: 'check',
-        q: { pl: 'Tabliczka czekolady waży 100 g. Ile takich tabliczek razem waży 1 kg?', ru: 'Плитка шоколада весит 100 g. Сколько таких плиток вместе весят 1 kg?' },
+        q: { pl: 'Tabliczka czekolady waży 100 gramów. Ile takich tabliczek razem waży 1 kilogram?', ru: 'Плитка шоколада весит 100 граммов. Сколько таких плиток вместе весят 1 килограмм?' },
         opts: ['10', '100', '1000'], correct: '10',
-        hint: { pl: 'Podpowiedź: 1 kg = 1000 g. Ile razy 100 g mieści się w 1000 g?', ru: 'Подсказка: 1 kg = 1000 g. Сколько раз 100 g помещается в 1000 g?' },
+        hint: { pl: 'Podpowiedź: 1 kg = 1000 g. Ile razy 100 gramów mieści się w 1000 gramów?', ru: 'Подсказка: 1 kg = 1000 g. Сколько раз по 100 граммов помещается в 1000 граммах?' },
         why: { pl: '1 kg = 1000 g, a 1000 : 100 = 10, więc 10 tabliczek.', ru: '1 kg = 1000 g, а 1000 : 100 = 10, значит 10 плиток.' } },
       { type: 'check',
         q: { pl: 'Na opakowaniu czekolady jest napis „100 g”. Ile to dekagramów?', ru: 'На упаковке шоколадки написано «100 g». Сколько это декаграммов?' },
@@ -562,8 +562,8 @@ const LEARN = {
         title: { pl: 'Mnożyć czy dzielić? Ten sam trik', ru: 'Умножать или делить? Тот же трюк' },
         hi: { pl: 'Pamiętasz trik z tematu „Długość”? Z masą działa tak samo!', ru: 'Помнишь трюк из темы «Длина»? С массой он работает так же!' },
         blocks: [
-          { t: 'p', pl: 'Plecak waży 5 kg. W kilogramach to 5, a w gramach — aż 5000! Im mniejsza jednostka, tym większa liczba.',
-            ru: 'Рюкзак весит 5 kg. Считаем в килограммах — получаем 5. В граммах — целых 5000! Чем мельче единица, тем больше число.' },
+          { t: 'p', pl: 'Plecak waży 5 kilogramów. W kilogramach to 5, a w gramach — aż 5000! Im mniejsza jednostka, tym większa liczba.',
+            ru: 'Рюкзак весит 5 килограммов. Считаем в килограммах — получаем 5. В граммах — целых 5000! Чем мельче единица, тем больше число.' },
           { t: 'rule', pl: ['Z większej jednostki na mniejszą → liczba rośnie → mnożymy.', 'Z mniejszej na większą → liczba maleje → dzielimy.'],
             ru: ['Из крупной единицы в мелкую → число растёт → умножаем.', 'Из мелкой в крупную → число уменьшается → делим.'] },
           { t: 'ex', rows: [
@@ -577,9 +577,9 @@ const LEARN = {
           { t: 'cheat' }
         ] },
       { type: 'guided', f: 'kg', t: 'g', v: 4.5, stages: ['bigger', 'direction', 'factor', 'answer'],
-        scene: { pl: 'Twój plecak waży 4,5 kg. Ile to gramów?', ru: 'Твой рюкзак весит 4,5 kg. Сколько это граммов?' } },
+        scene: { pl: 'Twój plecak waży 4,5 kilograma. Ile to gramów?', ru: 'Твой рюкзак весит 4,5 килограмма. Сколько это граммов?' } },
       { type: 'guided', f: 'g', t: 'kg', v: 190, stages: ['direction', 'factor', 'answer'],
-        scene: { pl: 'Twój telefon waży 190 g. Ile to kilogramów?', ru: 'Твой телефон весит 190 g. Сколько это килограммов?' } },
+        scene: { pl: 'Twój telefon waży 190 gramów. Ile to kilogramów?', ru: 'Твой телефон весит 190 граммов. Сколько это килограммов?' } },
       { type: 'info',
         title: { pl: 'Kilogramy i gramy razem', ru: 'Килограммы и граммы вместе' },
         hi: { pl: 'Czasem masa jest zapisana w dwóch jednostkach, na przykład 2 kg 350 g. To nic trudnego!', ru: 'Иногда масса записана в двух единицах, например 2 kg 350 g. Это несложно!' },
@@ -593,7 +593,7 @@ const LEARN = {
       { type: 'check',
         q: { pl: 'Plecak z podręcznikami waży 3 kg 200 g. Ile to gramów?', ru: 'Рюкзак с учебниками весит 3 kg 200 g. Сколько это граммов?' },
         opts: ['3200', '3020', '320'], correct: '3200',
-        hint: { pl: 'Podpowiedź: najpierw zamień 3 kg na gramy.', ru: 'Подсказка: сначала переведи 3 kg в граммы.' },
+        hint: { pl: 'Podpowiedź: najpierw zamień 3 kilogramy na gramy.', ru: 'Подсказка: сначала переведи 3 килограмма в граммы.' },
         why: { pl: '3 kg = 3000 g, więc 3000 + 200 = 3200 g.', ru: '3 kg = 3000 g, значит 3000 + 200 = 3200 g.' } },
       { type: 'end',
         title: { pl: 'Gotowe — ważenie masz w małym palcu!', ru: 'Готово — ты мастер взвешивания!' },
